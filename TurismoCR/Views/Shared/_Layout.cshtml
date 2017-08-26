@@ -30,11 +30,14 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index"></a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Principal</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">Acerca de</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contacto</a></li>
-					<li><a asp-area="" asp-controller="Home" asp-action="Register">Unirme</a></li>
                 </ul>
+				<ul class="nav navbar-nav navbar-right">
+                    <li><a href="#"><span class="glyphicon glyphicon-user"></span> Unirme</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Iniciar sesión</a></li>
+                </ul>	
             </div>
         </div>
     </nav>
