@@ -1,7 +1,7 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TurismoCR", "TurismoCR.csproj", "{F4D4CE04-1E9C-435C-B8AB-E92668AC456A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TurismoCR", "TurismoCR.csproj", "{387449B7-BB32-433B-99D0-5CAD7CFBF252}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,9 +9,9 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F4D4CE04-1E9C-435C-B8AB-E92668AC456A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F4D4CE04-1E9C-435C-B8AB-E92668AC456A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F4D4CE04-1E9C-435C-B8AB-E92668AC456A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F4D4CE04-1E9C-435C-B8AB-E92668AC456A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{387449B7-BB32-433B-99D0-5CAD7CFBF252}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{387449B7-BB32-433B-99D0-5CAD7CFBF252}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{387449B7-BB32-433B-99D0-5CAD7CFBF252}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{387449B7-BB32-433B-99D0-5CAD7CFBF252}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
