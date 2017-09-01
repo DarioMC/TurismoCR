@@ -92,7 +92,7 @@ INSERT INTO Puesto (ID_Puesto ,Titulo_Puesto,Salario_Min, Salario_Max)
 
 INSERT INTO Empleado (ID_Empleado,Nombre,Apellido,Email,Telefono,Fecha_Contratacion,
                      ID_Puesto,Salario,Por_Comision ,ID_Gerente, ID_Departamento)
-                     VALUES(1,'Santiago','Rivera','Stiago78@gmail.com',59748493,'11-11-2000',1,1000,500,1,1);
+                     VALUES(1,'Santiago','Rivera','Stiago78@gmail.com',59748493,'11-11-2000',1,1000,0,1,1);
 
 INSERT INTO Empleado (ID_Empleado,Nombre,Apellido,Email,Telefono,Fecha_Contratacion,
                      ID_Puesto,Salario,Por_Comision ,ID_Gerente, ID_Departamento)
@@ -123,8 +123,12 @@ INSERT INTO Empleado (ID_Empleado,Nombre,Apellido,Email,Telefono,Fecha_Contratac
 INSERT INTO  Historial_Puesto (ID_Empleado, Fecha_Inicio,ID_Puesto,ID_Departamento)
               VALUES(1,'11-11-2000',1,1);
  
+ 
  INSERT INTO  Historial_Puesto (ID_Empleado, Fecha_Inicio,ID_Puesto,ID_Departamento)
               VALUES(2,'01-04-2017',2,2);
+              
+ INSERT INTO  Historial_Puesto (ID_Empleado, Fecha_Inicio,ID_Puesto,ID_Departamento)
+              VALUES(2,'01-05-2018',3,3);
               
  INSERT INTO  Historial_Puesto (ID_Empleado, Fecha_Inicio,ID_Puesto,ID_Departamento)
               VALUES(3,'23-02-2016',3,3);

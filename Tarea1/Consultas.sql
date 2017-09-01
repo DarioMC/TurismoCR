@@ -1,3 +1,59 @@
+-- 2- B 
+CREATE TABLESPACE grupoAdDaOsDan_tbl
+    DATAFILE 'tbs_grupo.dbf'
+        SIZE 8M
+        AUTOEXTEND OFF;
+    
+CREATE TABLESPACE grupoAdDaOsDan_idx
+    DATAFILE 'idx_grupo.dbf'
+    SIZE 8M
+    AUTOEXTEND OFF;
+
+-- 3 B     
+CREATE USER egarro 
+    IDENTIFIED BY abcd123 
+    DEFAULT TABLESPACE grupoAdDaOsDan_tbl;
+    
+    
+ -- 4 B  
+ CREATE USER ochavarria
+    IDENTIFIED BY abcd124 
+    DEFAULT TABLESPACE grupoAdDaOsDan_tbl;
+
+CREATE USER dmonestel 
+    IDENTIFIED BY abcd125 
+    DEFAULT TABLESPACE grupoAdDaOsDan_tbl;
+    
+CREATE USER dsolis 
+    IDENTIFIED BY abcd126 
+    DEFAULT TABLESPACE grupoAdDaOsDan_tbl;
+            
+-- 5 B 
+CREATE ROLE ROL_EJECUTA;
+--Grant execute TRIGGER to ROL_EJECUTAR;
+
+CREATE ROLE ROL_NOVATO;
+grant select any table to ROL_NOVATO;
+grant update any table to ROL_NOVATO;
+grant insert any table to ROL_NOVATO;
+
+CREATE ROLE ROL_SUPERIOR;
+grant select any table to ROL_SUPERIOR with admin option;
+grant update any table to ROL_SUPERIOR with admin option;
+grant delete any table to ROL_SUPERIOR with admin option;
+grant insert any table to ROL_SUPERIOR with admin option;
+
+grant ROL_EJECUTA to egarro; 
+grant ROL_NOVATO to ochavarria;
+grant ROL_SUPERIOR to dmonestel; 
+grant ROL_NOVATO to dsolis;
+
+
+--GRANT dba, connect, resource TO egarro;
+-- GRANT CREATE ANY VIEW TO egarro WITH ADMIN OPTION;
+-- No se que hace ... 
+
+
 --1 C 
 select max ( Fecha_CONTRATACION) from Empleado  ; 
 
