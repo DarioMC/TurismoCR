@@ -156,7 +156,24 @@ IF EMPLEADO.FECHA_CONTRATACION < (SYSDATE - 1826) THEN
    SELECT Nombre Fecha_Contratacion FROM Empleado;
 END IF;
 SELECT * FROM Pais;     */
+CREATE OR REPLACE PROCEDURE Aumento_Salario
+IS 
+BEGIN 
+  FOR Empleado IN (SELECT ID_Empleado ,FECHA_CONTRATACION  FROM EMPLEADO) LOOP
+    IF Empleado.FECHA_CONTRATACION <= (SYSDATE - 3653)
+        THEN  UPDATE Empleado SET Salario = ROUND( (Salario * 0.10) + Salario, 0 )WHERE ID_EMPLEADO = Empleado.ID_EMPLEADO  ;
+    elsif Empleado.FECHA_CONTRATACION <= (SYSDATE - 1826)  
+      then UPDATE Empleado SET Salario = ROUND( (Salario * 0.05) + Salario, 0 )WHERE ID_EMPLEADO = Empleado.ID_EMPLEADO;
+    else 
+      UPDATE Empleado SET Salario = ROUND( (Salario * 0.02) + Salario, 0 )WHERE ID_EMPLEADO = Empleado.ID_EMPLEADO;
+  
+    END IF; 
+  END LOOP;
+END Aumento_Salario;
 
+/*
+SELECT (SYSDATE - 365) AS RESULTADO  FROM DUAL;
 
-
-
+select Salario, FECHA_CONTRATACION from empleado;
+EXEC Aumento_Salario;
+*/
