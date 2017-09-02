@@ -111,7 +111,7 @@ WHERE EMPLEADO.FECHA_CONTRATACION BETWEEN (SYSDATE - 366) AND SYSDATE;
 
 -----8C. Despliegue toda la localización geográfica, país, ciudad y departamento, para aquellosdepartamentos que tienen más de 10 empleados.
 
-SELECT Pais.Nombre_Pais, Localizacion.Ciudad, Departamento.Nombre_Departamento
+SELECT DISTINCT Pais.Nombre_Pais, Localizacion.Ciudad, Departamento.Nombre_Departamento
 FROM Pais INNER JOIN Localizacion 
 ON Pais.ID_Pais = Localizacion.ID_Pais
 INNER JOIN Departamento
