@@ -92,3 +92,71 @@ select Nombre, Apellido, avg (Salario)
 from Empleado 
 where Por_Comision >0 ;
 -- A que se refiere con el promedio ?? 
+
+------6C. Muestre todos los nombres de empleados que llevan más de un año trabajando y su salario sea más de $10000.
+SELECT Nombre from Empleado
+where Salario > 10000 AND Fecha_Contratacion < (SYSDATE - 365);
+
+-----7C. Despliegue todos los trabajos para los cuales se contrató personal en el último año.
+
+SELECT Puesto.Titulo_Puesto FROM PUESTO
+INNER JOIN Empleado 
+ON PUESTO.ID_PUESTO = Empleado.ID_PUESTO
+---WHERE EMPLEADO.FECHA_CONTRATACION > SYSDATE - 1
+WHERE EMPLEADO.FECHA_CONTRATACION BETWEEN SYSDATE -1 AND SYSDATE;
+SELECT Puesto.Titulo_Puesto FROM PUESTO
+INNER JOIN Empleado 
+ON PUESTO.ID_PUESTO = Empleado.ID_PUESTO
+WHERE EMPLEADO.FECHA_CONTRATACION BETWEEN (SYSDATE - 366) AND SYSDATE;
+
+-----8C. Despliegue toda la localización geográfica, país, ciudad y departamento, para aquellosdepartamentos que tienen más de 10 empleados.
+
+SELECT Pais.Nombre_Pais, Localizacion.Ciudad, Departamento.Nombre_Departamento
+FROM Pais INNER JOIN Localizacion 
+ON Pais.ID_Pais = Localizacion.ID_Pais
+INNER JOIN Departamento
+ON Departamento.ID_Localizacion = Localizacion.ID_Localizacion
+INNER JOIN Empleado
+ON Empleado.ID_Departamento = Departamento.ID_Departamento
+WHERE Empleado.ID_Departamento IN (
+      SELECT Empleado.ID_Departamento FROM Empleado
+      GROUP BY Empleado.ID_Departamento
+      HAVING COUNT(*) > 1   ----10
+  );
+-----9C. Despliegue todas las personas que tienen al menos 10 personas a cargo.
+      SELECT DISTINCT Empleado.ID_Gerente FROM Empleado
+      ---GROUP BY Empleado.ID_Empleado
+      WHERE Empleado.ID_Gerente IN (
+      SELECT Empleado.ID_Gerente FROM Empleado
+      GROUP BY Empleado.ID_Gerente
+      HAVING COUNT(*) > 1   ----10
+  );
+
+----1D. Incremente el salario de los empleados en un 10%, si han trabajado en la empresa más de 10 años,
+----un 5%, más de 5 años, 2%, en cualquier otro caso.
+/*
+     UPDATE Empleado SET Salario = ROUND( Salario * 1.20, 0 )
+     
+     SELECT Empleado.ID_Empleado, (CASE  Empleado.Salario
+      WHEN 4800 THEN 4850
+      ELSE Empleado.Salario
+      END) AS Salario_Actualizado  FROM Empleado;
+  */    
+ /*     
+ SELECT Salario  FROM Empleado  
+WHERE EMPLEADO.FECHA_CONTRATACION < (SYSDATE - 3653)
+OR
+ EMPLEADO.FECHA_CONTRATACION < (SYSDATE - 1826);
+ */
+    /*   
+BEGIN     
+IF EMPLEADO.FECHA_CONTRATACION < (SYSDATE - 3653) THEN
+   SELECT Salario FROM Empleado;
+IF EMPLEADO.FECHA_CONTRATACION < (SYSDATE - 1826) THEN
+   SELECT Nombre Fecha_Contratacion FROM Empleado;
+END IF;
+SELECT * FROM Pais;     */
+
+
+
+
