@@ -159,13 +159,13 @@ SELECT * FROM Pais;     */
 CREATE OR REPLACE PROCEDURE Aumento_Salario
 IS 
 BEGIN 
-  FOR Empleado IN (SELECT ID_Empleado ,FECHA_CONTRATACION  FROM EMPLEADO) LOOP
-    IF Empleado.FECHA_CONTRATACION <= (SYSDATE - 3653)
-        THEN  UPDATE Empleado SET Salario = ROUND( (Salario * 0.10) + Salario, 0 )WHERE ID_EMPLEADO = Empleado.ID_EMPLEADO  ;
-    elsif Empleado.FECHA_CONTRATACION <= (SYSDATE - 1826)  
-      then UPDATE Empleado SET Salario = ROUND( (Salario * 0.05) + Salario, 0 )WHERE ID_EMPLEADO = Empleado.ID_EMPLEADO;
+  FOR Empleado IN (SELECT ID_Empleado ,Fecha_Contratacion  FROM Empleado) LOOP
+    IF Empleado.Fecha_Contratacion <= (SYSDATE - 3653)
+        THEN  UPDATE Empleado SET Salario = ROUND( (Salario * 0.10) + Salario, 0 )WHERE ID_Empleado = Empleado.ID_Empleado;
+    elsif Empleado.Fecha_Contratacion <= (SYSDATE - 1826)  
+      then UPDATE Empleado SET Salario = ROUND( (Salario * 0.05) + Salario, 0 )WHERE ID_Empleado = Empleado.ID_Empleado;
     else 
-      UPDATE Empleado SET Salario = ROUND( (Salario * 0.02) + Salario, 0 )WHERE ID_EMPLEADO = Empleado.ID_EMPLEADO;
+      UPDATE Empleado SET Salario = ROUND( (Salario * 0.02) + Salario, 0 )WHERE ID_Empleado = Empleado.ID_Empleado;
   
     END IF; 
   END LOOP;
