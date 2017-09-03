@@ -161,19 +161,33 @@ IS
 BEGIN 
   FOR Empleado IN (SELECT ID_Empleado ,Fecha_Contratacion  FROM Empleado) LOOP
     IF Empleado.Fecha_Contratacion <= (SYSDATE - 3653)
-        THEN  UPDATE Empleado SET Salario = ROUND( (Salario * 0.10) + Salario, 0 )WHERE ID_Empleado = Empleado.ID_Empleado;
-    elsif Empleado.Fecha_Contratacion <= (SYSDATE - 1826)  
-      then UPDATE Empleado SET Salario = ROUND( (Salario * 0.05) + Salario, 0 )WHERE ID_Empleado = Empleado.ID_Empleado;
-    else 
-      UPDATE Empleado SET Salario = ROUND( (Salario * 0.02) + Salario, 0 )WHERE ID_Empleado = Empleado.ID_Empleado;
-  
+        
+        THEN  UPDATE Empleado SET Salario = ( (Salario * 0.10)+ Salario ) WHERE ID_Empleado = Empleado.ID_Empleado;
+        EXIT;
+    ELSIF Empleado.Fecha_Contratacion BETWEEN (SYSDATE - 3653) AND  (SYSDATE - 1826)  
+      THEN UPDATE Empleado SET Salario = ( (Salario * 0.05)+ Salario) WHERE ID_Empleado = Empleado.ID_Empleado;
+      EXIT;
+    ELSIF Empleado.Fecha_Contratacion > (SYSDATE - 1826)
+      THEN UPDATE Empleado SET Salario = ( (Salario * 0.02)+ Salario )WHERE ID_Empleado = Empleado.ID_Empleado;
+        EXIT;
+    ELSE 
+        EXIT;
     END IF; 
   END LOOP;
 END Aumento_Salario;
 
 /*
+ SELECT ID_Empleado from Empleado
+                        where rowid = (select max(rowid) from Empleado);
+
+
+
 SELECT (SYSDATE - 365) AS RESULTADO  FROM DUAL;
+        SELECT ID_Empleado from Empleado
+                        where rowid = (select max(rowid) from Empleado);
+
+*/
+
 
 select Salario, FECHA_CONTRATACION from empleado;
 EXEC Aumento_Salario;
-*/
