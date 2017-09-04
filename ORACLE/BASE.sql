@@ -59,11 +59,3 @@ CREATE TABLE Historial_Puesto (ID_Empleado INT NOT NULL,
     CONSTRAINT fk_Departamento FOREIGN KEY (ID_Departamento) REFERENCES Departamento(ID_Departamento),
     CONSTRAINT fk_Puesto FOREIGN KEY (ID_Puesto) REFERENCES Puesto(ID_Puesto),
     CONSTRAINT fk_Empleado2 FOREIGN KEY (ID_Empleado) REFERENCES Empleado(ID_Empleado));
-                                
-DROP TABLE Region; 
-DROP TABLE Pais;
-DROP TABLE Localizacion; 
-DROP TABLE Puesto; 
-DROP TABLE Departamento; 
-DROP TABLE Historial_Puesto; 
-DROP TABLE Empleado;

@@ -58,7 +58,7 @@ INSERT INTO Localizacion (ID_Localizacion, Direccion,
         
 -- DEPARTAMENTO --
 INSERT INTO Departamento(ID_Departamento,Nombre_Departamento, ID_Gerente, ID_Localizacion)
-    VALUES(1,'Diseño',1,1);
+    VALUES(1,'Dise?o',1,1);
     
 INSERT INTO Departamento(ID_Departamento,Nombre_Departamento, ID_Gerente, ID_Localizacion)
     VALUES(2,'Cientifico de datos',2,2);
@@ -74,7 +74,7 @@ INSERT INTO Departamento(ID_Departamento,Nombre_Departamento, ID_Gerente, ID_Loc
           
 -- PUESTO --
 INSERT INTO Puesto (ID_Puesto ,Titulo_Puesto,Salario_Min, Salario_Max)
-    VALUES(1,'Diseñador', 1000, 1500);
+    VALUES(1,'Dise?ador', 1000, 1500);
             
 INSERT INTO Puesto (ID_Puesto ,Titulo_Puesto,Salario_Min, Salario_Max)
     VALUES(2,'Analista', 6000, 9000);

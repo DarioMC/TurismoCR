@@ -15,13 +15,13 @@
     Respuesta:
     - No se puede garantizar que se cumpla la primera forma normal, puesto que 
       en el modelo de la base de datos no se puede apreciar que los atributos 
-      tengan solo valores at—micos.
+      tengan solo valores at?micos.
 
     - Al parecer no se cumple la segunda forma normal, puesto que el 
-      id_gerente en la tabla empleado no tiene ninguna relaci—n con la llave primaria.
+      id_gerente en la tabla empleado no tiene ninguna relaci?n con la llave primaria.
 
-    - En la tabla localizaci—n hay redudancia de datos, el c—digo postal aporta la 
-      misma informaci—n que los atributos provincia y ciudad.
+    - En la tabla localizacion hay redudancia de datos, el codigo postal aporta la
+      misma informaci?n que los atributos provincia y ciudad.
 */
 
 -- 2B 
@@ -34,6 +34,8 @@ CREATE TABLESPACE grupoAdDaOsDan_idx
     DATAFILE 'idx_grupo.dbf'
     SIZE 8M
     AUTOEXTEND OFF;
+
+ALTER SESSION SET "_ORACLE_SCRIPT" = TRUE;
 
 -- 3B     
 CREATE USER egarro 
