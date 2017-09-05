@@ -83,7 +83,7 @@ SELECT * FROM Departamento
 
 SELECT EXTRACT (YEAR FROM fecha_contratacion) as ano, count(Empleado.ID_Empleado)
     FROM EMPLEADO 
-    GROUP BY EXTRACT(YEAR FROM fecha_cONtratacion)
+    GROUP BY EXTRACT(YEAR FROM fecha_contratacion)
     HAVING COUNT(Empleado.ID_Empleado) > 1 ;
 
 --2C
@@ -115,7 +115,7 @@ SELECT Nombre, Apellido, AVG(Salario)
 
 -- 6C
 SELECT Nombre FROM Empleado
-    WHERE Salario > 10000 AND Fecha_CONtrataciON < (SYSDATE - 365);
+    WHERE Salario > 10000 AND Fecha_Contratacion < (SYSDATE - 365);
 
 -- 7C
 SELECT Puesto.Titulo_Puesto FROM PUESTO
@@ -173,9 +173,79 @@ BEGIN
 END Aumento_Salario;
 
 SELECT Salario, FECHA_CONTRATACION FROM empleado;
-EXEC Aumento_Salario;
+-- EXEC Aumento_Salario;
 
 -- 2D
+DECLARE
+    yr number;
+    yr_aux number;
+    cntrcts number;
+    cntrcts_aux number;
+BEGIN
+    yr := 0;
+    cntrcts := 0;
+    -- Get years with more contracts.
+    FOR rw IN (
+        -- Get table with columns: year and number of contracts
+        SELECT EXTRACT(YEAR FROM TO_DATE(FECHA_CONTRATACION)) AS Year, COUNT(*) AS Contracts
+        FROM EMPLEADO
+        GROUP BY EXTRACT(YEAR FROM TO_DATE(FECHA_CONTRATACION))
+    ) LOOP
+        yr_aux := rw.Year;
+        cntrcts_aux := rw.Contracts;
+        IF (cntrcts_aux > cntrcts) THEN
+            yr := yr_aux;
+            cntrcts := cntrcts_aux;
+        END IF;
+    END LOOP;
+    dbms_output.put_line('El año con más contrataciones es: ' || yr);
+    -- Number of contracts by month in that year.
+    FOR rw IN (
+        SELECT EXTRACT(MONTH FROM TO_DATE(FECHA_CONTRATACION)) AS Month, COUNT(*) AS Contracts
+        FROM EMPLEADO
+        WHERE EXTRACT(YEAR FROM TO_DATE(FECHA_CONTRATACION)) = yr
+        GROUP BY EXTRACT(MONTH FROM TO_DATE(FECHA_CONTRATACION))
+    ) LOOP
+        IF (rw.Month = 1) THEN
+            dbms_output.put_line('Durante el mes de enero se realizaron ' || rw.Contracts || ' contrataciones.');
+        END IF;
+        IF (rw.Month = 2) THEN
+            dbms_output.put_line('Durante el mes de febrero se realizaron ' || rw.Contracts || ' contrataciones.');
+        END IF;
+        IF (rw.Month = 3) THEN
+            dbms_output.put_line('Durante el mes de marzo se realizaron ' || rw.Contracts || ' contrataciones.');
+        END IF;
+        IF (rw.Month = 4) THEN
+            dbms_output.put_line('Durante el mes de abril se realizaron ' || rw.Contracts || ' contrataciones.');
+        END IF;
+        IF (rw.Month = 5) THEN
+            dbms_output.put_line('Durante el mes de mayo se realizaron ' || rw.Contracts || ' contrataciones.');
+        END IF;
+        IF (rw.Month = 6) THEN
+            dbms_output.put_line('Durante el mes de junio se realizaron ' || rw.Contracts || ' contrataciones.');
+        END IF;
+        IF (rw.Month = 7) THEN
+            dbms_output.put_line('Durante el mes de julio se realizaron ' || rw.Contracts || ' contrataciones.');
+        END IF;
+        IF (rw.Month = 8) THEN
+            dbms_output.put_line('Durante el mes de agosto se realizaron ' || rw.Contracts || ' contrataciones.');
+        END IF;
+        IF (rw.Month = 9) THEN
+            dbms_output.put_line('Durante el mes de setiembre se realizaron ' || rw.Contracts || ' contrataciones.');
+        END IF;
+        IF (rw.Month = 10) THEN
+            dbms_output.put_line('Durante el mes de octubre se realizaron ' || rw.Contracts || ' contrataciones.');
+        END IF;
+        IF (rw.Month = 11) THEN
+            dbms_output.put_line('Durante el mes de noviembre se realizaron ' || rw.Contracts || ' contrataciones.');
+        END IF;
+        IF (rw.Month = 12) THEN
+            dbms_output.put_line('Durante el mes de diciembre se realizaron ' || rw.Contracts || ' contrataciones.');
+        END IF;
+    END LOOP;
+END;
+
+-- 3D
 
 -- 6D
 CREATE OR REPLACE
@@ -195,7 +265,7 @@ CREATE OR REPLACE
 PROCEDURE Salario_DescendienteDepartamento( idDepartamento NUMBER)
 IS
 BEGIN
-    SELECT NOMBRE, APELIIDO, SALARIO FROM EMPLEADO 
+    SELECT NOMBRE, APELLIDO, SALARIO FROM EMPLEADO
     WHERE ID_DEPARTAMENTO = idDepartamento
     ORDER BY SALARIO DESC;
 END Salario_DescendienteDepartamento;
