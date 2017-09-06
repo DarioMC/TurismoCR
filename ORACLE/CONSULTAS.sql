@@ -177,14 +177,14 @@ SELECT Salario, FECHA_CONTRATACION FROM empleado;
 
 -- 2D
 DECLARE
-    yr number;
-    yr_aux number;
-    cntrcts number;
-    cntrcts_aux number;
+    yr NUMBER;
+    yr_aux NUMBER;
+    cntrcts NUMBER;
+    cntrcts_aux NUMBER;
 BEGIN
     yr := 0;
     cntrcts := 0;
-    -- Get years with more contracts.
+    -- Get year with more contracts.
     FOR rw IN (
         -- Get table with columns: year and number of contracts
         SELECT EXTRACT(YEAR FROM TO_DATE(FECHA_CONTRATACION)) AS Year, COUNT(*) AS Contracts
@@ -246,6 +246,31 @@ BEGIN
 END;
 
 -- 3D
+DECLARE
+  employee_name VARCHAR2(32767);
+  employee_last_name VARCHAR2(32767);
+  job_title VARCHAR2(32767);
+  date_hire VARCHAR2(32767);
+BEGIN
+  FOR rw IN (
+    SELECT EMPLEADO.NOMBRE, EMPLEADO.APELLIDO, PUESTO.TITULO_PUESTO, FECHA_INICIO
+    FROM HISTORIAL_PUESTO
+    INNER JOIN EMPLEADO ON EMPLEADO.ID_EMPLEADO = HISTORIAL_PUESTO.ID_EMPLEADO
+    INNER JOIN PUESTO ON PUESTO.ID_PUESTO = HISTORIAL_PUESTO.ID_PUESTO
+    WHERE (HISTORIAL_PUESTO.ID_PUESTO, FECHA_INICIO)
+    IN (SELECT ID_PUESTO, MIN(FECHA_INICIO) FROM HISTORIAL_PUESTO GROUP BY ID_PUESTO)
+  ) LOOP
+      employee_name := rw.NOMBRE;
+      employee_last_name := rw.APELLIDO;
+      job_title := rw.TITULO_PUESTO;
+      date_hire := TO_CHAR(rw.FECHA_INICIO);
+      dbms_output.put_line(
+          'El primer empleado ' || job_title || ' contratado ' ||
+          'es ' || employee_name || ' ' || employee_last_name ||
+          ', se contrato en la fecha: ' || date_hire
+      );
+  END LOOP;
+END;
 
 -- 6D
 CREATE OR REPLACE
