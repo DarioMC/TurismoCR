@@ -109,9 +109,9 @@ SELECT Nombre,Apellido, sysdate-historial_puesto.fecha_inicio
     ON Empleado.ID_Empleado = Historial_Puesto.ID_Empleado;
 
 -- 5C 
-SELECT Nombre, Apellido, AVG(Salario) 
-    FROM Empleado 
-    WHERE Por_Comision > 0;
+--SELECT Nombre, Apellido, AVG(Salario) 
+    --FROM Empleado 
+    --WHERE Por_Comision > 0;
 
 -- 6C
 SELECT Nombre FROM Empleado
@@ -148,32 +148,30 @@ SELECT DISTINCT Empleado.ID_Gerente FROM Empleado
     );
 
 -- 1D
-CREATE OR REPLACE PROCEDURE Aumento_Salario
+create or replace PROCEDURE Aumento_Salario
 IS 
 BEGIN 
-    FOR Empleado IN (SELECT ID_Empleado ,Fecha_Contratacion  FROM Empleado) LOOP
-        IF Empleado.Fecha_Contratacion < add_months(sysdate,-(12*10))
+    FOR i IN (SELECT ID_Empleado, Fecha_Contratacion FROM Empleado) LOOP
+        IF i.Fecha_Contratacion < add_months(sysdate,-(12*10))
             THEN  UPDATE Empleado SET Salario = ( (Salario * 1.10)  ) 
-              WHERE ID_Empleado = Empleado.ID_Empleado;
-        EXIT;
+              WHERE ID_Empleado = i.ID_Empleado;
         
-        ELSIF Empleado.Fecha_Contratacion  >= add_months(sysdate,-(12*10)) AND
-              Empleado.Fecha_Contratacion < add_months(sysdate,-(12*5))
+        ELSIF i.Fecha_Contratacion  >= add_months(sysdate,-(12*10)) AND
+              i.Fecha_Contratacion < add_months(sysdate,-(12*5))
             THEN UPDATE Empleado SET Salario = ( (Salario * 1.05) ) 
-              WHERE ID_Empleado = Empleado.ID_Empleado;
-        EXIT;
+              WHERE ID_Empleado = i.ID_Empleado;
         
         ELSE
             UPDATE Empleado SET Salario = ( (Salario * 1.02) )
-              WHERE ID_Empleado = Empleado.ID_Empleado;
-        EXIT;
+              WHERE ID_Empleado = i.ID_Empleado;
          
         END IF; 
     END LOOP;
 END Aumento_Salario;
 
----SELECT Salario, FECHA_CONTRATACION FROM empleado;
----EXEC Aumento_Salario;
+--SELECT Salario, FECHA_CONTRATACION FROM empleado;
+EXEC Aumento_Salario;
+SELECT Salario, FECHA_CONTRATACION FROM empleado;
 
 
 
