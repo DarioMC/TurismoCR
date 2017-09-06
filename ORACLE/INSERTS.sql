@@ -122,7 +122,12 @@ INSERT INTO Empleado (ID_Empleado,Nombre,Apellido,Email,Telefono,Fecha_Contratac
 INSERT INTO Empleado (ID_Empleado,Nombre,Apellido,Email,Telefono,Fecha_Contratacion,
     ID_Puesto,Salario,Por_Comision ,ID_Gerente, ID_Departamento)
     VALUES(7, 'John', 'Smith', 'jsmith29@gmail.com', 76554383, '11-05-2013',
-        3, 3800, 1200, 3, 3);                     
+        3, 3800, 1200, 3, 3); 
+        
+INSERT INTO Empleado (ID_Empleado,Nombre,Apellido,Email,Telefono,Fecha_Contratacion,
+    ID_Puesto,Salario,Por_Comision ,ID_Gerente, ID_Departamento)
+    VALUES(8, 'Alison', 'Smith', 'ally69@gmail.com', 89344383, '11-04-2012',
+        3, 3800, 1000, 3, 3); 
                      
 -- HISTORIAL_PUESTO
 INSERT INTO Historial_Puesto (ID_Empleado, Fecha_Inicio, ID_Puesto, ID_Departamento)
@@ -148,3 +153,6 @@ INSERT INTO Historial_Puesto (ID_Empleado, Fecha_Inicio,ID_Puesto,ID_Departament
               
 INSERT INTO Historial_Puesto (ID_Empleado, Fecha_Inicio,ID_Puesto,ID_Departamento)
     VALUES(7, '11-05-2013', 3, 3);
+    
+INSERT INTO Historial_Puesto (ID_Empleado, Fecha_Inicio,ID_Puesto,ID_Departamento)
+    VALUES(8, '11-04-2012', 3, 3);
