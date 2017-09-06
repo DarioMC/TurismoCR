@@ -109,9 +109,11 @@ SELECT Nombre,Apellido, sysdate-historial_puesto.fecha_inicio
     ON Empleado.ID_Empleado = Historial_Puesto.ID_Empleado;
 
 -- 5C 
---SELECT Nombre, Apellido, AVG(Salario) 
-    --FROM Empleado 
-    --WHERE Por_Comision > 0;
+SELECT Nombre, Apellido, AVG(Salario) 
+    FROM Empleado
+    WHERE Por_Comision > 0
+    GROUP BY Nombre, Apellido;
+    
 
 -- 6C
 SELECT Nombre FROM Empleado
