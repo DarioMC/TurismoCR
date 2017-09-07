@@ -110,26 +110,30 @@ SELECT Nombre,Apellido, sysdate-historial_puesto.fecha_inicio
 
 -- 5C 
 SELECT Nombre, Apellido, AVG(Salario) 
-    FROM Empleado 
-    WHERE Por_Comision > 0;
+    FROM Empleado
+    WHERE Por_Comision > 0
+    GROUP BY Nombre, Apellido;
+    
 
 -- 6C
 SELECT Nombre FROM Empleado
-    WHERE Salario > 10000 AND Fecha_Contratacion < (SYSDATE - 365);
+    WHERE Salario > 1000 AND Fecha_Contratacion < add_months(sysdate,-(12*1));  ---10000
 
 -- 7C
-SELECT Puesto.Titulo_Puesto FROM PUESTO
-    INNER JOIN Empleado 
-    ON PUESTO.ID_PUESTO = Empleado.ID_PUESTO
-    WHERE EMPLEADO.FECHA_CONTRATACION BETWEEN SYSDATE -1 AND SYSDATE;
+
+    
     SELECT Puesto.Titulo_Puesto FROM PUESTO
     INNER JOIN Empleado 
     ON PUESTO.ID_PUESTO = Empleado.ID_PUESTO
-    WHERE EMPLEADO.FECHA_CONTRATACION BETWEEN (SYSDATE - 366) AND SYSDATE;
+    WHERE EMPLEADO.FECHA_CONTRATACION >= add_months(sysdate,-(12*1));
 
 -- 8C
 SELECT DISTINCT Pais.Nombre_Pais, Localizacion.Ciudad, Departamento.Nombre_Departamento
+<<<<<<< HEAD
     FROM Pais INNER JOIN LocalizaciON 
+=======
+    FROM Pais INNER JOIN Localizacion 
+>>>>>>> d275a670b97031b612c72cec8b9f60825e795754
     ON Pais.ID_Pais = LocalizaciON.ID_Pais
     INNER JOIN Departamento
     ON Departamento.ID_Localizacion = Localizacion.ID_LocalizaciON
@@ -138,7 +142,7 @@ SELECT DISTINCT Pais.Nombre_Pais, Localizacion.Ciudad, Departamento.Nombre_Depar
     WHERE Empleado.ID_Departamento IN (
         SELECT Empleado.ID_Departamento FROM Empleado
         GROUP BY Empleado.ID_Departamento
-        HAVING COUNT(*) > 1
+        HAVING COUNT(*) > 1  ---10
     );
     
 -- 9C
@@ -146,45 +150,48 @@ SELECT DISTINCT Empleado.ID_Gerente FROM Empleado
     WHERE Empleado.ID_Gerente IN (
         SELECT Empleado.ID_Gerente FROM Empleado
         GROUP BY Empleado.ID_Gerente
-        HAVING COUNT(*) > 1
+        HAVING COUNT(*) > 1  --10
     );
 
 -- 1D
-CREATE OR REPLACE PROCEDURE Aumento_Salario
+create or replace PROCEDURE Aumento_Salario
 IS 
 BEGIN 
-    FOR Empleado IN (SELECT ID_Empleado ,Fecha_Contratacion  FROM Empleado) LOOP
-        IF Empleado.Fecha_CONtrataciON <= (SYSDATE - 3653)
-            THEN  UPDATE Empleado SET Salario = ( (Salario * 0.10) + Salario ) 
-            WHERE ID_Empleado = Empleado.ID_Empleado;
-        EXIT;
-        ELSIF Empleado.Fecha_Contratacion BETWEEN (SYSDATE - 3653) AND (SYSDATE - 1826)  
-            THEN UPDATE Empleado SET Salario = ( (Salario * 0.05) + Salario) 
-            WHERE ID_Empleado = Empleado.ID_Empleado;
-        EXIT;
-        ELSIF Empleado.Fecha_CONtrataciON > (SYSDATE - 1826)
-            THEN UPDATE Empleado SET Salario = ( (Salario * 0.02) + Salario )
-            WHERE ID_Empleado = Empleado.ID_Empleado;
-        EXIT;
-        ELSE 
-            EXIT;
+    FOR i IN (SELECT ID_Empleado, Fecha_Contratacion FROM Empleado) LOOP
+        IF i.Fecha_Contratacion < add_months(sysdate,-(12*10))
+            THEN  UPDATE Empleado SET Salario = ( (Salario * 1.10)  ) 
+              WHERE ID_Empleado = i.ID_Empleado;
+        
+        ELSIF i.Fecha_Contratacion  >= add_months(sysdate,-(12*10)) AND
+              i.Fecha_Contratacion < add_months(sysdate,-(12*5))
+            THEN UPDATE Empleado SET Salario = ( (Salario * 1.05) ) 
+              WHERE ID_Empleado = i.ID_Empleado;
+        
+        ELSE
+            UPDATE Empleado SET Salario = ( (Salario * 1.02) )
+              WHERE ID_Empleado = i.ID_Empleado;
+         
         END IF; 
     END LOOP;
 END Aumento_Salario;
 
+--SELECT Salario, FECHA_CONTRATACION FROM empleado;
+EXEC Aumento_Salario;
 SELECT Salario, FECHA_CONTRATACION FROM empleado;
--- EXEC Aumento_Salario;
+
+
+
 
 -- 2D
 DECLARE
-    yr NUMBER;
-    yr_aux NUMBER;
-    cntrcts NUMBER;
-    cntrcts_aux NUMBER;
+    yr number;
+    yr_aux number;
+    cntrcts number;
+    cntrcts_aux number;
 BEGIN
     yr := 0;
     cntrcts := 0;
-    -- Get year with more contracts.
+    -- Get years with more contracts.
     FOR rw IN (
         -- Get table with columns: year and number of contracts
         SELECT EXTRACT(YEAR FROM TO_DATE(FECHA_CONTRATACION)) AS Year, COUNT(*) AS Contracts
@@ -246,31 +253,6 @@ BEGIN
 END;
 
 -- 3D
-DECLARE
-  employee_name VARCHAR2(32767);
-  employee_last_name VARCHAR2(32767);
-  job_title VARCHAR2(32767);
-  date_hire VARCHAR2(32767);
-BEGIN
-  FOR rw IN (
-    SELECT EMPLEADO.NOMBRE, EMPLEADO.APELLIDO, PUESTO.TITULO_PUESTO, FECHA_INICIO
-    FROM HISTORIAL_PUESTO
-    INNER JOIN EMPLEADO ON EMPLEADO.ID_EMPLEADO = HISTORIAL_PUESTO.ID_EMPLEADO
-    INNER JOIN PUESTO ON PUESTO.ID_PUESTO = HISTORIAL_PUESTO.ID_PUESTO
-    WHERE (HISTORIAL_PUESTO.ID_PUESTO, FECHA_INICIO)
-    IN (SELECT ID_PUESTO, MIN(FECHA_INICIO) FROM HISTORIAL_PUESTO GROUP BY ID_PUESTO)
-  ) LOOP
-      employee_name := rw.NOMBRE;
-      employee_last_name := rw.APELLIDO;
-      job_title := rw.TITULO_PUESTO;
-      date_hire := TO_CHAR(rw.FECHA_INICIO);
-      dbms_output.put_line(
-          'El primer empleado ' || job_title || ' contratado ' ||
-          'es ' || employee_name || ' ' || employee_last_name ||
-          ', se contrato en la fecha: ' || date_hire
-      );
-  END LOOP;
-END;
 
 -- 6D
 CREATE OR REPLACE
