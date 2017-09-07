@@ -47,7 +47,7 @@ CREATE USER ochavarria
     IDENTIFIED BY abcd124 
     DEFAULT TABLESPACE grupoAdDaOsDan_tbl;
 
-CREATE USER dmONestel 
+CREATE USER dmonestel
     IDENTIFIED BY abcd125 
     DEFAULT TABLESPACE grupoAdDaOsDan_tbl;
     
@@ -72,8 +72,11 @@ GRANT INSERT any table to ROL_SUPERIOR with admin option;
 
 GRANT ROL_EJECUTA to egarro; 
 GRANT ROL_NOVATO to ochavarria;
-GRANT ROL_SUPERIOR to dmONestel; 
+GRANT ROL_SUPERIOR to dmonestel;
 GRANT ROL_NOVATO to dsolis;
+
+--6B
+-- Se adjunta la evidencia en una imagen.
 
 --1C 
 SELECT MAX(Fecha_CONTRATACION) FROM Empleado; 
@@ -100,7 +103,6 @@ SELECT Nombre, COUNT(Historial_Puesto.ID_Empleado)
     HAVING EXTRACT(YEAR FROM MAX(Sysdate)) = EXTRACT(YEAR FROM MAX(Fecha_Inicio)) 
     AND COUNT (Historial_Puesto.ID_Empleado) > 1; 
 
-
 -- 4C 
 SELECT Nombre,Apellido, sysdate-historial_puesto.fecha_inicio 
     AS dias, historial_puesto.fecha_inicio
@@ -113,28 +115,21 @@ SELECT Nombre, Apellido, AVG(Salario)
     FROM Empleado
     WHERE Por_Comision > 0
     GROUP BY Nombre, Apellido;
-    
 
 -- 6C
 SELECT Nombre FROM Empleado
     WHERE Salario > 1000 AND Fecha_Contratacion < add_months(sysdate,-(12*1));  ---10000
 
 -- 7C
-
-    
-    SELECT Puesto.Titulo_Puesto FROM PUESTO
-    INNER JOIN Empleado 
-    ON PUESTO.ID_PUESTO = Empleado.ID_PUESTO
-    WHERE EMPLEADO.FECHA_CONTRATACION >= add_months(sysdate,-(12*1));
+SELECT Puesto.Titulo_Puesto FROM PUESTO
+INNER JOIN Empleado
+ON PUESTO.ID_PUESTO = Empleado.ID_PUESTO
+WHERE EMPLEADO.FECHA_CONTRATACION >= add_months(sysdate,-(12*1));
 
 -- 8C
 SELECT DISTINCT Pais.Nombre_Pais, Localizacion.Ciudad, Departamento.Nombre_Departamento
-<<<<<<< HEAD
-    FROM Pais INNER JOIN LocalizaciON 
-=======
-    FROM Pais INNER JOIN Localizacion 
->>>>>>> d275a670b97031b612c72cec8b9f60825e795754
-    ON Pais.ID_Pais = LocalizaciON.ID_Pais
+    FROM Pais INNER JOIN Localizacion
+    ON Pais.ID_Pais = Localizacion.ID_Pais
     INNER JOIN Departamento
     ON Departamento.ID_Localizacion = Localizacion.ID_LocalizaciON
     INNER JOIN Empleado
@@ -154,7 +149,7 @@ SELECT DISTINCT Empleado.ID_Gerente FROM Empleado
     );
 
 -- 1D
-create or replace PROCEDURE Aumento_Salario
+CREATE OR REPLACE PROCEDURE Aumento_Salario
 IS 
 BEGIN 
     FOR i IN (SELECT ID_Empleado, Fecha_Contratacion FROM Empleado) LOOP
@@ -179,19 +174,16 @@ END Aumento_Salario;
 EXEC Aumento_Salario;
 SELECT Salario, FECHA_CONTRATACION FROM empleado;
 
-
-
-
 -- 2D
 DECLARE
-    yr number;
-    yr_aux number;
-    cntrcts number;
-    cntrcts_aux number;
+    yr NUMBER;
+    yr_aux NUMBER;
+    cntrcts NUMBER;
+    cntrcts_aux NUMBER;
 BEGIN
     yr := 0;
     cntrcts := 0;
-    -- Get years with more contracts.
+    -- Get year with more contracts.
     FOR rw IN (
         -- Get table with columns: year and number of contracts
         SELECT EXTRACT(YEAR FROM TO_DATE(FECHA_CONTRATACION)) AS Year, COUNT(*) AS Contracts
@@ -253,6 +245,50 @@ BEGIN
 END;
 
 -- 3D
+DECLARE
+  employee_name VARCHAR2(32767);
+  employee_last_name VARCHAR2(32767);
+  job_title VARCHAR2(32767);
+  date_hire VARCHAR2(32767);
+BEGIN
+  FOR rw IN (
+    SELECT EMPLEADO.NOMBRE, EMPLEADO.APELLIDO, PUESTO.TITULO_PUESTO, FECHA_INICIO
+    FROM HISTORIAL_PUESTO
+    INNER JOIN EMPLEADO ON EMPLEADO.ID_EMPLEADO = HISTORIAL_PUESTO.ID_EMPLEADO
+    INNER JOIN PUESTO ON PUESTO.ID_PUESTO = HISTORIAL_PUESTO.ID_PUESTO
+    WHERE (HISTORIAL_PUESTO.ID_PUESTO, FECHA_INICIO)
+    IN (SELECT ID_PUESTO, MIN(FECHA_INICIO) FROM HISTORIAL_PUESTO GROUP BY ID_PUESTO)
+  ) LOOP
+      employee_name := rw.NOMBRE;
+      employee_last_name := rw.APELLIDO;
+      job_title := rw.TITULO_PUESTO;
+      date_hire := TO_CHAR(rw.FECHA_INICIO);
+      dbms_output.put_line(
+          'El primer empleado ' || job_title || ' contratado ' ||
+          'es ' || employee_name || ' ' || employee_last_name ||
+          ', se contrato en la fecha: ' || date_hire
+      );
+  END LOOP;
+END;
+
+--4D
+CREATE OR REPLACE FUNCTION GET_MANAGER_NAME(ID_DEPT IN NUMBER)
+  RETURN VARCHAR2 IS
+  RET_VAL VARCHAR2(32767);
+BEGIN
+  SELECT EMPLEADO.NOMBRE
+  INTO RET_VAL
+  FROM DEPARTAMENTO
+  INNER JOIN EMPLEADO ON DEPARTAMENTO.ID_GERENTE = EMPLEADO.ID_EMPLEADO
+  WHERE DEPARTAMENTO.ID_DEPARTAMENTO = ID_DEPT;
+  RETURN RET_VAL;
+END GET_MANAGER_NAME;
+
+BEGIN
+  dbms_output.put_line(GET_MANAGER_NAME(4));
+END;
+
+--5D
 
 -- 6D
 CREATE OR REPLACE
@@ -305,4 +341,3 @@ BEGIN
         VALUES(SYSDATE, USER, :old.key, :new.key);
     END IF;
 END AuditoriaTrigger;
-
