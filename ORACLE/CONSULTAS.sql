@@ -171,7 +171,7 @@ BEGIN
 END Aumento_Salario;
 
 --SELECT Salario, FECHA_CONTRATACION FROM empleado;
-EXEC Aumento_Salario;
+-- EXEC Aumento_Salario;
 SELECT Salario, FECHA_CONTRATACION FROM empleado;
 
 -- 2D
