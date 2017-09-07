@@ -128,11 +128,11 @@ SELECT Puesto.Titulo_Puesto FROM PUESTO
     WHERE EMPLEADO.FECHA_CONTRATACION BETWEEN (SYSDATE - 366) AND SYSDATE;
 
 -- 8C
-SELECT DISTINCT Pais.Nombre_Pais, LocalizaciON.Ciudad, Departamento.Nombre_Departamento
+SELECT DISTINCT Pais.Nombre_Pais, Localizacion.Ciudad, Departamento.Nombre_Departamento
     FROM Pais INNER JOIN LocalizaciON 
     ON Pais.ID_Pais = LocalizaciON.ID_Pais
     INNER JOIN Departamento
-    ON Departamento.ID_LocalizaciON = LocalizaciON.ID_LocalizaciON
+    ON Departamento.ID_Localizacion = Localizacion.ID_LocalizaciON
     INNER JOIN Empleado
     ON Empleado.ID_Departamento = Departamento.ID_Departamento
     WHERE Empleado.ID_Departamento IN (
