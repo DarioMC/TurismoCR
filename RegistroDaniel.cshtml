@@ -1,0 +1,48 @@
+﻿@*Primero se indica que se van a implementar o usar modelos*@
+
+@using WMarket.Models
+@{
+    ViewBag.Title = "Registro";
+    
+}
+
+@*Luego se indica que el modelo a utilizar es, en este caso, Usuario.*@
+
+@model WMarket.Models.Usuario
+
+
+@{
+    @*Se implementa un Form para realizar el registro y usar el modelo establecido.*@
+    @*El form debe indicar el nombre el nombre del método del controlar a usar, en este caso Registrar, y segundo el controlador en cual buscar ese metodo, que es Login. *@
+using (Html.BeginForm("Registrar", "Login", FormMethod.Post))
+{
+        <h2>Registro</h2>
+<form method="POST">
+    <label>Nombre Completo: </label><br />
+    @Html.TextBoxFor(m => m.NombreCompleto)<br /> @*Cada input o campo que vaya a llenar el usuario, se tiene que mappear al modelo Usuario
+                                                      entonces se indica que la propiedad es del tipo de ese modelo*@
+    <label>Usuario</label><br />
+    @Html.TextBoxFor(m => m.User)<br />
+    <label>Contraseña</label><br />
+    @Html.TextBoxFor(m => m.Contrasena)<br />
+    <label>Teléfono</label><br />
+    @Html.TextBoxFor(m => m.Telefono)<br />
+    <label>Correo</label><br />
+    @Html.TextBoxFor(m => m.Correo) <br />
+    <label>Direccion</label><br />
+    @Html.TextAreaFor(m => m.Direccion)<br />
+    <label>Tipo de Cuenta</label><br />
+    @Html.DropDownListFor(m => m.Admin,
+        new List<SelectListItem>
+        {
+            new SelectListItem {Value = "False", Text = "Comprador" },
+            new SelectListItem {Value = "True", Text = "Vendedor" }
+        }) <br />
+    
+    <br />
+    <input id="btnRegistro" type="submit" value="Registrarse" />
+</form>
+    }
+}
+
+@*Luego de todo esto, simplemente se cierra el Form y listo, el resto va en el controlador.*@
