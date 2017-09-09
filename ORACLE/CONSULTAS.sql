@@ -56,24 +56,35 @@ CREATE USER dsolis
     DEFAULT TABLESPACE grupoAdDaOsDan_tbl;
             
 -- 5B 
+-- 5 B 
 CREATE ROLE ROL_EJECUTA;
---GRANT EXECUTE TRIGGER to ROL_EJECUTAR;
+Grant execute Procedure  to ROL_EJECUTAR;
+grant connect to ROL_EJECUTA; 
 
 CREATE ROLE ROL_NOVATO;
-GRANT SELECT any table to ROL_NOVATO;
-GRANT UPDATE any table to ROL_NOVATO;
-GRANT INSERT any table to ROL_NOVATO;
+grant select any table to ROL_NOVATO;
+grant update any table to ROL_NOVATO;
+grant insert any table to ROL_NOVATO;
+grant connect to ROL_NOVATO;
+
+
+drop role ROL_NOVATO; 
+drop role ROL_SUPERIOR;
+drop role ROL_EJECUTA; 
 
 CREATE ROLE ROL_SUPERIOR;
-GRANT SELECT any table to ROL_SUPERIOR with admin option;
-GRANT UPDATE any table to ROL_SUPERIOR with admin option;
-GRANT DELETE any table to ROL_SUPERIOR with admin option;
-GRANT INSERT any table to ROL_SUPERIOR with admin option;
+grant select any table to ROL_SUPERIOR with admin option;
+grant update any table to ROL_SUPERIOR with admin option;
+grant delete any table to ROL_SUPERIOR with admin option;
+grant insert any table to ROL_SUPERIOR with admin option;
+grant create any table to ROL_SUPERIOR with admin option;
+grant connect to ROL_SUPERIOR;
 
-GRANT ROL_EJECUTA to egarro; 
-GRANT ROL_NOVATO to ochavarria;
-GRANT ROL_SUPERIOR to dmonestel;
-GRANT ROL_NOVATO to dsolis;
+grant ROL_EJECUTA to egarro; 
+grant ROL_NOVATO to ochavarria;
+grant ROL_SUPERIOR to dmonestel; 
+grant ROL_NOVATO to dsolis;
+
 
 --6B
 -- Se adjunta la evidencia en una imagen.
