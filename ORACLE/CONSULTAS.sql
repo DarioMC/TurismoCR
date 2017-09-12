@@ -58,7 +58,9 @@ CREATE USER dsolis
 -- 5B 
 -- 5 B 
 CREATE ROLE ROL_EJECUTA;
-Grant execute Procedure  to ROL_EJECUTAR;
+Grant execute on Actualiza_ManagerDepartamento  to ROL_EJECUTA;
+grant create any table to ROL_EJECUTA with admin option;
+grant create  procedure to ROL_EJECUTA ;
 grant connect to ROL_EJECUTA; 
 
 CREATE ROLE ROL_NOVATO;
@@ -367,3 +369,6 @@ BEGIN
     VALUES(SYSDATE, USER, :old.SALARIO, :new.SALARIO);
   END IF;
 END AuditoriaTrigger;
+
+--Pruebas
+execute Actualiza_ManagerDepartamento(1);
