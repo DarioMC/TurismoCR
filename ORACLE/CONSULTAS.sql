@@ -129,7 +129,7 @@ SELECT Nombre, Apellido, AVG(Salario)
 
 -- 6C
 SELECT Nombre FROM Empleado
-    WHERE Salario > 1000 AND Fecha_Contratacion < add_months(sysdate,-(12*1));  ---10000
+    WHERE Salario > 10000 AND Fecha_Contratacion < add_months(sysdate,-(12*1));  ---1000
 
 -- 7C
 SELECT Puesto.Titulo_Puesto FROM PUESTO
@@ -148,7 +148,7 @@ SELECT DISTINCT Pais.Nombre_Pais, Localizacion.Ciudad, Departamento.Nombre_Depar
     WHERE Empleado.ID_Departamento IN (
         SELECT Empleado.ID_Departamento FROM Empleado
         GROUP BY Empleado.ID_Departamento
-        HAVING COUNT(*) > 1  ---10
+        HAVING COUNT(*) > 10  ---1
     );
     
 -- 9C
@@ -156,7 +156,7 @@ SELECT DISTINCT Empleado.ID_Gerente FROM Empleado
     WHERE Empleado.ID_Gerente IN (
         SELECT Empleado.ID_Gerente FROM Empleado
         GROUP BY Empleado.ID_Gerente
-        HAVING COUNT(*) > 1  --10
+        HAVING COUNT(*) > 10  --1
     );
 
 -- 1D
@@ -183,7 +183,7 @@ END Aumento_Salario;
 
 --SELECT Salario, FECHA_CONTRATACION FROM empleado;
 -- EXEC Aumento_Salario;
-SELECT Salario, FECHA_CONTRATACION FROM empleado;
+--SELECT Salario, FECHA_CONTRATACION FROM empleado;
 
 -- 2D
 DECLARE
@@ -319,34 +319,38 @@ END;
 CREATE OR REPLACE
 PROCEDURE Actualiza_ManagerDepartamento(idDepartamento NUMBER)
 IS
+
 BEGIN
-    UPDATE DEPARTAMENTO
-    SET ID_GERENTE = (SELECT FIRST ID_EMPLEADO FROM EMPLEADO 
-        WHERE ID_DEPARTAMENTO = idDepartamento AND FECHA_CONTRATACION > ALL(
-            SELECT FECHA_CONTRATO FROM EMPLEADO WHERE ID_DEPARTAMENTO = idDepartamento)
-        )
-    WHERE ID_DEPARTAMENTO = idDepartamento;
+
+  UPDATE DEPARTAMENTO
+  SET ID_GERENTE = (SELECT ID_EMPLEADO FROM EMPLEADO WHERE ID_DEPARTAMENTO = idDepartamento AND FECHA_CONTRATACION > ALL(
+    SELECT FECHA_CONTRATACION FROM EMPLEADO WHERE ID_DEPARTAMENTO = idDepartamento))
+  WHERE ID_DEPARTAMENTO = idDepartamento;
+
 END Actualiza_ManagerDepartamento;
 
 -- 7D
 CREATE OR REPLACE
 PROCEDURE Salario_DescendienteDepartamento( idDepartamento NUMBER)
 IS
+  empNombre EMPLEADO.NOMBRE%TYPE;
+  empApellido EMPLEADO.APELLIDO%TYPE;
+  empSalario EMPLEADO.SALARIO%TYPE;
 BEGIN
-    SELECT NOMBRE, APELLIDO, SALARIO FROM EMPLEADO
-    WHERE ID_DEPARTAMENTO = idDepartamento
-    ORDER BY SALARIO DESC;
+  SELECT NOMBRE, APELLIDO, SALARIO INTO empNombre, empApellido, empSalario FROM EMPLEADO WHERE ID_DEPARTAMENTO = idDepartamento
+  ORDER BY SALARIO DESC;
+
 END Salario_DescendienteDepartamento;
 
 -- 8D
 CREATE OR REPLACE TRIGGER SalarioPositivo
-    BEFORE INSERT OR UPDATE OF SALARIO
-    ON EMPLEADO
-    FOR EACH ROW
+  BEFORE INSERT OR UPDATE OF SALARIO
+  ON EMPLEADO
+  FOR EACH ROW
 BEGIN
-    IF :new.SALARIO < 0 THEN
-        RAISE_APPLICATION_ERROR(-20100, 'Por favor inserte un valor positivo');
-    END IF;
+  IF :new.SALARIO < 0 THEN
+    RAISE_APPLICATION_ERROR(-20100, 'Por favor inserte un valor positivo');
+  END IF;
 END SalarioPositivo;
 
 --9D
@@ -356,13 +360,10 @@ CREATE TABLE AUDITORIA(FECHA_CAMBIO DATE NOT NULL,
     SALARIO_NEW INT NOT NULL);
 
 CREATE OR REPLACE TRIGGER AuditoriaTrigger BEFORE UPDATE
-    ON EMPLEADO FOR EACH ROW
+  ON EMPLEADO FOR EACH ROW
 BEGIN
-    IF UPDATING(SALARIO) THEN
-        INSERT INTO AUDITORIA
-        VALUES(SYSDATE, USER, :old.SALARIO, :new.SALARIO);
-    ELSIF UPDATING THEN
-        INSERT INTO AUDITORIA
-        VALUES(SYSDATE, USER, :old.key, :new.key);
-    END IF;
+  IF UPDATING('SALARIO') THEN
+    INSERT INTO AUDITORIA
+    VALUES(SYSDATE, USER, :old.SALARIO, :new.SALARIO);
+  END IF;
 END AuditoriaTrigger;

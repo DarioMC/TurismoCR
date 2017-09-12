@@ -1,4 +1,4 @@
---Trigger que se activa al insertar o modificar el salario de un empleado.
+-- 8D Trigger que se activa al insertar o modificar el salario de un empleado.
 
 CREATE OR REPLACE TRIGGER SalarioPositivo
   BEFORE INSERT OR UPDATE OF SALARIO

@@ -1,4 +1,4 @@
---Procedimiento almacenado que devuelvo los empleados de un departamento ordenados por salario de forma descendente.
+--7D Procedimiento almacenado que devuelvo los empleados de un departamento ordenados por salario de forma descendente.
 
 CREATE OR REPLACE
 PROCEDURE Salario_DescendienteDepartamento( idDepartamento NUMBER)
