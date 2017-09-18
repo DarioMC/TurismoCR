@@ -42,7 +42,7 @@ namespace TurismoCR
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Car}/{action=Index}/{id?}");
+                    template: "{controller=Login}/{action=Index}/{id?}");
             });
         }
     }

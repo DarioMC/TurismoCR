@@ -57,13 +57,12 @@ namespace TurismoCR.Models
 
         public User() { }
 
-        public User(String name, String lastName1, String lastName2, 
+        public User(String name, String lastName1, 
                     String id, String birthDate, String genre, String phone, 
                     String email, String user, String password, String rol)
         {
             Name = name;
             LastName1 = lastName1;
-            LastName2 = lastName2;
             ID = id;
             BirthDate = birthDate;
             Genre = genre;
