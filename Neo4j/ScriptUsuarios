@@ -1,0 +1,96 @@
+CREATE (Administrador:Admin{
+    Name: Admin
+})
+
+
+CREATE (Dario:Owner{
+    Name: "Dario", 
+    LastName1: "Monestel",
+    LastName2: "Corella",
+    ID: "116260898",
+    BirthDate: "1995-12-13",
+    Genre: "M",
+    PhoneNumber: "87446905",
+    Email: "dariomc_95@yahoo.es",
+    UserName: "subotai",
+    Password: "esesta",
+    Rol: "Owner"
+})
+
+CREATE (Dario:Owner{
+    Name: "Dario", 
+    LastName1: "Monestel",
+    LastName2: "Corella",
+    ID: "116260898",
+    BirthDate: "1995-12-13",
+    Genre: "M",
+    PhoneNumber: "87446905",
+    Email: "dariomc_95@yahoo.es",
+    UserName: "subotai",
+    Password: "esesta",
+    Rol: "Owner"
+})
+
+CREATE (Adrian:Client{
+    Name: "Adrian", 
+    LastName1: "Garro",
+    LastName2: "Sanchez",
+    ID: "116440594",
+    BirthDate: "1996-06-11",
+    Genre: "M",
+    PhoneNumber: "85635561",
+    Email: "adriangarro81@gmail.com",
+    UserName: "doncangrejo",
+    Password: "<=8",
+    Rol: "Client"
+})
+
+CREATE (Daniel:Administrator{
+    Name: "Daniel", 
+    LastName1: "Solis",
+    LastName2: "Sanchez",
+    ID: "123456789",
+    BirthDate: "1996-04-21",
+    Genre: "M",
+    PhoneNumber: "84831259",
+    Email: "danielss@gmail.com",
+    UserName: "jodaniel",
+    Password: "4321",
+    Rol: "Administrator"
+})
+
+CREATE (Oscar:Client{
+    Name: "Oscar", 
+    LastName1: "Chavarria",
+    LastName2: "Campos",
+    ID: "777666777",
+    BirthDate: "1995-01-01",
+    Genre: "M",
+    PhoneNumber: "",
+    Email: "oscarch69@gmail.com",
+    UserName: "jodaniel",
+    Password: "1234",
+    Rol: "Client"
+})
+
+CREATE (Stefany:Client{
+    Name: "Stefany", 
+    LastName1: "Arguedas",
+    LastName2: "Varela",
+    ID: "612367854",
+    BirthDate: "1998-11-12",
+    Genre: "F",
+    PhoneNumber: "81050861",
+    Email: "stef98@gmail.com",
+    UserName: "stef98",
+    Password: "abcde",
+    Rol: "Client"
+})
+
+CREATE (Adrian)-[:Sigue]->(Stefany)
+CREATE (Stefany)-[:Sigue]->(Adrian)
+CREATE (Adrian)-[:Sigue]->(Oscar)
+CREATE (Oscar)-[:Sigue]->(Adrian)
+CREATE (Oscar)-[:Sigue]->(Stefany)
+
+MATCH (:Client)

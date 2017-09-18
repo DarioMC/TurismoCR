@@ -100,9 +100,9 @@
                 @Html.DropDownListFor(model => model.Genre,
                 new List<SelectListItem>
                 {
-                    new SelectListItem {Value = "C", Text = "Cliente" },
-                    new SelectListItem {Value = "P", Text = "Propietario" },
-                    new SelectListItem {Value = "A", Text = "Administrador" }
+                    new SelectListItem {Value = "Client", Text = "Cliente" },
+                    new SelectListItem {Value = "Owner", Text = "Propietario" },
+                    new SelectListItem {Value = "Administrator", Text = "Administrador" }
                 })
                 @Html.ValidationMessageFor(model => model.Rol, "", new { @class = "text-danger" })
             </div>
