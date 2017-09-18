@@ -8,64 +8,26 @@ namespace TurismoCR.Models
     public class Reseña
     {
 
-        #region Atributos
-
-        int idReseña;
-        String usuario;
-        String servicioId;
-        String comentario;
-        int calificacion;
-        DateTime fecha;
-
-        #endregion
-
-        #region Propiedades
-
-        public int IdReseña
+        private Guid _id;
+        [System.ComponentModel.DataAnnotations.Key]
+        public Guid IdResenia
         {
-            get { return this.idReseña; }
-            set { this.idReseña = value; }
+            get { return _id; }
+            set { _id = new Guid(); }
         }
-
-        public String Usuario
-        {
-            get { return this.usuario; }
-            set { this.usuario = value; }
-        }
-
-        public String IdServicio
-        {
-            get { return this.IdServicio; }
-            set { this.IdServicio = value; }
-        }
-
-        public String Comentario
-        {
-            get { return this.comentario; }
-            set { this.comentario = value; }
-        }
-
-        public int Calificacion
-        {
-            get { return this.calificacion; }
-            set { this.calificacion = value; }
-        }
-
-        public DateTime Fecha
-        {
-            get { return this.fecha; }
-            set { this.fecha = value; }
-        }
-
-        #endregion
+        public int IdServicio { get; set; }
+        public String Usuario { get; set; }
+        public DateTime Fecha { get; set; }
+        public int Calificacion { get; set; }
+        public String Comentario { get; set; }
 
         #region Constructor
 
         public Reseña() { }
 
-        public Reseña(int nId, String nUser, String nServicio, String nComment, int nCalif, DateTime nFecha)
+        public Reseña(String nUser, int nServicio, String nComment, int nCalif, DateTime nFecha)
         {
-            IdReseña = nId;
+            IdResenia = new Guid();
             Usuario = nUser;
             IdServicio = nServicio;
             Comentario = nComment;
