@@ -24,7 +24,14 @@ namespace TurismoCR.Controllers
             var mongoServer = mongoClient.GetServer();
             var db = mongoServer.GetDatabase("TurismoCR");
 
-            
+        }
+
+        public ActionResult InsertarServicio(Models.Servicio servicio)
+        {
+            ///Start startInsert = new Start("prueba de insert desde csharp", "ejecutar insert", 2);
+            ///MongoCollection mgCollection = db.GetCollection<Start>("start");
+            ///mgCollection.Insert<Start>(startInsert);
+            return View();
         }
 
     }
