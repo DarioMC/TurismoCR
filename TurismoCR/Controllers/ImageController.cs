@@ -35,6 +35,18 @@ namespace TurismoCR.Controllers
             return View();
         }
 
+        public ActionResult InsertarImagenLugar()
+        {
+            return View();
+
+        }
+
+        public ActionResult InsertarImagenServicio()
+        {
+            return View();
+
+        }
+
         public ActionResult AddPicture()
         {
             return View();
