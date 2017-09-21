@@ -7,7 +7,7 @@ namespace TurismoCR.Models
     [Serializable]
     public class User
     {
-        #region Properties
+		#region Properties
 
         [Display(Name = "Nombre")]
         [Required(ErrorMessage = "¡Campo Vacío!")]
@@ -25,8 +25,8 @@ namespace TurismoCR.Models
         [Required(ErrorMessage = "¡Campo Vacío!")]
         public String ID { get; set; }
 
-        [Display(Name = "Fecha de nacimiento")]
-        [Required(ErrorMessage = "¡Campo Vacío!")]
+		[Display(Name = "Fecha de nacimiento")]
+		[Required(ErrorMessage = "¡Campo Vacío!")]
         public String BirthDate { get; set; }
 
         [Display(Name = "Género")]
@@ -53,7 +53,6 @@ namespace TurismoCR.Models
         [Display(Name = "Rol")]
         [Required(ErrorMessage = "¡Campo Vacío!")]
         public String Rol { get; set; }
-
         #endregion
 
         #region Constructor & Destructor
