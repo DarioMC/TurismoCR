@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Neo4jClient;
 using TurismoCR.Models;
@@ -37,8 +38,15 @@ namespace TurismoCR.Controllers
             if (userConsulted.Any()) {
                 var foundUser = userConsulted.First();
                 if (foundUser.Password == user.Password) {
-                    HttpContext.Response.Cookies.Append("openSession", foundUser.UserName);
-                    var myCookie = HttpContext.Request.Cookies["openSession"];
+                    Response.Cookies.Append("openSession", 
+                        foundUser.UserName,
+                        new CookieOptions
+                        {
+                           Expires = DateTimeOffset.Now.AddHours(2)
+                        }
+                    );
+                    
+                    var myCookie = Request.Cookies["openSession"];
                     if (myCookie != null) {
                         System.Diagnostics.Debug.WriteLine("Test:");
                     }
