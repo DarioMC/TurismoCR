@@ -1,9 +1,4 @@
-CREATE (Administrador:Admin{
-    Name: Admin
-})
-
-
-CREATE (Dario:Owner{
+CREATE (Dario:User{
     Name: "Dario", 
     LastName1: "Monestel",
     LastName2: "Corella",
@@ -17,21 +12,7 @@ CREATE (Dario:Owner{
     Rol: "Owner"
 })
 
-CREATE (Dario:Owner{
-    Name: "Dario", 
-    LastName1: "Monestel",
-    LastName2: "Corella",
-    ID: "116260898",
-    BirthDate: "1995-12-13",
-    Genre: "M",
-    PhoneNumber: "87446905",
-    Email: "dariomc_95@yahoo.es",
-    UserName: "subotai",
-    Password: "esesta",
-    Rol: "Owner"
-})
-
-CREATE (Adrian:Client{
+CREATE (Adrian:User{
     Name: "Adrian", 
     LastName1: "Garro",
     LastName2: "Sanchez",
@@ -45,7 +26,7 @@ CREATE (Adrian:Client{
     Rol: "Client"
 })
 
-CREATE (Daniel:Administrator{
+CREATE (Daniel:User{
     Name: "Daniel", 
     LastName1: "Solis",
     LastName2: "Sanchez",
@@ -59,7 +40,7 @@ CREATE (Daniel:Administrator{
     Rol: "Administrator"
 })
 
-CREATE (Oscar:Client{
+CREATE (Oscar:User{
     Name: "Oscar", 
     LastName1: "Chavarria",
     LastName2: "Campos",
@@ -73,7 +54,7 @@ CREATE (Oscar:Client{
     Rol: "Client"
 })
 
-CREATE (Stefany:Client{
+CREATE (Stefany:User{
     Name: "Stefany", 
     LastName1: "Arguedas",
     LastName2: "Varela",
@@ -92,5 +73,3 @@ CREATE (Stefany)-[:Sigue]->(Adrian)
 CREATE (Adrian)-[:Sigue]->(Oscar)
 CREATE (Oscar)-[:Sigue]->(Adrian)
 CREATE (Oscar)-[:Sigue]->(Stefany)
-
-MATCH (:Client)
