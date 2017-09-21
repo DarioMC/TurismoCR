@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Neo4jClient;
 
@@ -21,10 +18,23 @@ namespace TurismoCR.Controllers
             return View();
         }
 
-		public void ConexionNeo4j()
+        [HttpPost]
+		public void Auth()
 		{
-			var cliente = new GraphClient(new Uri("http://localhost:7474/db/data"), "neo4j", "adrian");
-			cliente.Connect();
+			var client = new GraphClient(
+                new Uri("http://localhost:7474/db/data"), "neo4j", "adrian"
+            );
+			client.Connect();
 		}
+
+		[HttpPost]
+		public void Reg()
+		{
+			var client = new GraphClient(
+                new Uri("http://localhost:7474/db/data"), "neo4j", "adrian"
+            );
+			client.Connect();
+		}
+
     }
 }
