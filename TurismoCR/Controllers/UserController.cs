@@ -9,13 +9,13 @@ namespace TurismoCR.Controllers
 {
     public class UserController : Controller
     {
-		// GET: Login
-		public ActionResult Index()
+        public ActionResult Login()
 		{
+            ViewData["Message"] = "Página de inicio de sesión.";
 			return View();
 		}
 
-        public IActionResult Register()
+        public ActionResult Register()
         {
             ViewData["Message"] = "Página de registro.";
             return View();

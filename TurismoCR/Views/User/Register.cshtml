@@ -9,13 +9,12 @@
 @using (Html.BeginForm("Register", "User", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-    
+    @* FORM *@
     <div class="form-horizontal">
-        <h4>¡Ingresa tus datos!</h4>
+        <h4>¡Ingresa tus datos para registrarte en TurismoCR!</h4>
         <hr />
-        
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        
+	    @* Name *@
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
@@ -23,7 +22,7 @@
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
             </div>
         </div>
-
+	    @* LastName1 *@
         <div class="form-group">
             @Html.LabelFor(model => model.LastName1, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
@@ -31,7 +30,7 @@
                 @Html.ValidationMessageFor(model => model.LastName1, "", new { @class = "text-danger" })
             </div>
         </div>
-
+	    @* LastName2 *@
         <div class="form-group">
             @Html.LabelFor(model => model.LastName2, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
@@ -39,7 +38,7 @@
                 @Html.ValidationMessageFor(model => model.LastName2, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        @* ID *@
         <div class="form-group">
             @Html.LabelFor(model => model.ID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
@@ -47,7 +46,7 @@
                 @Html.ValidationMessageFor(model => model.ID, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        @* BirthDate *@
         <div class="form-group">
             @Html.LabelFor(model => model.BirthDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
@@ -55,7 +54,7 @@
                 @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        @* Genre *@
 	    <div class="form-group">
             @Html.LabelFor(model => model.Genre, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
@@ -69,7 +68,7 @@
              @Html.ValidationMessageFor(model => model.Genre, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        @* PhoneNumber *@
         <div class="form-group">
             @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
@@ -77,7 +76,7 @@
                 @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
             </div>
         </div>
-     
+        @* userName *@
         <div class="form-group">
             @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
@@ -85,7 +84,7 @@
                 @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        @* Password *@
         <div class="form-group">
             @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
@@ -93,7 +92,7 @@
                 @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        @* Rol *@
         <div class="form-group">
             @Html.LabelFor(model => model.Rol, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
@@ -107,16 +106,12 @@
                 @Html.ValidationMessageFor(model => model.Rol, "", new { @class = "text-danger" })
             </div>
         </div>
-        
+        @* Register Btn *@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Registrarme" class="btn btn-success" />
             </div>
         </div>
-        
     </div>
+    @* FORM *@
 }
-
-<div>
-    @Html.ActionLink("Volver", "Index")
-</div>
