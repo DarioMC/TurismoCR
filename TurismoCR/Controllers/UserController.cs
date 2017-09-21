@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Neo4jClient;
@@ -24,19 +25,22 @@ namespace TurismoCR.Controllers
 		public ActionResult Auth(User user)
 		{
 			var client = new GraphClient(
+                // cambiar password (adrian) por el de su base Neo4j
                 new Uri("http://localhost:7474/db/data"), "neo4j", "adrian"
             );
 			client.Connect();
-            var query = client.Cypher
+            var userConsulted = client
+                              .Cypher
                               .Match("(userNeo4j:User)")
                               .Where((User userNeo4j) => userNeo4j.UserName == user.UserName)
                               .Return(userNeo4j => userNeo4j.As<User>())
                               .Results;
-			// here!
-			foreach (object o in query)
-			{
-                System.Diagnostics.Debug.WriteLine("Test:" + o);
-			}
+            if (userConsulted.Any()) {
+                var foundUser = userConsulted.First();
+                if (foundUser.Password == user.Password) {
+                    HttpCookie foundUserCookie = new HttpCookie("openSession");
+                }
+            }
             return RedirectToAction("Index", "Home");
 
 		}
