@@ -21,8 +21,8 @@ namespace TurismoCR.Controllers
             
             /// Al crear la base mongo para esta conexión  nombrarla --> TurismoCR 
             var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
-            var mongoServer = mongoClient.GetServer();
-            var db = mongoServer.GetDatabase("TurismoCR");
+            ///var mongoServer = mongoClient.GetServer();
+            var db = mongoClient.GetDatabase("TurismoCR");
 
         }
 
