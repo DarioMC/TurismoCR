@@ -38,7 +38,10 @@ namespace TurismoCR.Controllers
                 var foundUser = userConsulted.First();
                 if (foundUser.Password == user.Password) {
                     HttpContext.Response.Cookies.Append("openSession", foundUser.UserName);
-                    System.Diagnostics.Debug.WriteLine("Test:" + HttpContext.Request.Cookies["openSession"]);
+                    var myCookie = HttpContext.Request.Cookies["openSession"];
+                    if (myCookie != null) {
+                        System.Diagnostics.Debug.WriteLine("Test:");
+                    }
 				}
             }
             return RedirectToAction("Index", "Home");
