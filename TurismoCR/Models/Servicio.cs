@@ -9,7 +9,7 @@ namespace TurismoCR.Models
     {
 
         #region Atributos
-
+        
         String idServicio;
         DateTime fechaInicio;
         DateTime fechaFinal;
