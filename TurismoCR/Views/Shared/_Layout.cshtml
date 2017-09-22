@@ -44,21 +44,23 @@
 					
                 </ul>
                 <!-- navbar-right -->
-				@{
-                    if (Request.Cookies["openSession"] != null) {
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a asp-area="" asp-controller="User" asp-action="Login">Nombre Usuario</a></li>
-                            <li><a asp-area="" asp-controller="User" asp-action="Register">Cerrar Sesión</a></li>
-                            <li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Carrito</a></li>
-                        </ul>
-                    }
-                    else {
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a asp-area="" asp-controller="User" asp-action="Login">Iniciar sesión</a></li>
-                            <li><a asp-area="" asp-controller="User" asp-action="Register">Registrarme</a></li>
-                        </ul>
-                    }
-				}
+                @if (Context.Request.Cookies["openSession"] != null) {
+					var cookie = Context.Request.Cookies["openSession"];
+					var userName = cookie.ToString();
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a asp-area="" asp-controller="User" asp-action="Login">
+					        userName
+					    </a></li>
+                        <li><a asp-area="" asp-controller="User" asp-action="Register">Cerrar Sesión</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Carrito</a></li>
+                    </ul>
+                }
+                else {
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a asp-area="" asp-controller="User" asp-action="Login">Iniciar sesión</a></li>
+                        <li><a asp-area="" asp-controller="User" asp-action="Register">Registrarme</a></li>
+                    </ul>
+                }
 				<!-- navbar-right -->
             </div>
         </div>

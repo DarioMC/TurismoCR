@@ -30,31 +30,36 @@ namespace TurismoCR.Controllers
             );
 			client.Connect();
             var userConsulted = client
-                              .Cypher
-                              .Match("(userNeo4j:User)")
-                              .Where((User userNeo4j) => userNeo4j.UserName == user.UserName)
-                              .Return(userNeo4j => userNeo4j.As<User>())
-                              .Results;
+                .Cypher
+                .Match("(userNeo4j:User)")
+                .Where((User userNeo4j) => userNeo4j.UserName == user.UserName)
+                .Return(userNeo4j => userNeo4j.As<User>())
+                .Results;
             if (userConsulted.Any()) {
                 var foundUser = userConsulted.First();
                 if (foundUser.Password == user.Password) {
-                    Response.Cookies.Append("openSession", 
+                    Response.Cookies.Append("openSession",
                         foundUser.UserName,
                         new CookieOptions
                         {
-                           Expires = DateTimeOffset.Now.AddHours(2)
+                            Expires = DateTimeOffset.Now.AddHours(1)
                         }
                     );
-                    
+
+                    // debug
                     var myCookie = Request.Cookies["openSession"];
                     if (myCookie != null) {
-                        System.Diagnostics.Debug.WriteLine("Test:");
+                        System.Diagnostics.Debug.WriteLine("Test");
+                        System.Diagnostics.Debug.WriteLine(myCookie.ToString());
                     }
 				}
             }
             return RedirectToAction("Index", "Home");
 
 		}
+
+		[HttpPost]
+        public void LogOut(User user) {}
 
 		[HttpPost]
 		public void Reg()
