@@ -38,30 +38,34 @@ namespace TurismoCR.Controllers
                 // if user exist in Neo4j
 				if (userConsulted.Any()) {
 					var foundUser = userConsulted.First();
-                    if (foundUser.Password == user.Password) {
-                        // adding user session cookie
-						Response.Cookies.Append("userSession",
-							foundUser.UserName,
-							new CookieOptions
-							{
-								Expires = DateTimeOffset.Now.AddHours(1)
-							}
-						);
-						// adding rol session cookie
-						Response.Cookies.Append("rolSession",
-							foundUser.Rol,
-							new CookieOptions
-							{
-								Expires = DateTimeOffset.Now.AddHours(1)
-							}
-						);
-                        // setting alert message
-						TempData["msg"] = "<script>alert('Excelente, tu usuario ha sido identificado.');</script>";
-						// TODO Admin hide car with cookie config
-
-					} else {
-						// setting alert message
-						TempData["msg"] = "<script>alert('Contraseña incorrecta.');</script>";
+                    // checking if user is enabled
+                    if (foundUser.Enabled == true) {
+                        // if password is valid
+						if (foundUser.Password == user.Password) {
+							// adding user session cookie
+							Response.Cookies.Append("userSession",
+								foundUser.UserName,
+								new CookieOptions
+								{
+									Expires = DateTimeOffset.Now.AddHours(1)
+								}
+							);
+							// adding rol session cookie
+							Response.Cookies.Append("rolSession",
+								foundUser.Rol,
+								new CookieOptions
+								{
+									Expires = DateTimeOffset.Now.AddHours(1)
+								}
+							);
+							// setting alert message
+							TempData["msg"] = "<script>alert('Excelente, tu usuario ha sido identificado.');</script>";
+						} else {
+							// setting alert message
+							TempData["msg"] = "<script>alert('Contraseña incorrecta.');</script>";
+						}
+                    } else {
+                        TempData["msg"] = "<script>alert('Tu usuario ha sido desactivado');</script>";
                     }
                 } else {
 					// setting alert message

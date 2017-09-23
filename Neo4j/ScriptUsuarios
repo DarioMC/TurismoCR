@@ -70,7 +70,7 @@ CREATE (Stefany:User{
     UserName: "stef98",
     Password: "abcde",
     Rol: "Client",
-    Enabled: true
+    Enabled: false
 })
 
 CREATE (Adrian)-[:Sigue]->(Stefany)
