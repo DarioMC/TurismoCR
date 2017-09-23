@@ -9,7 +9,8 @@ CREATE (Dario:User{
     Email: "dariomc_95@yahoo.es",
     UserName: "subotai",
     Password: "esesta",
-    Rol: "Owner"
+    Rol: "Owner",
+    Enabled: true
 })
 
 CREATE (Adrian:User{
@@ -23,7 +24,8 @@ CREATE (Adrian:User{
     Email: "adriangarro81@gmail.com",
     UserName: "doncangrejo",
     Password: "<=8",
-    Rol: "Client"
+    Rol: "Client",
+    Enabled: true
 })
 
 CREATE (Daniel:User{
@@ -37,7 +39,8 @@ CREATE (Daniel:User{
     Email: "danielss@gmail.com",
     UserName: "jodaniel",
     Password: "4321",
-    Rol: "Administrator"
+    Rol: "Administrator",
+    Enabled: true
 })
 
 CREATE (Oscar:User{
@@ -51,7 +54,8 @@ CREATE (Oscar:User{
     Email: "oscarch69@gmail.com",
     UserName: "jodaniel",
     Password: "1234",
-    Rol: "Client"
+    Rol: "Client",
+    Enabled: true
 })
 
 CREATE (Stefany:User{
@@ -65,7 +69,8 @@ CREATE (Stefany:User{
     Email: "stef98@gmail.com",
     UserName: "stef98",
     Password: "abcde",
-    Rol: "Client"
+    Rol: "Client",
+    Enabled: true
 })
 
 CREATE (Adrian)-[:Sigue]->(Stefany)

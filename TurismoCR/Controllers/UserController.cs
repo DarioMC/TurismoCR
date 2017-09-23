@@ -14,21 +14,13 @@ namespace TurismoCR.Controllers
 {
     public class UserController : Controller
     {
-        public ActionResult Login()
-		{
+        public ActionResult Login() {
             ViewData["Message"] = "Página de inicio de sesión.";
 			return View();
 		}
 
-        public ActionResult Register()
-        {
-            ViewData["Message"] = "Página de registro.";
-            return View();
-        }
-
         [HttpPost]
-		public ActionResult Auth(User user)
-		{
+		public ActionResult Auth(User user) {
 			var client = new GraphClient(
                 // cambiar password (adrian) por el de su base Neo4j
                 new Uri("http://localhost:7474/db/data"), "neo4j", "adrian"
@@ -50,37 +42,36 @@ namespace TurismoCR.Controllers
                             Expires = DateTimeOffset.Now.AddHours(1)
                         }
                     );
-
-                    // debug
-                    var myCookie = Request.Cookies["openSession"];
-                    if (myCookie != null) {
-                        System.Diagnostics.Debug.WriteLine("Test");
-                        System.Diagnostics.Debug.WriteLine(myCookie.ToString());
-                    }
+                    // TODO Admin hide car with cookie config
 				}
             }
             return RedirectToAction("Index", "Home");
 
 		}
 
-		[HttpPost]
-        public void LogOut(User user) {}
+        public ActionResult LogOut() {
+            if (Request.Cookies["openSession"] != null) {
+                Response.Cookies.Delete("openSession");
+			}
+            return RedirectToAction("Index", "Home");
+        }
+
+		public ActionResult Register() {
+			ViewData["Message"] = "Página de registro.";
+			return View();
+		}
 
 		[HttpPost]
-		public void Reg()
-		{
+		public void Reg() {
 			var client = new GraphClient(
                 new Uri("http://localhost:7474/db/data"), "neo4j", "adrian"
             );
 			client.Connect();
 		}
 
-        //Método para inserta una imagen o logotipo del vendedor-servicio
-        public async System.Threading.Tasks.Task<ActionResult> AgregarImagenLugarAsync(HttpPostedFileBase theFile)
-        {
-
-            if (theFile.ContentLength > 0)
-            {
+        // Método para insertar una imagen o logotipo del vendedor-servicio
+        public async System.Threading.Tasks.Task<ActionResult> AgregarImagenLugarAsync(HttpPostedFileBase theFile) {
+            if (theFile.ContentLength > 0) {
                 string theFileName = Path.GetFileName(theFile.FileName);
 
                 byte[] thePictureAsBytes = new byte[theFile.ContentLength];
@@ -108,7 +99,6 @@ namespace TurismoCR.Controllers
                 //Agregar redireccion a interfaz en vez de vista.
                 return View();
 
-
             }
             /*else
                 ViewBag.Message = "Debe subir una imagen";*/
@@ -117,8 +107,7 @@ namespace TurismoCR.Controllers
             return View();
         }
 
-        public async Task<ActionResult> BorrarImagenServicioAsync(ObjectId idImagen)
-        {
+        public async Task<ActionResult> BorrarImagenServicioAsync(ObjectId idImagen) {
             var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
             var db = mongoClient.GetDatabase("TurismoCR");
 
