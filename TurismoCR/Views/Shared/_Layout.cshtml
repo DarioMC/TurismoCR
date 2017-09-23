@@ -22,7 +22,7 @@
         <!-- Pickadate -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/themes/classic.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/themes/classic.date.css" rel="stylesheet">
-    </environment>
+	</environment>
 </head>
 <body>
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -55,12 +55,13 @@
 
 						<li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Carrito</a></li>
                     </ul>
-                }
-                else {
+					@Html.Raw(TempData["msg"])
+                } else {
                     <ul class="nav navbar-nav navbar-right">
                         <li><a asp-area="" asp-controller="User" asp-action="Login">Iniciar sesión</a></li>
                         <li><a asp-area="" asp-controller="User" asp-action="Register">Registrarme</a></li>
                     </ul>
+					@Html.Raw(TempData["msg"])
                 }
 				<!-- navbar-right -->
             </div>
