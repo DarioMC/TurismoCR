@@ -19,6 +19,7 @@ namespace TurismoCR.Models
         String provincia;
         String canton;
         String distrito;
+        internal readonly int Id;
 
         #endregion
 

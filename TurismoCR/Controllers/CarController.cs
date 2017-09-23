@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using StackExchange.Redis;
 using System.Configuration;
+using TurismoCR.Models;
 
 namespace TurismoCR.Controllers
 {
