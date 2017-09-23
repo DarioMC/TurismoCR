@@ -65,7 +65,7 @@ namespace TurismoCR.Controllers
 							TempData["msg"] = "<script>alert('Contraseña incorrecta.');</script>";
 						}
                     } else {
-                        TempData["msg"] = "<script>alert('Tu usuario ha sido desactivado');</script>";
+                        TempData["msg"] = "<script>alert('Tu usuario ha sido desactivado.');</script>";
                     }
                 } else {
 					// setting alert message
@@ -77,9 +77,9 @@ namespace TurismoCR.Controllers
             }
             // let's go to main page
             return RedirectToAction("Index", "Home");
-		}
+		} // Auth
 
-        public ActionResult LogOut() {
+		public ActionResult LogOut() {
             if (Request.Cookies["userSession"] != null) {
                 Response.Cookies.Delete("userSession");
 			}
