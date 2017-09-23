@@ -18,10 +18,13 @@ namespace TurismoCR.Controllers
         }
         public IActionResult Index()
         {
+            
             Orden ejmOrden = new Orden("LuisDavid", DateTime.Now, "Viajes", "5x Dias en crucero por el caribe", 14500);
             _context.Add(ejmOrden);
 
             _context.SaveChanges();
+
+            //Agregar redireccion de interfaz en vez de View.
             return View();
         }
     }

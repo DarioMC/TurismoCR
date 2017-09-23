@@ -9,8 +9,7 @@ namespace TurismoCR.Models
     {
 
         #region Atributos
-        
-        String idServicio;
+
         DateTime fechaInicio;
         DateTime fechaFinal;
         String categoria;
@@ -24,12 +23,6 @@ namespace TurismoCR.Models
         #endregion
 
         #region Propiedades
-
-        public String IdServicio
-        {
-            get { return this.idServicio; }
-            set { this.idServicio = value; }
-        }
 
         public DateTime FechaInicial
         {
@@ -85,9 +78,8 @@ namespace TurismoCR.Models
 
         public Servicio() { }
 
-        public Servicio(String nId, DateTime nFechIni, DateTime nFechFin, String nCat, String nDesc, String nTar, String nProv, String nCant, String nDist)
+        public Servicio(DateTime nFechIni, DateTime nFechFin, String nCat, String nDesc, String nTar, String nProv, String nCant, String nDist)
         {
-            IdServicio = nId;
             FechaInicial = nFechIni;
             FechaFinal = nFechFin;
             Categoria = nCat;
