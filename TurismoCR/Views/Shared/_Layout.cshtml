@@ -44,16 +44,22 @@
 					
                 </ul>
                 <!-- navbar-right -->
-                @if (Context.Request.Cookies["openSession"] != null) {
-					var cookie = Context.Request.Cookies["openSession"];
-					var userName = cookie.ToString();
+                @if (Context.Request.Cookies["userSession"] != null && Context.Request.Cookies["rolSession"] != null) {
+					var userCookie = Context.Request.Cookies["userSession"];
+					var userName = userCookie.ToString();
+					var rolCookie = Context.Request.Cookies["rolSession"];
+                    var rolName = rolCookie.ToString();
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a asp-area="" asp-controller="User" asp-action="Login">
+                        <li><a asp-area="" asp-controller="" asp-action="">
 					        @userName
 					    </a></li>
-                        <li><a asp-area="" asp-controller="User" asp-action="LogOut">Cerrar Sesión</a></li>
-
-						<li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Carrito</a></li>
+                        <li><a asp-area="" asp-controller="User" asp-action="LogOut">
+						    Cerrar Sesión
+						</a></li>
+					    @if (rolName == "Client") {
+					        <li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Carrito</a></li>
+					    }
+					    @* TODO add other roles: "Owner", "Administrator" *@
                     </ul>
 					@Html.Raw(TempData["msg"])
                 } else {

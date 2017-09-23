@@ -22,46 +22,65 @@ namespace TurismoCR.Controllers
         [HttpPost]
 		public ActionResult Auth(User user) {
             try {
+                // setting Neo4j connection
 				var client = new GraphClient(
 				    // cambiar password (adrian) por el de su base Neo4j
 				    new Uri("http://localhost:7474/db/data"), "neo4j", "adrian"
 			    );
 				client.Connect();
+                // getting user from Neo4j
 				var userConsulted = client
 					.Cypher
 					.Match("(userNeo4j:User)")
 					.Where((User userNeo4j) => userNeo4j.UserName == user.UserName)
 					.Return(userNeo4j => userNeo4j.As<User>())
 					.Results;
+                // if user exist in Neo4j
 				if (userConsulted.Any()) {
 					var foundUser = userConsulted.First();
-					if (foundUser.Password == user.Password) {
-						Response.Cookies.Append("openSession",
+                    if (foundUser.Password == user.Password) {
+                        // adding user session cookie
+						Response.Cookies.Append("userSession",
 							foundUser.UserName,
 							new CookieOptions
 							{
 								Expires = DateTimeOffset.Now.AddHours(1)
 							}
 						);
+						// adding rol session cookie
+						Response.Cookies.Append("rolSession",
+							foundUser.Rol,
+							new CookieOptions
+							{
+								Expires = DateTimeOffset.Now.AddHours(1)
+							}
+						);
+                        // setting alert message
 						TempData["msg"] = "<script>alert('Excelente, tu usuario ha sido identificado.');</script>";
 						// TODO Admin hide car with cookie config
+
 					} else {
-                        TempData["msg"] = "<script>alert('Contraseña incorrecta.');</script>";
+						// setting alert message
+						TempData["msg"] = "<script>alert('Contraseña incorrecta.');</script>";
                     }
                 } else {
-                    TempData["msg"] = "<script>alert('No existe el usuario en el sistema.');</script>";
+					// setting alert message
+					TempData["msg"] = "<script>alert('No existe el usuario en el sistema.');</script>";
                 }
+            } catch {
+				// setting alert message
+				TempData["msg"] = "<script>alert('No hay comunicación con Neo4j.');</script>";
             }
-            catch {
-                TempData["msg"] = "<script>alert('No hay comunicación con Neo4j.');</script>";
-            }
+            // let's go to main page
             return RedirectToAction("Index", "Home");
 		}
 
         public ActionResult LogOut() {
-            if (Request.Cookies["openSession"] != null) {
-                Response.Cookies.Delete("openSession");
-
+            if (Request.Cookies["userSession"] != null) {
+                Response.Cookies.Delete("userSession");
+			}
+			if (Request.Cookies["rolSession"] != null) {
+				Response.Cookies.Delete("rolSession");
 			}
             return RedirectToAction("Index", "Home");
         }
