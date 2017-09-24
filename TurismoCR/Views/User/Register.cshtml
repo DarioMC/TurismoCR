@@ -109,12 +109,12 @@
                 {
                     new SelectListItem {Value = "Client", Text = "Cliente" },
                     new SelectListItem {Value = "Owner", Text = "Propietario" },
-                    new SelectListItem {Value = "Administrator", Text = "Administrador" }
-                })
+                    @*new SelectListItem {Value = "Administrator", Text = "Administrador" }*@
+                },
+			    htmlAttributes: new { @id = "userRolesDropDownList" })
                 @Html.ValidationMessageFor(model => model.Rol, "", new { @class = "text-danger" })
             </div>
         </div>
-
 	    @* Enabled *@
         <div class="form-group" style="display: none;">
             @Html.LabelFor(model => model.Enabled, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -128,7 +128,6 @@
                 @Html.ValidationMessageFor(model => model.Rol, "", new { @class = "text-danger" })
             </div>
         </div>
-	    
         @* Register Btn *@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
