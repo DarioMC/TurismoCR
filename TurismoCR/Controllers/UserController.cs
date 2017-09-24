@@ -95,15 +95,43 @@ namespace TurismoCR.Controllers
 		}
 
 		[HttpPost]
-		public void Reg() {
-			var client = new GraphClient(
-                new Uri("http://localhost:7474/db/data"), "neo4j", "adrian"
-            );
-			client.Connect();
-		}
+		public ActionResult Reg(User user) {
+            try {
+				// setting Neo4j connection
+				var client = new GraphClient(
+					// cambiar password (adrian) por el de su base Neo4j
+					new Uri("http://localhost:7474/db/data"), "neo4j", "adrian"
+				);
+				client.Connect();
+				// getting user from Neo4j
+				var userConsulted = client
+					.Cypher
+					.Match("(userNeo4j:User)")
+					.Where((User userNeo4j) => userNeo4j.UserName == user.UserName)
+					.Return(userNeo4j => userNeo4j.As<User>())
+					.Results;
+                // if user exist in Neo4j
+                if (userConsulted.Any()) {
+					// setting alert message
+					TempData["msg"] = "<script>alert('Este usuario ya está registrado en Neo4j.');</script>";
+                } else {
+					client.Cypher
+						 .Create("(user:User {user})")
+						 .WithParam("user", user)
+						 .ExecuteWithoutResults();
+					// setting alert message
+					TempData["msg"] = "<script>alert('Usuario exitosamente registrado.');</script>";
+                }
+            } catch {
+				// setting alert message
+				TempData["msg"] = "<script>alert('No hay comunicación con Neo4j.');</script>";
+            }
+			// let's go to main page
+			return RedirectToAction("Index", "Home");
+		} // Reg
 
-        // Método para insertar una imagen o logotipo del vendedor-servicio
-        public async System.Threading.Tasks.Task<ActionResult> AgregarImagenLugarAsync(HttpPostedFileBase theFile) {
+		// Método para insertar una imagen o logotipo del vendedor-servicio
+		public async System.Threading.Tasks.Task<ActionResult> AgregarImagenLugarAsync(HttpPostedFileBase theFile) {
             if (theFile.ContentLength > 0) {
                 string theFileName = Path.GetFileName(theFile.FileName);
 

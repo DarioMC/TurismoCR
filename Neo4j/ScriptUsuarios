@@ -78,3 +78,6 @@ CREATE (Stefany)-[:Sigue]->(Adrian)
 CREATE (Adrian)-[:Sigue]->(Oscar)
 CREATE (Oscar)-[:Sigue]->(Adrian)
 CREATE (Oscar)-[:Sigue]->(Stefany)
+
+MATCH (n)
+DETACH DELETE n

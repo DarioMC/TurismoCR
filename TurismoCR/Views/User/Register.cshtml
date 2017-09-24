@@ -50,7 +50,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.BirthDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
-                <input id="selectDate" name="selectDate" type="datetime-local" class="form-control">
+			    @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { id="selectDate", name="selectDate", type="datetime-local", @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -61,8 +61,8 @@
             @Html.DropDownListFor(model => model.Genre,
                 new List<SelectListItem>
                 {
-                    new SelectListItem {Value = "F", Text = "Femenino" },
                     new SelectListItem {Value = "M", Text = "Masculino" },
+			        new SelectListItem {Value = "F", Text = "Femenino" },
 			        new SelectListItem {Value = "O", Text = "Otro" }
                 })
              @Html.ValidationMessageFor(model => model.Genre, "", new { @class = "text-danger" })
@@ -74,6 +74,14 @@
             <div class="col-md-3">
                 @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+	    @* Email *@
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
             </div>
         </div>
         @* userName *@
@@ -96,7 +104,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Rol, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
-                @Html.DropDownListFor(model => model.Genre,
+                @Html.DropDownListFor(model => model.Rol,
                 new List<SelectListItem>
                 {
                     new SelectListItem {Value = "Client", Text = "Cliente" },
@@ -106,6 +114,21 @@
                 @Html.ValidationMessageFor(model => model.Rol, "", new { @class = "text-danger" })
             </div>
         </div>
+
+	    @* Enabled *@
+        <div class="form-group" style="display: none;">
+            @Html.LabelFor(model => model.Enabled, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.Enabled,
+                new List<SelectListItem>
+                {
+                    new SelectListItem {Value = "true", Text = "Usuario activado"}
+			        @*new SelectListItem {Value = "false", Text = "Usuario desactivado"}*@
+                })
+                @Html.ValidationMessageFor(model => model.Rol, "", new { @class = "text-danger" })
+            </div>
+        </div>
+	    
         @* Register Btn *@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

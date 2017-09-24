@@ -22,8 +22,7 @@
         clear: "borrar",
         close: "cerrar",
         firstDay: 1,
-        format: "dddd d !de mmmm !de yyyy",
-        formatSubmit: "yyyy/mm/dd",
+        format: "yyyy-mm-dd",
     });
 }
 

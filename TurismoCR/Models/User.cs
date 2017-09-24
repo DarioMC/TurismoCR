@@ -65,7 +65,7 @@ namespace TurismoCR.Models
 
         public User(String name, String lastName1, String lastName2,
                     String id, String birthDate, String genre, String phone,
-                    String email, String user, String password, String rol, Boolean enabled=true)
+                    String email, String user, String password, String rol, Boolean enabled)
         {
             Name = name;
             LastName1 = lastName1;
