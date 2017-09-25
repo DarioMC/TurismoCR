@@ -53,19 +53,28 @@
                         <li><a asp-area="" asp-controller="" asp-action="">
 					        @userName
 					    </a></li>
-                        <li><a asp-area="" asp-controller="User" asp-action="LogOut">
-						    Cerrar Sesión
-						</a></li>
 					    @if (rolName == "Client") {
 					        <li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Carrito</a></li>
 					    }
 					    @* TODO add other roles: "Owner", "Administrator" *@
+						@if (rolName == "Owner") {
+						   <li><a asp-area="" asp-controller="Servicio" asp-action="InsertarServicio">
+                               Insertar Servicio
+                           </a></li>
+						    <li><a asp-area="" asp-controller="Servicio" asp-action="EditarServicio">
+                               Editar Servicios
+                           </a></li>
+						}
+						 <li><a asp-area="" asp-controller="User" asp-action="LogOut">
+                            Cerrar Sesión
+                        </a></li>
                     </ul>
 					@Html.Raw(TempData["msg"])
                 } else {
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a asp-area="" asp-controller="User" asp-action="Login">Iniciar sesión</a></li>
-                        <li><a asp-area="" asp-controller="User" asp-action="Register">Registrarme</a></li>
+                        <li><a asp-area="" asp-controller="User" asp-action="Login">Iniciar Sesión</a></li>
+                        <li><a asp-area="" asp-controller="User" asp-action="Register">Registrarme como Cliente</a></li>
+						<li><a asp-area="" asp-controller="User" asp-action="RegisterOwnerPlace">Registrarme como Propietario</a></li>
                     </ul>
 					@Html.Raw(TempData["msg"])
                 }

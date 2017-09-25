@@ -1,0 +1,87 @@
+﻿@model TurismoCR.Models.Servicio;
+
+@{
+    ViewData["Title"] = "Insertar servicio";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@using (Html.BeginForm("InsertarServicioAsync", "Servicio", FormMethod.Post)) 
+{
+     @* FORM *@
+    <div class="form-horizontal">
+        <h4>Ingrese los datos del servicio/paquete turístico a registrar</h4>
+        <hr />
+    	@* Categoría *@
+        <div class="form-group">
+            @Html.LabelFor(model => model.Categoria, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.Categoria, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Categoria, "", new { @class = "text-danger" })
+            </div>
+        </div>
+	    @* Descripción *@
+        <div class="form-group">
+            @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+	    @* Provincia *@
+	    <div class="form-group">
+            @Html.LabelFor(model => model.Provincia, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.Provincia, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Provincia, "", new { @class = "text-danger" })
+            </div>
+        </div>
+	    @* Cantón *@
+        <div class="form-group">
+            @Html.LabelFor(model => model.Canton, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.Canton, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Canton, "", new { @class = "text-danger" })
+            </div>
+        </div>
+	    @* Distrito *@
+        <div class="form-group">
+            @Html.LabelFor(model => model.Distrito, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.Distrito, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+	    @* Tarifa *@
+        <div class="form-group">
+            @Html.LabelFor(model => model.Tarifa, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.Tarifa, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Tarifa, "", new { @class = "text-danger" })
+            </div>
+        </div>
+	    @* Fecha de inicio *@
+        <div class="form-group">
+            @Html.LabelFor(model => model.FechaInicial, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.FechaInicial, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FechaInicial, "", new { @class = "text-danger" })
+            </div>
+        </div>
+	    @* Fecha de finalización *@
+        <div class="form-group">
+            @Html.LabelFor(model => model.FechaFinal, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.FechaFinal, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FechaFinal, "", new { @class = "text-danger" })
+            </div>
+        </div>
+	    @* TODO SERVICE IMAGE *@
+	    @* Add Btn *@
+	    <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Agregar servicio" class="btn btn-success" />
+            </div>
+        </div>
+	</div>
+}

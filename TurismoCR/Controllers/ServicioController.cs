@@ -7,7 +7,6 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using TurismoCR.Models;
 using System.IO;
-using System.Threading.Tasks;
 using static TurismoCR.Controllers.ImageController;
 
 namespace TurismoCR.Controllers
@@ -18,6 +17,11 @@ namespace TurismoCR.Controllers
         {
             return View();
         }
+
+		public ActionResult InsertarServicio() {
+			ViewData["Message"] = "Página para agregar servicio/paquete turístico";
+			return View();
+		}
 
         [HttpPost]
         public async Task<ActionResult> InsertarServicioAsync(Servicio servicio)
@@ -74,11 +78,16 @@ namespace TurismoCR.Controllers
             return View();
         }
 
+		public ActionResult EditarServicio() {
+			ViewData["Message"] = "Página para editar servicio/paquete turístico";
+			return View();
+		}
+
         [HttpPost]
         public async Task<ActionResult> EditarServicioAsync(ObjectId IdServicio, Servicio cambiosServicio)
         {
-
-            var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
+			// TODO check if user has services
+			var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
             //var mongoServer = mongoClient.GetServer();
             var db = mongoClient.GetDatabase("TurismoCR");
 

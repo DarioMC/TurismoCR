@@ -107,6 +107,11 @@ namespace TurismoCR.Controllers
 			return View();
 		}
 
+		public ActionResult RegisterOwnerPlace() {
+			ViewData["Message"] = "Página de registro.";
+			return View();
+		}
+
 		[HttpPost]
 		public ActionResult Reg(User user) {
 			// check if user is well defined
@@ -140,9 +145,9 @@ namespace TurismoCR.Controllers
 						TempData["msg"] = "<script>alert('Este usuario ya está registrado en Neo4j.');</script>";
 					} else {
 						client.Cypher
-							 .Create("(userNeo4j:User {user})")
-							 .WithParam("user", user)
-							 .ExecuteWithoutResults();
+							  .Create("(userNeo4j:User {user})")
+							  .WithParam("user", user)
+							  .ExecuteWithoutResults();
 						// setting alert message
 						TempData["msg"] = "<script>alert('Usuario exitosamente registrado.');</script>";
 					}

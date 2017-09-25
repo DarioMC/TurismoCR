@@ -1,4 +1,4 @@
-﻿@model TurismoCR.Models.User;
+﻿@model TurismoCR.Models.Owner;
 
 @{
     ViewData["Title"] = "Registrarse";
@@ -11,10 +11,10 @@
     @Html.AntiForgeryToken()
     @* FORM *@
     <div class="form-horizontal">
-        <h4>¡Ingresa tus datos para registrarte como cliente en TurismoCR!</h4>
+        <h4>¡Ingresa tus datos para registrarte como propietario en TurismoCR!</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-	    @* Name *@
+        @* Name *@
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
@@ -22,7 +22,7 @@
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
             </div>
         </div>
-	    @* LastName1 *@
+        @* LastName1 *@
         <div class="form-group">
             @Html.LabelFor(model => model.LastName1, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
@@ -30,7 +30,7 @@
                 @Html.ValidationMessageFor(model => model.LastName1, "", new { @class = "text-danger" })
             </div>
         </div>
-	    @* LastName2 *@
+        @* LastName2 *@
         <div class="form-group">
             @Html.LabelFor(model => model.LastName2, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
@@ -50,20 +50,20 @@
         <div class="form-group">
             @Html.LabelFor(model => model.BirthDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
-			    @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { id="selectDate", name="selectDate", type="datetime-local", @class = "form-control" } })
+                @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { id="selectDate", name="selectDate", type="datetime-local", @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
             </div>
         </div>
         @* Genre *@
-	    <div class="form-group">
+        <div class="form-group">
             @Html.LabelFor(model => model.Genre, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
             @Html.DropDownListFor(model => model.Genre,
                 new List<SelectListItem>
                 {
                     new SelectListItem {Value = "M", Text = "Masculino" },
-			        new SelectListItem {Value = "F", Text = "Femenino" },
-			        new SelectListItem {Value = "O", Text = "Otro" }
+                    new SelectListItem {Value = "F", Text = "Femenino" },
+                    new SelectListItem {Value = "O", Text = "Otro" }
                 })
              @Html.ValidationMessageFor(model => model.Genre, "", new { @class = "text-danger" })
             </div>
@@ -76,7 +76,7 @@
                 @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
             </div>
         </div>
-	    @* Email *@
+        @* Email *@
         <div class="form-group">
             @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
@@ -107,14 +107,14 @@
                 @Html.DropDownListFor(model => model.Rol,
                     new List<SelectListItem>
                     {
-                        new SelectListItem {Value = "Client", Text = "Cliente" }
+                        new SelectListItem {Value = "Owner", Text = "Propietario" }
                     },
-    			    htmlAttributes: new { @id = "userRolesDropDownList" }
-			    )
+                    htmlAttributes: new { @id = "userRolesDropDownList" }
+                )
                 @Html.ValidationMessageFor(model => model.Rol, "", new { @class = "text-danger" })
             </div>
         </div>
-	    @* Enabled *@
+        @* Enabled *@
         <div class="form-group" style="display: none;">
             @Html.LabelFor(model => model.Enabled, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
@@ -122,10 +122,42 @@
                     new List<SelectListItem>
                     {
                         new SelectListItem {Value = "true", Text = "Usuario activado"}
-    			        @*new SelectListItem {Value = "false", Text = "Usuario desactivado"}*@
+                        @*new SelectListItem {Value = "false", Text = "Usuario desactivado"}*@
                     }
-			    )
+                )
                 @Html.ValidationMessageFor(model => model.Rol, "", new { @class = "text-danger" })
+            </div>
+        </div>
+	    @* Latitude *@
+        <div class="form-group">
+            @Html.LabelFor(model => model.Latitude, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.Latitude, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Latitude, "", new { @class = "text-danger" })
+            </div>
+        </div>
+	    @* Longitude *@
+        <div class="form-group">
+            @Html.LabelFor(model => model.Longitude, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.Longitude, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Longitude, "", new { @class = "text-danger" })
+            </div>
+        </div>
+	    @* Description *@
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+	    @* Address *@
+        <div class="form-group">
+            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
             </div>
         </div>
         @* Register Btn *@
