@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using TurismoCR.Data;
 using TurismoCR.Models;
+using System.Collections.Generic;
 
 namespace TurismoCR.Controllers
 {
@@ -19,13 +20,61 @@ namespace TurismoCR.Controllers
         public IActionResult Index()
         {
             
-            Orden ejmOrden = new Orden("LuisDavid", DateTime.Now, "Viajes", "5x Dias en crucero por el caribe", 14500);
-            _context.Add(ejmOrden);
-
-            _context.SaveChanges();
-
-            //Agregar redireccion de interfaz en vez de View.
+            
             return View();
+        }
+
+        public ActionResult InsertaOrdenCompra(Orden nuevaOrden)
+        {
+
+            try
+            {
+                //Agrega la orden nueva sin hacer commit.
+                _context.Add(nuevaOrden);
+
+                //Realiza el commit.
+                _context.SaveChanges();
+
+                //Agregar redireccion de interfaz en vez de View.
+                return View();
+            }
+            catch(Exception ex)
+            {
+                //Agregar redireccion de interfaz en vez de View.
+                return View();
+            }
+        }
+
+        public ActionResult BuscarOrdenesCompra(String usuarioId)
+        {
+            try
+            {
+                using (_context)
+                {
+                    //Busca todas las ordenes de compra de un usuario.
+                    var ordenes = from p in _context.Ordenes
+                                  where p.Usuario.Equals(usuarioId)
+                                  select p;
+
+                    List<Orden> ordenesCompra = new List<Orden>();
+
+                    if(ordenes != null)
+                    { 
+                        foreach(Orden orden in ordenes)
+                        {
+                            //Agrega todos los resultados a una lista.
+                            ordenesCompra.Add(orden);
+                        }
+                    }
+                    return View(ordenesCompra);
+
+                }
+            }
+            catch(Exception ex)
+            {
+                //Agregar redireccion de interfaz en vez de View.
+                return View();
+            }
         }
     }
 }
