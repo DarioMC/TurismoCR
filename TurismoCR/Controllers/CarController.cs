@@ -17,34 +17,17 @@ namespace TurismoCR.Controllers
 
         public IActionResult Index()
         {
-
-            //car.IdCarrito=1;
-            //car.Usuario = "ochavarria";
-            //listser.Add(new Servicio(new DateTime(12, 12, 12), new DateTime(12, 12, 12), "Gold", "Vista al volcan ", "15500", "Cartago", "Cartago", "Cartago"));
-            //listser.Add(new Servicio(new DateTime(12, 12, 12), new DateTime(12, 12, 12), "Turista", "Vista a la playa", "10000", "Limon", "Limon", "Limon"));
-
-            //car.Productos = listser;
-            
-            //redisDB.StringAppend("ochavarria", JsonConvert.SerializeObject(new Servicio(new DateTime(12, 12, 12), new DateTime(12, 12, 12), "Silver", "Vista a la montaña", "18000", "SanJose", "SanJose", "SanJose")));
-
-            
-
             var result = consultarServicios();
-
             return View(result);
         }
 
+        //Elimina un Agrega un Servicio 
         [HttpPost]
         public void Agregar(Servicio service )
         {
-            
+            var redisDB = RedisInstance();
             car.Productos.Add(service);
 
-                
-            ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("localhost");
-            IDatabase redisDB = redis.GetDatabase();
-                 
-                
             String result = redisDB.StringGet("ochavarria");
             var tempcar = JsonConvert.DeserializeObject<Carrito>(result);
             tempcar.Productos.Add(service);
@@ -57,20 +40,22 @@ namespace TurismoCR.Controllers
             
         }
 
+        //Elimina un servicio
         [HttpPost]
         public ActionResult DeleteService(Servicio delSer)
         {
             try
             {
+                var redisDB = RedisInstance();
 
                 var tempProduc = new List<Servicio>();
-                ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("localhost");
-                IDatabase redisDB = redis.GetDatabase();
+
                 String result = redisDB.StringGet("ochavarria");
                 var car = JsonConvert.DeserializeObject<Carrito>(result);
                 tempProduc = car.Productos;
 
-
+                //Se convierte a string para la comparacion, ya que el id no es fijo.  
+                
                 var y = delSer.ToString();
                 foreach (var i in tempProduc)
                 {
@@ -98,24 +83,46 @@ namespace TurismoCR.Controllers
         }
 
 
-
+        //Connsulta en la base si ese carro tiene servicios un servicio
         private List<Servicio> consultarServicios()
         {
 
-            var productos = new List<Servicio>();
+            var redisDB = RedisInstance();
 
+            String result = redisDB.StringGet("ochavarria");
+
+            //Verifica si ese usuario ya tiene un carrito creado. 
+            if (result == null)
+            {
+
+                car.IdCarrito = 1;
+                car.Usuario = "ochavarria";
+                car.Productos = new List<Servicio>();
+                //car.Productos.Add(new Servicio(new DateTime(12, 12, 12), new DateTime(12, 12, 12), "Gold", "Vista al volcan ", "15500", "Cartago", "Cartago", "Cartago"));
+                //car.Productos.Add(new Servicio(new DateTime(12, 12, 12), new DateTime(12, 12, 12), "Turista", "Vista a la playa", "10000", "Limon", "Limon", "Limon"));
+                
+                String json = JsonConvert.SerializeObject(car);
+                redisDB.StringSet("ochavarria", json);
+                return car.Productos; 
+
+            }
+            else {
+                var tempcar = JsonConvert.DeserializeObject<Carrito>(result);
+                var productos = tempcar.Productos;
+                return productos;
+            }
+            
+        }
+
+        //Devulve una instancia de la base de datos. 
+        private IDatabase RedisInstance()
+        {
+            var productos = new List<Servicio>();
             ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("localhost");
             IDatabase redisDB = redis.GetDatabase();
-            String result = redisDB.StringGet("ochavarria");
-            var car = JsonConvert.DeserializeObject<Carrito>(result);
-            productos = car.Productos;
-
-            if (productos == null)
-            {
-                productos = new List<Servicio>();
-            }
-            return productos;
+            return redisDB; 
         }
+
 
     }
 }
