@@ -82,6 +82,17 @@ namespace TurismoCR.Models
             set { this.distrito = value; }
         }
 
+        public override string ToString()
+        {
+            return fechaInicio.ToString()
+                +fechaFinal.ToString()
+                +categoria 
+                +descripcion 
+                +tarifa
+                +provincia
+                +canton
+                +distrito; 
+        }
         #endregion
 
         #region Constructor

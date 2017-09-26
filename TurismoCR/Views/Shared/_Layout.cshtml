@@ -44,30 +44,42 @@
 					
                 </ul>
                 <!-- navbar-right -->
-                @if (Context.Request.Cookies["userSession"] != null && Context.Request.Cookies["rolSession"] != null) {
-					var userCookie = Context.Request.Cookies["userSession"];
-					var userName = userCookie.ToString();
-					var rolCookie = Context.Request.Cookies["rolSession"];
+                @if (Context.Request.Cookies["userSession"] != null && Context.Request.Cookies["rolSession"] != null)
+                {
+                    var userCookie = Context.Request.Cookies["userSession"];
+                    var userName = userCookie.ToString();
+                    var rolCookie = Context.Request.Cookies["rolSession"];
                     var rolName = rolCookie.ToString();
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a asp-area="" asp-controller="" asp-action="">
-					        @userName
-					    </a></li>
-					    @if (rolName == "Client") {
-					        <li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Carrito</a></li>
-					    }
-					    @* TODO add other roles: "Owner", "Administrator" *@
-						@if (rolName == "Owner") {
-						   <li><a asp-area="" asp-controller="Servicio" asp-action="InsertarServicio">
-                               Insertar Servicio
-                           </a></li>
-						    <li><a asp-area="" asp-controller="Servicio" asp-action="EditarServicio">
-                               Editar Servicios
-                           </a></li>
-						}
-						 <li><a asp-area="" asp-controller="User" asp-action="LogOut">
-                            Cerrar Sesión
-                        </a></li>
+                        <li>
+                            <a asp-area="" asp-controller="" asp-action="">
+                                @userName
+                            </a>
+                        </li>
+                        @if (rolName == "Client")
+                        {
+                            <li><a a asp-area="" asp-controller="Car" asp-action="Index">
+                                <span class="glyphicon glyphicon-shopping-cart"></span> Carrito</a></li>
+                        }
+                        @* TODO add other roles: "Owner", "Administrator" *@
+                        @if (rolName == "Owner")
+                        {
+                            <li>
+                                <a asp-area="" asp-controller="Servicio" asp-action="InsertarServicio">
+                                    Insertar Servicio
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-area="" asp-controller="Servicio" asp-action="EditarServicio">
+                                    Editar Servicios
+                                </a>
+                            </li>
+                        }
+                        <li>
+                            <a asp-area="" asp-controller="User" asp-action="LogOut">
+                                Cerrar Sesión
+                            </a>
+                        </li>
                     </ul>
 					@Html.Raw(TempData["msg"])
                 } else {
