@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Catálogo servicio";
     ViewData["Message"] = "Página para editar o borrar servicio/paquete turístico";
-    List<Servicio> serviciosPropietario = ViewData["resultado"] as List<Servicio>;
+    List<Servicio> serviciosPropietario = ViewBag.ServiciosPropietario as List<Servicio>;
 }
 
 <h2>@ViewData["Title"]</h2>

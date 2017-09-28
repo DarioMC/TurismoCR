@@ -72,15 +72,8 @@ namespace TurismoCR.Controllers
             //Verifica redireccion.
             return View();
         }
-
-		public ActionResult CatalogoServicio()
-		{
-			ViewData["Message"] = "Página para editar o borrar servicio/paquete turístico";
-			return View();
-		}
-
-		[HttpPost]
-		public async Task<ActionResult> BuscarServiciosPropietario()
+        
+		public async Task<ActionResult> CatalogoServicio()
 		{
 			var userCookie = Request.Cookies["userSession"];
 			var propietario = userCookie.ToString();
@@ -90,8 +83,8 @@ namespace TurismoCR.Controllers
 			var filtro = Builders<Servicio>.Filter.Eq("nombreUsuarioPropietario", propietario);
 			var sort = Builders<Servicio>.Sort.Ascending("Categoria");
 			var resultado = await coleccion.Find(filtro).Sort(sort).ToListAsync();
-            ViewBag["resultado"] = resultado;
-            return RedirectToAction("CatalogoServicio", "Servicio");
+            ViewBag.ServiciosPropietario = resultado;
+            return View();
 		}
 
         [HttpPost]
