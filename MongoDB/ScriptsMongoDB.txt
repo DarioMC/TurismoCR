@@ -1,0 +1,85 @@
+//comnandos para crear base con las colecciones 
+
+
+
+
+//  usar nueva BD
+
+
+
+use TurismoCR           
+
+
+
+//crear documento
+
+
+
+
+servicio = { 
+ fechaInicio: "2017-03-09 16:05:072",
+
+ fechaFinal: "2017-03-12 16:05:072", 
+ 
+categoria: "playa", 
+ 
+descripcion: "paquete vip", 
+ 
+tarifa: "1000.0", 
+ 
+provincia: "Guanacaste", 
+ 
+canton: "Liberia",
+ 
+distrito: "Mayorga"
+NombreUsuarioPropietario: "subotai"
+
+
+
+
+}
+
+
+NombreUsuarioPropietario
+
+
+// crear coleccion e insertar documento
+
+
+
+
+db.Servicios.insert(servicio)
+
+
+
+
+imgLug = {
+  FileName: "imgLug",
+ 
+  PictureDataAsString: "ssjsj", 
+
+   codPro: 24266.0 
+
+}
+
+
+
+
+
+db.ImgLugar.insert(imgLug) 
+
+
+
+
+imgServ = {
+  FileName: "imgPlaya", 
+  
+PictureDataAsString: "jfkshskkds", 
+  
+codPro: 21213.0 
+
+}
+
+
+db.ImgServicio.insert(imgServ)
+}
