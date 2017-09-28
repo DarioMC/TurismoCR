@@ -27,7 +27,7 @@ namespace TurismoCR.Controllers
             var db = mongoClient.GetDatabase("TurismoCR");
             var ServicioCollection = db.GetCollection<Servicio>("Servicios");
             await ServicioCollection.InsertOneAsync(servicio);
-			// let's go to InsertarServicio
+			// let's go to home
 			return RedirectToAction("Index", "Home");
         }
 
