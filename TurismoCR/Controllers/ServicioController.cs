@@ -13,10 +13,6 @@ namespace TurismoCR.Controllers
 {
     public class ServicioController : Controller
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
 
 		public ActionResult InsertarServicio() {
 			ViewData["Message"] = "Página para agregar servicio/paquete turístico";
@@ -26,15 +22,13 @@ namespace TurismoCR.Controllers
         [HttpPost]
         public async Task<ActionResult> InsertarServicioAsync(Servicio servicio)
         {
+            // TODO Pulir Try-Catch
             var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
-            //var mongoServer = mongoClient.GetServer();
             var db = mongoClient.GetDatabase("TurismoCR");
-
             var ServicioCollection = db.GetCollection<Servicio>("Servicios");
             await ServicioCollection.InsertOneAsync(servicio);
-
-            //Agregar redireccion a la interfaz en vez de View.
-            return View();
+			// let's go to InsertarServicio
+			return RedirectToAction("Index", "Home");
         }
 
         public async Task<ActionResult> AgregarImagenServicioAsync(HttpPostedFileBase theFile)

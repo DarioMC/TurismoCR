@@ -76,6 +76,22 @@
                 @Html.ValidationMessageFor(model => model.FechaFinal, "", new { @class = "text-danger" })
             </div>
         </div>
+	    @* Nombre de propietario *@
+	    @{
+	        var userCookie = Context.Request.Cookies["userSession"];
+            var userName = userCookie.ToString();
+	    }
+	    <div class="form-group" style="display: none;">
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.NombreUsuarioPropietario,
+                    new List<SelectListItem>
+                    {
+                        new SelectListItem {Value = @userName, Text = "Propietario" }
+                    },
+                    htmlAttributes: new { @id = "userNameDropDownList" }
+                )
+            </div>
+        </div>
 	    @* TODO SERVICE IMAGE *@
 	    @* Add Btn *@
 	    <div class="form-group">
