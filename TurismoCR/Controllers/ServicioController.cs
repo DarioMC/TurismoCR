@@ -87,6 +87,16 @@ namespace TurismoCR.Controllers
             return View();
 		}
 
+        public async Task<ActionResult> EditarServicioAsync(ObjectId servicioId)
+        {
+            var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
+            var db = mongoClient.GetDatabase("TurismoCR");
+            var coleccion = db.GetCollection<Servicio>("Servicios");
+            var filtro = Builders<Servicio>.Filter.Eq("_id", servicioId);
+            var resultado = await coleccion.FindAsync(filtro);
+            return View(resultado);
+        }
+
         [HttpPost]
         public async Task<ActionResult> EditarServicioAsync(ObjectId IdServicio, Servicio cambiosServicio)
         {
