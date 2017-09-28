@@ -1,0 +1,12 @@
+﻿@{
+    using (Html.BeginForm("AgregarImagen", "Imagen", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="container">
+            <form method="post">
+                <input type="file" id="theFile" name="theFile" />
+                <br />
+                <input type="submit" value="Subir Imagen" />
+            </form>
+        </div>
+    }
+}
