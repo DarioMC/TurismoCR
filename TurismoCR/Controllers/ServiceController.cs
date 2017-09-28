@@ -61,17 +61,25 @@ namespace TurismoCR.Controllers
                 var collection = db.GetCollection<Service>("Services");
                 var userCookie = Request.Cookies["userSession"];
                 var ownerUsername = userCookie.ToString();
-                var filter = Builders<Service>.Filter.Eq("ownerUsername", ownerUsername);
+                var filter = Builders<Service>.Filter.Eq("OwnerUsername", ownerUsername);
                 var sort = Builders<Service>.Sort.Ascending("Category");
                 // filter services for curret owner user
                 var result = await collection.Find(filter).Sort(sort).ToListAsync();
-                // saving services
-                ViewBag.ownerServices = result;
+                if (result.Count == 0) {
+                    TempData["msg"] = "<script>alert('No hay paquetes registrados!');</script>";
+                } else {
+					// saving services
+					ViewBag.ownerServices = result;
+					// show view
+					return View();
+                }
+
             } catch {
                 TempData["msg"] = "<script>alert('No hay comunicación con MongoDB.');</script>";
             }
-            // show view
-			return View();
+			// let's go to main page
+			return RedirectToAction("Index", "Home");
+
 		}
 
 		public async Task<ActionResult> EditarServicioAsync(ObjectId servicioId)
