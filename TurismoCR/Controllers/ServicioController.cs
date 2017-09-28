@@ -148,5 +148,20 @@ namespace TurismoCR.Controllers
             //Agregar redireccion a otra vista con la lista por parámetro.
             return View();
         }
+
+        [HttpPost]
+        public async Task<ActionResult> BuscarServiciosPropietario(String propietario)
+        {
+            var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
+            var db = mongoClient.GetDatabase("TurismoCR");
+
+            var coleccion = db.GetCollection<Servicio>("Servicios");
+            var filtro = Builders<Servicio>.Filter.Eq("nombreUsuarioPropietario", propietario);
+            var sort = Builders<Servicio>.Sort.Ascending("Categoria");
+            var resultado = await coleccion.Find(filtro).Sort(sort).ToListAsync();
+
+            //Agregar redireccion a otra vista con la lista por parámetro.
+            return View();
+        }
     }
 }
