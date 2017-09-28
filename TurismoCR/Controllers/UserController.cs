@@ -198,7 +198,7 @@ namespace TurismoCR.Controllers
             return View();
         }
 
-        public async Task<ActionResult> BorrarImagenServicioAsync(ObjectId idImagen) {
+        public async Task<ActionResult> BorrarImagenLugarAsync(ObjectId idImagen) {
             var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
             var db = mongoClient.GetDatabase("TurismoCR");
 
