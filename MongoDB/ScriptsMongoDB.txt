@@ -31,10 +31,9 @@ provincia: "Guanacaste",
  
 canton: "Liberia",
  
-distrito: "Mayorga"
+distrito: "Mayorga",
+
 NombreUsuarioPropietario: "subotai"
-
-
 
 
 }
