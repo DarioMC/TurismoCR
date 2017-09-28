@@ -22,17 +22,29 @@ namespace TurismoCR.Controllers
 
         [HttpPost]
         public async Task<ActionResult> AddServiceAsync(Service service) {
-            try {
-				// setting MongoDB connection
-				var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
-				var db = mongoClient.GetDatabase("TurismoCR");
-				// getting reference to services
-				var serviceCollection = db.GetCollection<Service>("Services");
-				// inserting service by reference
-				await serviceCollection.InsertOneAsync(service);
-            } catch {
-				// setting alert message
-				TempData["msg"] = "<script>alert('No hay comunicación con MongoDB.');</script>";
+			// check if service is well defined
+			var isServiceNullOrEmpty = service
+				.GetType()
+				.GetProperties()
+				.Where(pi => pi.GetValue(service) is string)
+				.Select(pi => (string)pi.GetValue(service))
+				.Any(value => String.IsNullOrEmpty(value));
+            if (isServiceNullOrEmpty == true) {
+                // setting alert message
+                TempData["msg"] = "<script>alert('Hay campos vacíos!');</script>";
+            } else {
+                try {
+                    // setting MongoDB connection
+                    var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
+                    var db = mongoClient.GetDatabase("TurismoCR");
+                    // getting reference to services
+                    var serviceCollection = db.GetCollection<Service>("Services");
+                    // inserting service by reference
+                    await serviceCollection.InsertOneAsync(service);
+                } catch {
+                    // setting alert message
+                    TempData["msg"] = "<script>alert('No hay comunicación con MongoDB.');</script>";
+                }
             }
 			// let's go to home
 			return RedirectToAction("Index", "Home");

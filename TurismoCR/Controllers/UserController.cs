@@ -50,8 +50,7 @@ namespace TurismoCR.Controllers
 					if (userConsulted.Any()) {
 						var foundUser = userConsulted.First();
 						// checking if user is enabled
-						if (foundUser.Enabled == true)
-						{
+						if (foundUser.Enabled == true) {
 							// if password is valid
 							if (foundUser.Password == user.Password) {
 								// adding user session cookie
