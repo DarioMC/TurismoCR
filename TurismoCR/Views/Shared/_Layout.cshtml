@@ -41,7 +41,6 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Principal</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">Acerca de</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contacto</a></li>
-					
                 </ul>
                 <!-- navbar-right -->
                 @if (Context.Request.Cookies["userSession"] != null && Context.Request.Cookies["rolSession"] != null)
@@ -56,12 +55,24 @@
                                 @userName
                             </a>
                         </li>
+						@* TODO add other roles: "Administrator" *@
                         @if (rolName == "Client")
                         {
-                            <li><a a asp-area="" asp-controller="Car" asp-action="Index">
-                                <span class="glyphicon glyphicon-shopping-cart"></span> Carrito</a></li>
+						    <li>
+                                <a asp-area="" asp-controller="Servicio" asp-action="BuscarServicio">
+                                    Buscar Paquetes Turísticos
+                                </a>
+                            </li>
+						    <li>
+                                <a asp-area="" asp-controller="Orden" asp-action="VerOrdenes">
+                                    Ver mis órdenes
+                                </a>
+                            </li>
+                            <li><a asp-area="" asp-controller="Car" asp-action="Index">
+                                    <span class="glyphicon glyphicon-shopping-cart"></span> Carrito
+							    </a>
+						    </li>
                         }
-                        @* TODO add other roles: "Owner", "Administrator" *@
                         @if (rolName == "Owner")
                         {
                             <li>
@@ -72,6 +83,11 @@
                             <li>
                                 <a asp-area="" asp-controller="Servicio" asp-action="EditarServicio">
                                     Editar Servicios
+                                </a>
+                            </li>
+						    <li>
+                                <a asp-area="" asp-controller="Servicio" asp-action="BorrarServicio">
+                                    Borrar Servicios
                                 </a>
                             </li>
                         }

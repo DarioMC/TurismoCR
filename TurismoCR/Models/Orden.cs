@@ -7,7 +7,6 @@ namespace TurismoCR.Models
 {
     public class Orden
     {
-
         private Guid _id;
         [System.ComponentModel.DataAnnotations.Key]
         public int IdOrden { get; set; }
@@ -16,17 +15,18 @@ namespace TurismoCR.Models
         public String Usuario { get; set; }
         public int Tarifa { get; set; }
         public String Categoria { get; set; }
-        public String Descripción { get; set; }
+        public String Descripcion { get; set; }
 
         #region Constructor
 
         public Orden() { }
 
-        public Orden(String nUser, DateTime nFecha, String nCat, String nDesc, int nPrecio)
+        public Orden(String nUser, DateTime nFecha, 
+                     String nCat, String nDesc, int nPrecio)
         {
             Usuario = nUser;
             Fecha = nFecha;
-            Descripción = nDesc;
+            Descripcion = nDesc;
             Categoria = nCat;
             Tarifa = nPrecio;
         }

@@ -99,6 +99,11 @@ namespace TurismoCR.Controllers
             return View();
         }
 
+		public ActionResult BorrarServicio() {
+			ViewData["Message"] = "Página para borrar servicio/paquete turístico";
+			return View();
+		}
+
         [HttpPost]
         public async Task<ActionResult> BorrarServicioAsync(ObjectId idServicio)
         {
@@ -128,6 +133,12 @@ namespace TurismoCR.Controllers
             //Agregar redireccion a otra vista en vez de View.
             return View();
         }
+
+		public ActionResult BuscarServicio()
+		{
+			ViewData["Message"] = "Página para buscar servicios/paquetes turístico";
+			return View();
+		}
 
         [HttpPost]
         public async Task<ActionResult> BuscarServicios()

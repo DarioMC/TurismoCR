@@ -1,0 +1,70 @@
+﻿@model List<TurismoCR.Models.Orden>;
+
+@{
+    ViewData["Title"] = "Ver ordenes de compra actual";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>IDOrden</th>
+            <th>IDCarrito</th>
+            <th>Fecha</th>
+            <th>Usuario</th>
+            <th>Tarifa</th>
+            <th>Categoria</th>
+            <th>Descripcion</th>
+        </tr>
+    </thead>
+    <tbody>
+        @*@foreach (orden in model) {
+            <tr>
+                <td>@orden.IdOrden</td>
+                <td>@orden.IdCarrito</td>
+                <td>@orden.Fecha</td>
+                <td>@orden.Usuario</td>
+                <td>@orden.Tarifa</td>
+                <td>@orden.Categoria</td>
+                <td>@orden.Descripcion</td>
+            </tr>
+        }*@
+        <tr>
+            <td>1</td>
+            <td>1</td>
+            <td>2017</td>
+            <td>doncangrejo</td>
+            <td>2366</td>
+            <td>montaña</td>
+            <td>S1</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>1</td>
+            <td>2017</td>
+            <td>doncangrejo</td>
+            <td>4567</td>
+            <td>bosque</td>
+            <td>S2</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>1</td>
+            <td>2017</td>
+            <td>doncangrejo</td>
+            <td>3789</td>
+            <td>hotel</td>
+            <td>S3</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>1</td>
+            <td>2017</td>
+            <td>doncangrejo</td>
+            <td>1209</td>
+            <td>montaña</td>
+            <td>S4</td>
+        </tr>
+    </tbody>
+</table>

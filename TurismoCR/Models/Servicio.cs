@@ -20,11 +20,12 @@ namespace TurismoCR.Models
         String provincia;
         String canton;
         String distrito;
+        String nombreUsuarioPropietario;
         internal readonly int Id;
 
-        #endregion
+		#endregion
 
-        #region Propiedades
+		#region Propiedades
 
         [Display(Name = "Fecha de inicio del servicio")]
         public DateTime FechaInicial
@@ -82,6 +83,12 @@ namespace TurismoCR.Models
             set { this.distrito = value; }
         }
 
+		public String NombreUsuarioPropietario
+		{
+			get { return this.nombreUsuarioPropietario; }
+			set { this.nombreUsuarioPropietario = value; }
+		}
+
         public override string ToString()
         {
             return fechaInicio.ToString()
@@ -99,7 +106,9 @@ namespace TurismoCR.Models
 
         public Servicio() { }
 
-        public Servicio(DateTime nFechIni, DateTime nFechFin, String nCat, String nDesc, String nTar, String nProv, String nCant, String nDist)
+        public Servicio(DateTime nFechIni, DateTime nFechFin, String nCat, 
+                        String nDesc, String nTar, String nProv, 
+                        String nCant, String nDist, String nNombreUsuarioPropietario)
         {
             FechaInicial = nFechIni;
             FechaFinal = nFechFin;
@@ -109,6 +118,7 @@ namespace TurismoCR.Models
             Provincia = nProv;
             Canton = nCant;
             Distrito = nDist;
+            NombreUsuarioPropietario = nNombreUsuarioPropietario;
         }
 
         #endregion 

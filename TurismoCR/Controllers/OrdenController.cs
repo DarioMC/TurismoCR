@@ -17,6 +17,7 @@ namespace TurismoCR.Controllers
         {
             _context = context;
         }
+
         public IActionResult Index()
         {
             
@@ -24,9 +25,13 @@ namespace TurismoCR.Controllers
             return View();
         }
 
+		public ActionResult VerOrdenesCompra() {
+			ViewData["Message"] = "Página para ver órdenes de compra actual.";
+			return View();
+		}
+
         public ActionResult InsertaOrdenCompra(Orden nuevaOrden)
         {
-
             try
             {
                 //Agrega la orden nueva sin hacer commit.
@@ -38,12 +43,17 @@ namespace TurismoCR.Controllers
                 //Agregar redireccion de interfaz en vez de View.
                 return View();
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 //Agregar redireccion de interfaz en vez de View.
                 return View();
             }
         }
+
+		public ActionResult VerOrdenes() {
+			ViewData["Message"] = "Página para ver órdenes de compras realizadas.";
+			return View();
+		}
 
         public ActionResult BuscarOrdenesCompra(String usuarioId)
         {
@@ -70,7 +80,7 @@ namespace TurismoCR.Controllers
 
                 }
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 //Agregar redireccion de interfaz en vez de View.
                 return View();
