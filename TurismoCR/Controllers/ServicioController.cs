@@ -103,11 +103,6 @@ namespace TurismoCR.Controllers
             return View();
         }
 
-		public ActionResult BorrarServicio() {
-			ViewData["Message"] = "Página para borrar servicio/paquete turístico";
-			return View();
-		}
-
         [HttpPost]
         public async Task<ActionResult> BorrarServicioAsync(ObjectId idServicio)
         {
