@@ -1,4 +1,5 @@
-﻿@model TurismoCR.Models.Servicio;
+﻿@using MongoDB.Bson;
+@model TurismoCR.Models.Servicio;
 
 @{
     ViewData["Title"] = "Catálogo servicio";
@@ -8,13 +9,17 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<select>
+<div id="servicioId">
     @{
         foreach (var servicio in serviciosPropietario)
         {
-            <option value="@servicio.Id">
+
+            <label value="@servicio.Id">
                 @servicio.Descripcion
-            </option>
+            </label>
+            <input type="button" value="Editar Servicio" onclick="location.href='@Url.Action("EditarServicio", "Servicio", idServicio)'" />
+            <input type="button" value="Borrar Servicio" onclick="location.href='@Url.Action("BorrarServicio", "Servicio", servicio.Id)'" />
         }
+
     }
-</select>
+</div>
