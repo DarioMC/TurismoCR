@@ -41,6 +41,8 @@ namespace TurismoCR.Controllers
                     var serviceCollection = db.GetCollection<Service>("Services");
                     // inserting service by reference
                     await serviceCollection.InsertOneAsync(service);
+					// setting alert message
+					TempData["msg"] = "<script>alert('Paquete agregado exitosamente.');</script>";
                 } catch {
                     // setting alert message
                     TempData["msg"] = "<script>alert('No hay comunicación con MongoDB.');</script>";
@@ -49,6 +51,20 @@ namespace TurismoCR.Controllers
 			// let's go to home
 			return RedirectToAction("Index", "Home");
         }
+
+		public async Task<ActionResult> CatalogoServicio()
+		{
+			var userCookie = Request.Cookies["userSession"];
+			var propietario = userCookie.ToString();
+			var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
+			var db = mongoClient.GetDatabase("TurismoCR");
+			var coleccion = db.GetCollection<Service>("Services");
+			var filtro = Builders<Service>.Filter.Eq("NombreUsuarioPropietario", propietario);
+			var sort = Builders<Service>.Sort.Ascending("Categoria");
+			var resultado = await coleccion.Find(filtro).Sort(sort).ToListAsync();
+			ViewBag.ServiciosPropietario = resultado;
+			return View();
+		}
 
         public async Task<ActionResult> AgregarImagenServicioAsync(HttpPostedFileBase theFile)
         {
@@ -90,20 +106,6 @@ namespace TurismoCR.Controllers
             //Verifica redireccion.
             return View();
         }
-        
-		public async Task<ActionResult> CatalogoServicio()
-		{
-			var userCookie = Request.Cookies["userSession"];
-			var propietario = userCookie.ToString();
-			var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
-			var db = mongoClient.GetDatabase("TurismoCR");
-			var coleccion = db.GetCollection<Service>("Services");
-			var filtro = Builders<Service>.Filter.Eq("NombreUsuarioPropietario", propietario);
-			var sort = Builders<Service>.Sort.Ascending("Categoria");
-			var resultado = await coleccion.Find(filtro).Sort(sort).ToListAsync();
-            ViewBag.ServiciosPropietario = resultado;
-            return View();
-		}
 
         public async Task<ActionResult> EditarServicioAsync(ObjectId servicioId)
         {
