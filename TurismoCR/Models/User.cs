@@ -67,6 +67,7 @@ namespace TurismoCR.Models
 
         [Display(Name = "Habilitado")]
         public Boolean Enabled { get; set; }
+
         #endregion
 
         #region Constructor & Destructor

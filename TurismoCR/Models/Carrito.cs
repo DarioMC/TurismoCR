@@ -12,7 +12,7 @@ namespace TurismoCR.Models
 
         int idCarrito;
         String usuario;
-        List<Models.Servicio> productos;
+        List<Models.Service> productos;
 
         #endregion
 
@@ -30,7 +30,7 @@ namespace TurismoCR.Models
             set { this.usuario = value; }
         }
 
-        public List<Servicio> Productos
+        public List<Service> Productos
         {
             get { return this.productos; }
             set { this.productos = value; }
@@ -42,7 +42,7 @@ namespace TurismoCR.Models
 
         public Carrito() { }
 
-        public Carrito(int nId, String nUser, List<Servicio> nProds)
+        public Carrito(int nId, String nUser, List<Service> nProds)
         {
             IdCarrito = nId;
             Usuario = nUser;

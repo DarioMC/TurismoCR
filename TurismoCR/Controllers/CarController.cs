@@ -12,7 +12,7 @@ namespace TurismoCR.Controllers
 {
     public class CarController : Controller
     {
-        List<Servicio> listser = new List<Servicio>();
+        List<Service> listser = new List<Service>();
         Carrito car = new Carrito();
 
         public IActionResult Index()
@@ -23,7 +23,7 @@ namespace TurismoCR.Controllers
 
         //Elimina un Agrega un Servicio 
         [HttpPost]
-        public void Agregar(Servicio service )
+        public void Agregar(Service service )
         {
             var redisDB = RedisInstance();
             car.Productos.Add(service);
@@ -42,13 +42,13 @@ namespace TurismoCR.Controllers
 
         //Elimina un servicio
         [HttpPost]
-        public ActionResult DeleteService(Servicio delSer)
+        public ActionResult DeleteService(Service delSer)
         {
             try
             {
                 var redisDB = RedisInstance();
 
-                var tempProduc = new List<Servicio>();
+                var tempProduc = new List<Service>();
 
                 String result = redisDB.StringGet("ochavarria");
                 var car = JsonConvert.DeserializeObject<Carrito>(result);
@@ -84,7 +84,7 @@ namespace TurismoCR.Controllers
 
 
         //Connsulta en la base si ese carro tiene servicios un servicio
-        private List<Servicio> consultarServicios()
+        private List<Service> consultarServicios()
         {
 
             var redisDB = RedisInstance();
@@ -97,7 +97,7 @@ namespace TurismoCR.Controllers
 
                 car.IdCarrito = 1;
                 car.Usuario = "ochavarria";
-                car.Productos = new List<Servicio>();
+                car.Productos = new List<Service>();
                 //car.Productos.Add(new Servicio(new DateTime(12, 12, 12), new DateTime(12, 12, 12), "Gold", "Vista al volcan ", "15500", "Cartago", "Cartago", "Cartago"));
                 //car.Productos.Add(new Servicio(new DateTime(12, 12, 12), new DateTime(12, 12, 12), "Turista", "Vista a la playa", "10000", "Limon", "Limon", "Limon"));
                 
@@ -117,7 +117,7 @@ namespace TurismoCR.Controllers
         //Devulve una instancia de la base de datos. 
         private IDatabase RedisInstance()
         {
-            var productos = new List<Servicio>();
+            var productos = new List<Service>();
             ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("localhost");
             IDatabase redisDB = redis.GetDatabase();
             return redisDB; 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,27 +8,32 @@ using Microsoft.AspNetCore.Http;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using TurismoCR.Models;
-using System.IO;
 using static TurismoCR.Controllers.ImageController;
 
 namespace TurismoCR.Controllers
 {
-    public class ServicioController : Controller
+    public class ServiceController : Controller
     {
 
-		public ActionResult InsertarServicio() {
-			ViewData["Message"] = "Página para agregar servicio/paquete turístico";
+		public ActionResult AddService() {
+			ViewData["Message"] = "Página para agregar paquete turístico";
 			return View();
 		}
 
         [HttpPost]
-        public async Task<ActionResult> InsertarServicioAsync(Servicio servicio)
-        {
-            // TODO Pulir Try-Catch
-            var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
-            var db = mongoClient.GetDatabase("TurismoCR");
-            var ServicioCollection = db.GetCollection<Servicio>("Servicios");
-            await ServicioCollection.InsertOneAsync(servicio);
+        public async Task<ActionResult> AddServiceAsync(Service service) {
+            try {
+				// setting MongoDB connection
+				var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
+				var db = mongoClient.GetDatabase("TurismoCR");
+				// getting reference to services
+				var serviceCollection = db.GetCollection<Service>("Services");
+				// inserting service by reference
+				await serviceCollection.InsertOneAsync(service);
+            } catch {
+				// setting alert message
+				TempData["msg"] = "<script>alert('No hay comunicación con MongoDB.');</script>";
+            }
 			// let's go to home
 			return RedirectToAction("Index", "Home");
         }
@@ -79,9 +85,9 @@ namespace TurismoCR.Controllers
 			var propietario = userCookie.ToString();
 			var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
 			var db = mongoClient.GetDatabase("TurismoCR");
-			var coleccion = db.GetCollection<Servicio>("Servicios");
-			var filtro = Builders<Servicio>.Filter.Eq("NombreUsuarioPropietario", propietario);
-			var sort = Builders<Servicio>.Sort.Ascending("Categoria");
+			var coleccion = db.GetCollection<Service>("Services");
+			var filtro = Builders<Service>.Filter.Eq("NombreUsuarioPropietario", propietario);
+			var sort = Builders<Service>.Sort.Ascending("Categoria");
 			var resultado = await coleccion.Find(filtro).Sort(sort).ToListAsync();
             ViewBag.ServiciosPropietario = resultado;
             return View();
@@ -91,22 +97,22 @@ namespace TurismoCR.Controllers
         {
             var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
             var db = mongoClient.GetDatabase("TurismoCR");
-            var coleccion = db.GetCollection<Servicio>("Servicios");
-            var filtro = Builders<Servicio>.Filter.Eq("_id", servicioId);
+            var coleccion = db.GetCollection<Service>("Servicios");
+            var filtro = Builders<Service>.Filter.Eq("_id", servicioId);
             var resultado = await coleccion.FindAsync(filtro);
             return View(resultado);
         }
 
         [HttpPost]
-        public async Task<ActionResult> EditarServicioAsync(ObjectId IdServicio, Servicio cambiosServicio)
+        public async Task<ActionResult> EditarServicioAsync(ObjectId IdServicio, Service cambiosServicio)
         {
 			// TODO check if user has services
 			var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
             //var mongoServer = mongoClient.GetServer();
             var db = mongoClient.GetDatabase("TurismoCR");
 
-            var coleccion = db.GetCollection<Servicio>("Servicios");
-            var filtro = Builders<Servicio>.Filter.Eq("_id", IdServicio);
+            var coleccion = db.GetCollection<Service>("Servicios");
+            var filtro = Builders<Service>.Filter.Eq("_id", IdServicio);
             var resultado = await coleccion.ReplaceOneAsync(filtro, cambiosServicio, new UpdateOptions { IsUpsert = true });
 
             //Cambiar redireccion a otra vista en vez de View.
@@ -119,8 +125,8 @@ namespace TurismoCR.Controllers
             var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
             var db = mongoClient.GetDatabase("TurismoCR");
 
-            var coleccion = db.GetCollection<Servicio>("Servicios");
-            var filtro = Builders<Servicio>.Filter.Eq("_id", idServicio);
+            var coleccion = db.GetCollection<Service>("Servicios");
+            var filtro = Builders<Service>.Filter.Eq("_id", idServicio);
 
             var resultado = await coleccion.DeleteOneAsync(filtro);
 
@@ -155,9 +161,9 @@ namespace TurismoCR.Controllers
             var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
             var db = mongoClient.GetDatabase("TurismoCR");
 
-            var coleccion = db.GetCollection<Servicio>("Servicios");
+            var coleccion = db.GetCollection<Service>("Servicios");
             var filtro = new BsonDocument();
-            var sort = Builders<Servicio>.Sort.Ascending("Categoria");
+            var sort = Builders<Service>.Sort.Ascending("Categoria");
             var resultado = await coleccion.Find(filtro).Sort(sort).ToListAsync();
 
             //Agregar redireccion a otra vista con la lista por parámetro.

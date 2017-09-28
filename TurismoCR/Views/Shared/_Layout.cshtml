@@ -63,7 +63,8 @@
                                     Buscar
                                 </a>
                             </li>
-						    <li><a asp-area="" asp-controller="Car" asp-action="Index">
+						    <li>
+							    <a asp-area="" asp-controller="Car" asp-action="Index">
                                     <span class="glyphicon glyphicon-shopping-cart"></span> Carrito
                                 </a>
                             </li>
@@ -73,32 +74,45 @@
                                 </a>
                             </li>
 						    <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Reseña
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Reseñas
                                 <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-								    <li><a asp-area="" asp-controller="Reseña" asp-action="InsertarReseña">
-                                        Insertar reseña
-                                    </a></li>
-								    <li><a asp-area="" asp-controller="Reseña" asp-action="BuscarReseña">
-                                        Buscar reseña
-                                    </a></li>
-								    <li><a asp-area="" asp-controller="Reseña" asp-action="BorrarReseña">
-                                        Borrar reseña
-                                    </a></li>
+								    <li>
+									    <a asp-area="" asp-controller="Reseña" asp-action="InsertarReseña">
+                                            Insertar reseña
+                                        </a>
+								    </li>
+								    <li>
+									    <a asp-area="" asp-controller="Reseña" asp-action="BuscarReseña">
+                                            Buscar reseña
+                                        </a>
+								    </li>
+								    <li>
+									    <a asp-area="" asp-controller="Reseña" asp-action="BorrarReseña">
+                                            Borrar reseña
+                                        </a>
+								    </li>
                                 </ul>
                             </li>
                         }
                         @if (rolName == "Owner")
                         {
-                            <li>
-                                <a asp-area="" asp-controller="Servicio" asp-action="InsertarServicio">
-                                    Insertar Servicio
-                                </a>
-                            </li>
-                            <li>
-                                <a asp-area="" asp-controller="Servicio" asp-action="CatalogoServicio">
-                                    Catálogo de Servicios
-                                </a>
+						    <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+								    Paquetes turísticos<span class="caret"></span>
+							    </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a asp-area="" asp-controller="Service" asp-action="AddService">
+                                            Publicar Paquete
+                                        </a>
+                                    </li>
+                                    @*<li>
+                                        <a asp-area="" asp-controller="Service" asp-action="CatalogoServicio">
+                                            Catálogo de Servicios
+                                        </a>
+                                    </li>*@
+                                </ul>
                             </li>
                         }
                         <li>
