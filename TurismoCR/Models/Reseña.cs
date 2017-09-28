@@ -7,7 +7,6 @@ namespace TurismoCR.Models
 {
     public class Reseña
     {
-
         private Guid _id;
         [System.ComponentModel.DataAnnotations.Key]
         public Guid IdResenia
@@ -36,6 +35,5 @@ namespace TurismoCR.Models
         }
 
         #endregion
-
     }
 }

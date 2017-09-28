@@ -16,12 +16,18 @@ namespace TurismoCR.Controllers
         {
             _context = context;
         }
+
         public IActionResult Index()
         {
             return View();
         }
 
-        public ActionResult InsertarReseña(Reseña reseña)
+		public ActionResult InsertarReseña() {
+			ViewData["Message"] = "Página para agregar reseña sobre servicio/paquete turístico";
+			return View();
+		}
+
+        public ActionResult InsertarReseñas(Reseña reseña)
         {
 
             try
@@ -43,6 +49,11 @@ namespace TurismoCR.Controllers
             }
 
         }
+
+		public ActionResult BuscarReseña() {
+			ViewData["Message"] = "Página para buscar reseña sobre servicio/paquete turístico";
+			return View();
+		}
 
         public ActionResult BuscarReseñas(String servicioId)
         {
@@ -77,7 +88,12 @@ namespace TurismoCR.Controllers
             }
         }
 
-        public ActionResult BorrarReseña(int idReseña)
+		public ActionResult BorrarReseña() {
+			ViewData["Message"] = "Página para borrar reseña sobre servicio/paquete turístico";
+			return View();
+		}
+
+        public ActionResult BorrarReseñas(int idReseña)
         {
             try
             {
