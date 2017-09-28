@@ -2,18 +2,16 @@
 @model TurismoCR.Models.Service;
 
 @{
-    ViewData["Title"] = "Catálogo servicio";
-    ViewData["Message"] = "Página para editar o borrar servicio/paquete turístico";
-    List<Servicio> serviciosPropietario = ViewBag.ServiciosPropietario as List<Servicio>;
+    ViewData["Title"] = "Catálogo de Paquetes";
+    ViewData["Message"] = "Página para editar o borrar paquetes turísticos";
+    List<Service> ownerServices = ViewBag.ownerServices as List<Service>;
 }
 
 <h2>@ViewData["Title"]</h2>
 
-<div id="servicioId">
+@*<div>
     @{
-        foreach (var servicio in serviciosPropietario)
-        {
-
+        foreach (var servicio in serviciosPropietario) {
             <label value="@servicio.Id">
                 @servicio.Descripcion
             </label>
@@ -22,4 +20,4 @@
         }
 
     }
-</div>
+</div>*@

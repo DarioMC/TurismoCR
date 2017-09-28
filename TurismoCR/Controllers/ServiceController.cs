@@ -52,17 +52,51 @@ namespace TurismoCR.Controllers
 			return RedirectToAction("Index", "Home");
         }
 
-		public async Task<ActionResult> CatalogoServicio()
+		public async Task<ActionResult> ShowServices() {
+            try {
+                // setting MongoDB connection
+                var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
+                var db = mongoClient.GetDatabase("TurismoCR");
+                // getting reference to services
+                var collection = db.GetCollection<Service>("Services");
+                var userCookie = Request.Cookies["userSession"];
+                var ownerUsername = userCookie.ToString();
+                var filter = Builders<Service>.Filter.Eq("ownerUsername", ownerUsername);
+                var sort = Builders<Service>.Sort.Ascending("Category");
+                // filter services for curret owner user
+                var result = await collection.Find(filter).Sort(sort).ToListAsync();
+                // saving services
+                ViewBag.ownerServices = result;
+            } catch {
+                TempData["msg"] = "<script>alert('No hay comunicación con MongoDB.');</script>";
+            }
+            // show view
+			return View();
+		}
+
+		public async Task<ActionResult> EditarServicioAsync(ObjectId servicioId)
 		{
-			var userCookie = Request.Cookies["userSession"];
-			var propietario = userCookie.ToString();
 			var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
 			var db = mongoClient.GetDatabase("TurismoCR");
-			var coleccion = db.GetCollection<Service>("Services");
-			var filtro = Builders<Service>.Filter.Eq("NombreUsuarioPropietario", propietario);
-			var sort = Builders<Service>.Sort.Ascending("Categoria");
-			var resultado = await coleccion.Find(filtro).Sort(sort).ToListAsync();
-			ViewBag.ServiciosPropietario = resultado;
+			var coleccion = db.GetCollection<Service>("Servicios");
+			var filtro = Builders<Service>.Filter.Eq("_id", servicioId);
+			var resultado = await coleccion.FindAsync(filtro);
+			return View(resultado);
+		}
+
+		[HttpPost]
+		public async Task<ActionResult> EditarServicioAsync(ObjectId IdServicio, Service cambiosServicio)
+		{
+			// TODO check if user has services
+			var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
+			//var mongoServer = mongoClient.GetServer();
+			var db = mongoClient.GetDatabase("TurismoCR");
+
+			var coleccion = db.GetCollection<Service>("Servicios");
+			var filtro = Builders<Service>.Filter.Eq("_id", IdServicio);
+			var resultado = await coleccion.ReplaceOneAsync(filtro, cambiosServicio, new UpdateOptions { IsUpsert = true });
+
+			//Cambiar redireccion a otra vista en vez de View.
 			return View();
 		}
 
@@ -104,32 +138,6 @@ namespace TurismoCR.Controllers
                 ViewBag.Message = "Debe subir una imagen";*/
 
             //Verifica redireccion.
-            return View();
-        }
-
-        public async Task<ActionResult> EditarServicioAsync(ObjectId servicioId)
-        {
-            var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
-            var db = mongoClient.GetDatabase("TurismoCR");
-            var coleccion = db.GetCollection<Service>("Servicios");
-            var filtro = Builders<Service>.Filter.Eq("_id", servicioId);
-            var resultado = await coleccion.FindAsync(filtro);
-            return View(resultado);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> EditarServicioAsync(ObjectId IdServicio, Service cambiosServicio)
-        {
-			// TODO check if user has services
-			var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
-            //var mongoServer = mongoClient.GetServer();
-            var db = mongoClient.GetDatabase("TurismoCR");
-
-            var coleccion = db.GetCollection<Service>("Servicios");
-            var filtro = Builders<Service>.Filter.Eq("_id", IdServicio);
-            var resultado = await coleccion.ReplaceOneAsync(filtro, cambiosServicio, new UpdateOptions { IsUpsert = true });
-
-            //Cambiar redireccion a otra vista en vez de View.
             return View();
         }
 
