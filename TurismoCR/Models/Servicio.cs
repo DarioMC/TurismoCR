@@ -24,11 +24,16 @@ namespace TurismoCR.Models
         String canton;
         String distrito;
         String nombreUsuarioPropietario;
-        internal readonly int Id;
 
 		#endregion
 
 		#region Propiedades
+
+        public ObjectId Id
+        {
+            get { return this._id; }
+            set { this._id = ObjectId.GenerateNewId(); }
+        }
 
         [Display(Name = "Fecha de inicio del servicio")]
         public String FechaInicial
@@ -113,6 +118,7 @@ namespace TurismoCR.Models
                         String nDesc, String nTar, String nProv, 
                         String nCant, String nDist, String nNombreUsuarioPropietario)
         {
+            //_id = ObjectId.GenerateNewId();
             FechaInicial = nFechIni;
             FechaFinal = nFechFin;
             Categoria = nCat;
