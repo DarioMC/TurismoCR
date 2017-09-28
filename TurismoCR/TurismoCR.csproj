@@ -33,4 +33,7 @@
     <None Include="Views\Reseña\BuscarReseña.cshtml" />
     <None Include="Views\Reseña\BorrarReseña.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Remove="Views\Servicio\BorrarServicio.cshtml" />
+  </ItemGroup>
 </Project>

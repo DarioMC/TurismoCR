@@ -1,0 +1,20 @@
+﻿@model TurismoCR.Models.Servicio;
+
+@{
+    ViewData["Title"] = "Catálogo servicio";
+    ViewData["Message"] = "Página para editar o borrar servicio/paquete turístico";
+    List<Servicio> serviciosPropietario = ViewData["resultado"] as List<Servicio>;
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<select>
+    @{
+        foreach (var servicio in serviciosPropietario)
+        {
+            <option value="servicio.Id">
+                servicio.Descripcion
+            </option>
+        }
+    }
+</select>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using TurismoCR.Models;
@@ -72,9 +73,25 @@ namespace TurismoCR.Controllers
             return View();
         }
 
-		public ActionResult EditarServicio() {
-			ViewData["Message"] = "Página para editar servicio/paquete turístico";
+		public ActionResult CatalogoServicio()
+		{
+			ViewData["Message"] = "Página para editar o borrar servicio/paquete turístico";
 			return View();
+		}
+
+		[HttpPost]
+		public async Task<ActionResult> BuscarServiciosPropietario()
+		{
+			var userCookie = Request.Cookies["userSession"];
+			var propietario = userCookie.ToString();
+			var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
+			var db = mongoClient.GetDatabase("TurismoCR");
+			var coleccion = db.GetCollection<Servicio>("Servicios");
+			var filtro = Builders<Servicio>.Filter.Eq("nombreUsuarioPropietario", propietario);
+			var sort = Builders<Servicio>.Sort.Ascending("Categoria");
+			var resultado = await coleccion.Find(filtro).Sort(sort).ToListAsync();
+            ViewBag["resultado"] = resultado;
+            return RedirectToAction("CatalogoServicio", "Servicio");
 		}
 
         [HttpPost]
@@ -142,21 +159,6 @@ namespace TurismoCR.Controllers
 
             var coleccion = db.GetCollection<Servicio>("Servicios");
             var filtro = new BsonDocument();
-            var sort = Builders<Servicio>.Sort.Ascending("Categoria");
-            var resultado = await coleccion.Find(filtro).Sort(sort).ToListAsync();
-
-            //Agregar redireccion a otra vista con la lista por parámetro.
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> BuscarServiciosPropietario(String propietario)
-        {
-            var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
-            var db = mongoClient.GetDatabase("TurismoCR");
-
-            var coleccion = db.GetCollection<Servicio>("Servicios");
-            var filtro = Builders<Servicio>.Filter.Eq("nombreUsuarioPropietario", propietario);
             var sort = Builders<Servicio>.Sort.Ascending("Categoria");
             var resultado = await coleccion.Find(filtro).Sort(sort).ToListAsync();
 
