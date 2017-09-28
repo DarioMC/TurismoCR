@@ -12,8 +12,8 @@
     @{
         foreach (var servicio in serviciosPropietario)
         {
-            <option value="servicio.Id">
-                servicio.Descripcion
+            <option value="servicio._id">
+                @servicio.Descripcion
             </option>
         }
     }

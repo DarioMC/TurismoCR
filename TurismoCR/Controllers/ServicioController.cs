@@ -80,7 +80,7 @@ namespace TurismoCR.Controllers
 			var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
 			var db = mongoClient.GetDatabase("TurismoCR");
 			var coleccion = db.GetCollection<Servicio>("Servicios");
-			var filtro = Builders<Servicio>.Filter.Eq("nombreUsuarioPropietario", propietario);
+			var filtro = Builders<Servicio>.Filter.Eq("NombreUsuarioPropietario", propietario);
 			var sort = Builders<Servicio>.Sort.Ascending("Categoria");
 			var resultado = await coleccion.Find(filtro).Sort(sort).ToListAsync();
             ViewBag.ServiciosPropietario = resultado;

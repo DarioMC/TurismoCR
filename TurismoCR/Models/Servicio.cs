@@ -1,4 +1,6 @@
 ﻿using System;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
@@ -9,11 +11,12 @@ namespace TurismoCR.Models
 {
     public class Servicio
     {
-
         #region Atributos
-
-        DateTime fechaInicio;
-        DateTime fechaFinal;
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        ObjectId _id;
+        String fechaInicio;
+        String fechaFinal;
         String categoria;
         String descripcion;
         String tarifa;
@@ -28,14 +31,14 @@ namespace TurismoCR.Models
 		#region Propiedades
 
         [Display(Name = "Fecha de inicio del servicio")]
-        public DateTime FechaInicial
+        public String FechaInicial
         {
             get { return this.fechaInicio; }
             set { this.fechaInicio = value; }
         }
 
         [Display(Name = "Fecha de finalización del servicio")]
-        public DateTime FechaFinal
+        public String FechaFinal
         {
             get { return this.fechaFinal; }
             set { this.fechaFinal = value; }
@@ -106,7 +109,7 @@ namespace TurismoCR.Models
 
         public Servicio() { }
 
-        public Servicio(DateTime nFechIni, DateTime nFechFin, String nCat, 
+        public Servicio(String nFechIni, String nFechFin, String nCat, 
                         String nDesc, String nTar, String nProv, 
                         String nCant, String nDist, String nNombreUsuarioPropietario)
         {
