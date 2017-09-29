@@ -90,7 +90,7 @@ namespace TurismoCR.Controllers
 			var db = mongoClient.GetDatabase("TurismoCR");
 			var collection = db.GetCollection<Service>("Services");
 			var filter = Builders<Service>.Filter.Eq("_id", IdService);
-			var resultado = await collection.ReplaceOneAsync(filter, serviceChanged, new UpdateOptions { IsUpsert = true });
+			var result = await collection.ReplaceOneAsync(filter, serviceChanged, new UpdateOptions { IsUpsert = true });
 			return View();
 		}
 
