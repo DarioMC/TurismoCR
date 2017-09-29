@@ -3,21 +3,91 @@
 
 @{
     ViewData["Title"] = "Catálogo de Paquetes";
-    ViewData["Message"] = "Página para editar o borrar paquetes turísticos";
     List<Service> ownerServices = ViewBag.ownerServices as List<Service>;
 }
 
 <h2>@ViewData["Title"]</h2>
+<br>
 
-@*<div>
-    @{
-        foreach (var servicio in serviciosPropietario) {
-            <label value="@servicio.Id">
-                @servicio.Descripcion
-            </label>
-            <input type="button" value="Editar Servicio" onclick="location.href='@Url.Action("EditarServicio", "Servicio", idServicio)'" />
-            <input type="button" value="Borrar Servicio" onclick="location.href='@Url.Action("BorrarServicio", "Servicio", servicio.Id)'" />
+<table id="t01">
+    <thead>
+		<th>IDMongoDB</th>
+        <th>Propietario</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Categoria</th>
+        <th>Provincia</th>
+        <th>Cantón</th>
+        <th>Distrito</th>
+        <th>Inicio</th>
+        <th>Fin</th>
+        <th>Precio</th>
+		<th>Editar</th>         
+        <th>Eliminar</th>
+    </thead>
+    <tbody>
+        @foreach (var service in ownerServices) {
+		    <tr>
+                <td>@service._id</td>
+                <td>@service.OwnerUsername</td>
+                <td>@service.Name</td>
+                <td>@service.Description</td>
+                <td>@service.Category</td>
+                <td>@service.Province</td>
+                <td>@service.Canton</td>
+                <td>@service.District</td>
+                <td>@service.StartDate</td>
+                <td>@service.EndDate</td>
+                <td>@service.Price</td>
+			    <td>
+				    <p data-placement="top" data-toggle="tooltip" title="Editar">
+    			        <button class="btn btn-primary btn-xs" data-title="Edit" 
+						    data-toggle="modal" data-target="#edit" >
+    			            <span class="glyphicon glyphicon-pencil"></span>
+    			        </button>
+				    </p>
+			    </td>
+                <td>
+			        <p data-placement="top" data-toggle="tooltip" title="Eliminar">
+			            <button class="btn btn-danger btn-xs" data-title="Delete" 
+						    data-toggle="modal" data-target="#delete" >
+			                <span class="glyphicon glyphicon-trash"></span>
+			            </button>
+			        </p>
+			    </td>
+			</tr>
         }
+    </tbody>
+</table>
 
-    }
-</div>*@
+<style>  
+    table#t01 {  
+    width: 100%;  
+    background-color: #f1f1c1;  
+    }  
+      
+    table#t01 tr:nth-child(even) {  
+    background-color: #eee;  
+    }  
+    table#t01 tr:nth-child(odd) {  
+    background-color: #fff;  
+    }  
+    table#t01 th {  
+    color: white;  
+    background-color:#50896d;  
+    }  
+    table, th, td {  
+    border: 1px solid black;  
+    }  
+    table, th, td {  
+    border: 1px solid black;  
+    border-collapse: collapse;  
+    }  
+    table, th, td {  
+    border: 1px solid black;  
+    border-collapse: collapse;  
+    }  
+    th, td {  
+    padding: 15px;  
+    }  
+</style> 

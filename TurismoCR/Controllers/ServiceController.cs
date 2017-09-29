@@ -71,6 +71,7 @@ namespace TurismoCR.Controllers
 					// saving services
 					ViewBag.ownerServices = result;
 					// show view
+                    ViewData["Message"] = "Página para editar o borrar paquetes turísticos";
 					return View();
                 }
 
@@ -82,7 +83,7 @@ namespace TurismoCR.Controllers
 
 		}
 
-		public async Task<ActionResult> EditarServicioAsync(ObjectId servicioId)
+		public async Task<ActionResult> EditServiceAsync(ObjectId servicioId)
 		{
 			var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
 			var db = mongoClient.GetDatabase("TurismoCR");
