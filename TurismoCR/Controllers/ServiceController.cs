@@ -83,33 +83,18 @@ namespace TurismoCR.Controllers
 
 		}
 
-		public async Task<ActionResult> EditServiceAsync(ObjectId servicioId)
-		{
-			var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
-			var db = mongoClient.GetDatabase("TurismoCR");
-			var coleccion = db.GetCollection<Service>("Servicios");
-			var filtro = Builders<Service>.Filter.Eq("_id", servicioId);
-			var resultado = await coleccion.FindAsync(filtro);
-			return View(resultado);
-		}
-
 		[HttpPost]
-		public async Task<ActionResult> EditarServicioAsync(ObjectId IdServicio, Service cambiosServicio)
+		public async Task<ActionResult> EditServiceAsync(ObjectId IdService, Service serviceChanged)
 		{
-			// TODO check if user has services
 			var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
-			//var mongoServer = mongoClient.GetServer();
 			var db = mongoClient.GetDatabase("TurismoCR");
-
-			var coleccion = db.GetCollection<Service>("Servicios");
-			var filtro = Builders<Service>.Filter.Eq("_id", IdServicio);
-			var resultado = await coleccion.ReplaceOneAsync(filtro, cambiosServicio, new UpdateOptions { IsUpsert = true });
-
-			//Cambiar redireccion a otra vista en vez de View.
+			var collection = db.GetCollection<Service>("Services");
+			var filter = Builders<Service>.Filter.Eq("_id", IdService);
+			var resultado = await collection.ReplaceOneAsync(filter, serviceChanged, new UpdateOptions { IsUpsert = true });
 			return View();
 		}
 
-        public async Task<ActionResult> AgregarImagenServicioAsync(HttpPostedFileBase theFile)
+        public async Task<ActionResult> AddImageServiceAsync(HttpPostedFileBase theFile)
         {
 
             if (theFile.ContentLength > 0)
@@ -151,17 +136,15 @@ namespace TurismoCR.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> BorrarServicioAsync(ObjectId idServicio)
+        public async Task<ActionResult> BorrarServicioAsync(ObjectId idServ)
         {
             var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
             var db = mongoClient.GetDatabase("TurismoCR");
 
-            var coleccion = db.GetCollection<Service>("Servicios");
-            var filtro = Builders<Service>.Filter.Eq("_id", idServicio);
+            var collection = db.GetCollection<Service>("Services");
+            var filter = Builders<Service>.Filter.Eq("_id", idServ);
+            var result = await collection.DeleteOneAsync(filter);
 
-            var resultado = await coleccion.DeleteOneAsync(filtro);
-
-            //Agregar redireccion a otra vista en vez de View.
             return View();
         }
 
