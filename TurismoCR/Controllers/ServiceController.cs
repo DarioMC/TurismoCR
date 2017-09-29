@@ -83,6 +83,11 @@ namespace TurismoCR.Controllers
 
 		}
 
+		public ActionResult EditService(Service service) {
+			ViewData["Message"] = "Página para editar paquete turístico";
+			return View(service);
+		}
+
 		[HttpPost]
 		public async Task<ActionResult> EditServiceAsync(ObjectId IdService, Service serviceChanged)
 		{
