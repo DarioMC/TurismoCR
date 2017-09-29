@@ -89,14 +89,18 @@ namespace TurismoCR.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> EditServiceAsync(ObjectId IdService, Service serviceChanged)
+		public async Task<ActionResult> EditServiceAsync(Service serviceChanged)
 		{
+            ObjectId IdService = ObjectId.Parse("59cd7df5a9da8b6574d01e52");
 			var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
 			var db = mongoClient.GetDatabase("TurismoCR");
 			var collection = db.GetCollection<Service>("Services");
 			var filter = Builders<Service>.Filter.Eq("_id", IdService);
-			var result = await collection.ReplaceOneAsync(filter, serviceChanged, new UpdateOptions { IsUpsert = true });
-			return View();
+            await collection.DeleteOneAsync(filter);
+            // inserting service by reference
+            await collection.InsertOneAsync(serviceChanged);
+			// let's go to main page
+			return RedirectToAction("Index", "Home");
 		}
 
         public async Task<ActionResult> AddImageServiceAsync(HttpPostedFileBase theFile)

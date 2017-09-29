@@ -97,11 +97,11 @@ namespace TurismoCR.Models
 
 		public Service() { }
 
-        public Service(String ownerUsername, String name, String description,
+        public Service(ObjectId id, String ownerUsername, String name, String description,
                       String category, String province, String canton, String district,
                       String startDate, String endDate, String price) 
         {
-			_id = ObjectId.GenerateNewId();
+			_id = id;
             OwnerUsername = ownerUsername;
             Name = name;
             Description = description;
