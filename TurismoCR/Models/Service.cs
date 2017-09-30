@@ -69,11 +69,14 @@ namespace TurismoCR.Models
         [DisplayFormat(ConvertEmptyStringToNull = false)]
         public String Price { get; set; }
 
-		#endregion
+        [Display(Name = "Habilitado")]
+        public Boolean Enabled { get; set; }
 
-		#region Methods
+        #endregion
 
-		public override string ToString()
+        #region Methods
+
+        public override string ToString()
         {
             return StartDate
                 + "-"
@@ -100,7 +103,7 @@ namespace TurismoCR.Models
 
         public Service(ObjectId id, String ownerUsername, String name, String description,
                       String category, String province, String canton, String district,
-                      String startDate, String endDate, String price) 
+                      String startDate, String endDate, String price, Boolean enabled) 
         {
             _id = id;
             OwnerUsername = ownerUsername;
@@ -113,6 +116,7 @@ namespace TurismoCR.Models
             StartDate = startDate;
             EndDate = endDate;
             Price = price;
+            Enabled = enabled;
 		}
 
 		#endregion
