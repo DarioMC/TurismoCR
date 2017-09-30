@@ -66,7 +66,8 @@ namespace TurismoCR.Controllers
                 // filter services for curret owner user
                 var result = await collection.Find(filter).Sort(sort).ToListAsync();
                 if (result.Count == 0) {
-                    TempData["msg"] = "<script>alert('No hay paquetes registrados!');</script>";
+					// setting alert message
+					TempData["msg"] = "<script>alert('No hay paquetes registrados!');</script>";
                 } else {
 					// saving services
 					ViewBag.ownerServices = result;
@@ -76,30 +77,51 @@ namespace TurismoCR.Controllers
                 }
 
             } catch {
-                TempData["msg"] = "<script>alert('No hay comunicación con MongoDB.');</script>";
+				// setting alert message
+				TempData["msg"] = "<script>alert('No hay comunicación con MongoDB.');</script>";
             }
 			// let's go to main page
 			return RedirectToAction("Index", "Home");
 
 		}
-
-		public ActionResult EditService(Service service) {
+		
+		public ActionResult EditService(Service service, String serviceID) {
 			ViewData["Message"] = "Página para editar paquete turístico";
+            // saving service id to edit
+            Response.Cookies.Append("serviceIDToEdit",
+                serviceID,
+				new CookieOptions
+				{
+                Expires = DateTimeOffset.Now.AddMinutes(20)
+				}
+			);
 			return View(service);
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> EditServiceAsync(Service serviceChanged)
-		{
-            // TODO Cambiar id y obtener
-            ObjectId IdService = ObjectId.Parse("59cd7df5a9da8b6574d01e52");
-			var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
-			var db = mongoClient.GetDatabase("TurismoCR");
-			var collection = db.GetCollection<Service>("Services");
-			var filter = Builders<Service>.Filter.Eq("_id", IdService);
-            await collection.DeleteOneAsync(filter);
-            // inserting service by reference
-            await collection.InsertOneAsync(serviceChanged);
+		public async Task<ActionResult> EditServiceAsync(Service serviceChanged) {
+            try {
+                // getting service id to edit 
+                ObjectId serviceID = ObjectId.Parse(Request.Cookies["serviceIDToEdit"]);
+				// setting MongoDB connection
+				var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
+                var db = mongoClient.GetDatabase("TurismoCR");
+                // getting reference to services
+                var collection = db.GetCollection<Service>("Services");
+				// setting service id filter
+				var filter = Builders<Service>.Filter.Eq("_id", serviceID);
+				// deleting old service by reference with filter
+				await collection.DeleteOneAsync(filter);
+                // inserting service edited by reference
+                await collection.InsertOneAsync(serviceChanged);
+                // deleting cookie with service id
+                Response.Cookies.Delete("serviceIDToEdit");
+				// setting alert message
+				TempData["msg"] = "<script>alert('Paquete editado exitosamente!');</script>";
+			} catch {
+				// setting alert message
+				TempData["msg"] = "<script>alert('No hay comunicación con MongoDB.');</script>";
+			}
 			// let's go to main page
 			return RedirectToAction("Index", "Home");
 		}

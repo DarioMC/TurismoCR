@@ -5,13 +5,14 @@
     ViewData["Title"] = "Edición de paquete";
 }
 
+<h2>@ViewData["Title"]</h2>
+
 @using (Html.BeginForm("EditServiceAsync", "Service",  FormMethod.Post))
 {
     @* FORM *@
     <div class="form-horizontal">
         <h4>Por favor edite los datos que requiera cambiar.</h4>
-        <hr />
-	     @* Owner Username *@
+	    @* Owner Username *@
         @{
             var userCookie = Context.Request.Cookies["userSession"];
             var userName = userCookie.ToString();

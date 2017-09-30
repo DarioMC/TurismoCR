@@ -15,7 +15,7 @@ namespace TurismoCR.Models
 		#region Properties
 
 		[BsonId]
-		[BsonRepresentation(BsonType.ObjectId)]
+        [BsonRepresentation(BsonType.ObjectId)]
         public ObjectId _id { get; set; }
 
 		[Display(Name = "Nombre de usuario del propietario")]
@@ -101,7 +101,7 @@ namespace TurismoCR.Models
                       String category, String province, String canton, String district,
                       String startDate, String endDate, String price) 
         {
-			_id = id;
+            _id = id;
             OwnerUsername = ownerUsername;
             Name = name;
             Description = description;
