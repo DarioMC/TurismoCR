@@ -17,6 +17,7 @@ namespace TurismoCR.Models
 		[BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public ObjectId _id { get; set; }
+        public String BackupID { get; set; }
 
 		[Display(Name = "Nombre de usuario del propietario")]
 		[Required(ErrorMessage = "¡Campo Vacío!", AllowEmptyStrings = false)]

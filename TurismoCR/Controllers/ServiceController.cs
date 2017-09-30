@@ -84,17 +84,17 @@ namespace TurismoCR.Controllers
 			return RedirectToAction("Index", "Home");
 
 		}
-		
-		public ActionResult EditService(Service service, String serviceID) {
-			ViewData["Message"] = "Página para editar paquete turístico";
-            // saving service id to edit
-            Response.Cookies.Append("serviceIDToEdit",
-                serviceID,
+
+		public ActionResult EditService(Service service) {
+			// saving service id to edit
+			Response.Cookies.Append("serviceIDToEdit",
+                service.BackupID,
 				new CookieOptions
 				{
-                Expires = DateTimeOffset.Now.AddMinutes(20)
+					Expires = DateTimeOffset.Now.AddMinutes(20)
 				}
 			);
+			ViewData["Message"] = "Página para editar paquete turístico";
 			return View(service);
 		}
 
