@@ -51,9 +51,9 @@
 			    @Html.DropDownListFor(model => model.Category,
                     new List<SelectListItem>
                     {
-                        new SelectListItem {Value = "Beach", Text = "Playa" },
-			            new SelectListItem {Value = "Mountain", Text = "Montaña" },
-			            new SelectListItem {Value = "Mountain", Text = "Volcán" }
+                        new SelectListItem {Value = "Playa", Text = "Playa" },
+			            new SelectListItem {Value = "Montaña", Text = "Montaña" },
+			            new SelectListItem {Value = "Volcán", Text = "Volcán" }
                     }
                 )
                 @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })

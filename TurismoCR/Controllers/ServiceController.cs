@@ -100,28 +100,40 @@ namespace TurismoCR.Controllers
 
 		[HttpPost]
 		public async Task<ActionResult> EditServiceAsync(Service serviceChanged) {
-            try {
-                // getting service id to edit 
-                ObjectId serviceID = ObjectId.Parse(Request.Cookies["serviceIDToEdit"]);
-				// setting MongoDB connection
-				var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
-                var db = mongoClient.GetDatabase("TurismoCR");
-                // getting reference to services
-                var collection = db.GetCollection<Service>("Services");
-				// setting service id filter
-				var filter = Builders<Service>.Filter.Eq("_id", serviceID);
-				// deleting old service by reference with filter
-				await collection.DeleteOneAsync(filter);
-                // inserting service edited by reference
-                await collection.InsertOneAsync(serviceChanged);
-                // deleting cookie with service id
-                Response.Cookies.Delete("serviceIDToEdit");
+			// check if service is well defined
+			var isServiceNullOrEmpty = serviceChanged
+				.GetType()
+				.GetProperties()
+				.Where(pi => pi.GetValue(serviceChanged) is string)
+				.Select(pi => (string)pi.GetValue(serviceChanged))
+				.Any(value => String.IsNullOrEmpty(value));
+            if (isServiceNullOrEmpty == true) {
 				// setting alert message
-				TempData["msg"] = "<script>alert('Paquete editado exitosamente!');</script>";
-			} catch {
-				// setting alert message
-				TempData["msg"] = "<script>alert('No hay comunicación con MongoDB.');</script>";
-			}
+				TempData["msg"] = "<script>alert('Hay campos vacíos!');</script>";
+            } else {
+				try {
+					// getting service id to edit 
+					ObjectId serviceID = ObjectId.Parse(Request.Cookies["serviceIDToEdit"]);
+					// setting MongoDB connection
+					var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
+					var db = mongoClient.GetDatabase("TurismoCR");
+					// getting reference to services
+					var collection = db.GetCollection<Service>("Services");
+					// setting service id filter
+					var filter = Builders<Service>.Filter.Eq("_id", serviceID);
+					// deleting old service by reference with filter
+					await collection.DeleteOneAsync(filter);
+					// inserting service edited by reference
+					await collection.InsertOneAsync(serviceChanged);
+					// deleting cookie with service id
+					Response.Cookies.Delete("serviceIDToEdit");
+					// setting alert message
+					TempData["msg"] = "<script>alert('Paquete editado exitosamente!');</script>";
+				} catch {
+					// setting alert message
+					TempData["msg"] = "<script>alert('No hay comunicación con MongoDB.');</script>";
+				}    
+            }
 			// let's go to main page
 			return RedirectToAction("Index", "Home");
 		}

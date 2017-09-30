@@ -6,14 +6,25 @@
 }
 
 <h2>@ViewData["Title"]</h2>
-<br>
 
 @using (Html.BeginForm("EditServiceAsync", "Service",  FormMethod.Post))
 {
     @* FORM *@
     <div class="form-horizontal">
         <h4>Por favor edite los datos que requiera cambiar.</h4>
-	    <br>
+	    <hr />
+	    @* Backup ID *@
+	    <div class="form-group" style="display:none;">
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.BackupID,
+                    new List<SelectListItem>
+                    {
+                        new SelectListItem {Value = "bckid", Text = "bckid" }
+                    },
+                    htmlAttributes: new { @id = "bckidDropDownList" }
+                )
+            </div>
+        </div>
 	    @* Owner Username *@
         @{
             var userCookie = Context.Request.Cookies["userSession"];
@@ -54,8 +65,8 @@
                     new List<SelectListItem>
                     {
                         new SelectListItem {Value = "Beach", Text = "Playa" },
-                        new SelectListItem {Value = "Mountain", Text = "Montaña" },
-                        new SelectListItem {Value = "Mountain", Text = "Volcán" }
+                        new SelectListItem {Value = "Montaña", Text = "Montaña" },
+                        new SelectListItem {Value = "Volcán", Text = "Volcán" }
                     }
                 )
                 @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
