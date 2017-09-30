@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using TurismoCR.Models;
-using TurismoCR.Controllers;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System.IO;
-using System.Linq.Expressions;
-using System.Web;
 using System.Threading.Tasks;
 using System.Linq;
 using Neo4jClient;
@@ -133,7 +130,7 @@ namespace TurismoCR.Controllers
         }
 
 
-        public async Task<Imagen> GetAsync(int cod)
+       /* public async Task<Imagen> GetAsync(int cod)
         {
             var thePictureColleciton = GetPictureCollection();
             var account = thePictureColleciton.Find(f => f.codPro == cod).FirstAsync();
@@ -151,7 +148,7 @@ namespace TurismoCR.Controllers
 
             return new FileContentResult(thePictureDataAsBytes, "image/jpeg");
         }
-
+        */
 
 
         private IMongoCollection<Imagen> GetPictureCollection()

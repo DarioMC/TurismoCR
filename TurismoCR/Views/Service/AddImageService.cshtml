@@ -1,0 +1,60 @@
+﻿@model TurismoCR.Models.Imagenes;
+
+
+@using (Html.BeginForm("AddImageServicioAsync", "Service", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @* FORM *@
+    <div class="form-horizontal">
+        <h4>Elija las imágenes deseadas.</h4>
+        <hr />
+        @*  IMG1 *@
+        <div class="form-group">
+            @Html.LabelFor(model => model.img1, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.TextBoxFor(m => m.img1, new { type = "file" })
+                )
+            </div>
+        </div>
+        @*  IMG1 *@
+        <div class="form-group" >
+            @Html.LabelFor(model => model.img2, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.TextBoxFor(m => m.img2, new { type = "file" })
+                )
+            </div>
+        </div>
+        @*  IMG1 *@
+        <div class="form-group" >
+            @Html.LabelFor(model => model.img3, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.TextBoxFor(m => m.img3, new { type = "file" })
+                )
+            </div>
+        </div>
+        @*  IMG1 *@
+        <div class="form-group" >
+            @Html.LabelFor(model => model.img4, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.TextBoxFor(m => m.img4, new { type = "file" })
+                )
+            </div>
+        </div>
+        @*  IMG1 *@
+        <div class="form-group" >
+            @Html.LabelFor(model => model.img5, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.TextBoxFor(m => m.img5, new { type = "file" })
+                )
+            </div>
+        </div>
+
+        @* Add Btn *@
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Agregar" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+        
+

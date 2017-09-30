@@ -49,7 +49,7 @@ namespace TurismoCR.Controllers
                 }
             }
 			// let's go to home
-			return RedirectToAction("Index", "Home");
+			return RedirectToAction("AddImageService", "Service");
         }
 
 		public async Task<ActionResult> ShowServices() {
@@ -138,45 +138,64 @@ namespace TurismoCR.Controllers
 			return RedirectToAction("Index", "Home");
 		}
 
-        public async Task<ActionResult> AddImageServiceAsync(HttpPostedFileBase theFile)
+        public ActionResult AddImageService()
         {
+            ViewData["Message"] = "Página para agregar paquete turístico";
+            return View();
+        }
 
-            if (theFile.ContentLength > 0)
-            {
-                string theFileName = Path.GetFileName(theFile.FileName);
+        public async Task<ActionResult> AddImageServiceAsync(Imagenes TheFile)
+        {
+            List<HttpPostedFileBase> listaImagenes = new List<HttpPostedFileBase>();
 
-                byte[] thePictureAsBytes = new byte[theFile.ContentLength];
-                using (BinaryReader theReader = new BinaryReader(theFile.InputStream))
+            listaImagenes.Add(TheFile.img1);
+            listaImagenes.Add(TheFile.img2);
+            listaImagenes.Add(TheFile.img3);
+            listaImagenes.Add(TheFile.img4);
+            listaImagenes.Add(TheFile.img5);
+
+            foreach (HttpPostedFileBase theFile in listaImagenes)
+            { 
+                if (theFile.ContentLength > 0)
                 {
-                    thePictureAsBytes = theReader.ReadBytes(theFile.ContentLength);
+                    string theFileName = Path.GetFileName(theFile.FileName);
+
+                    byte[] thePictureAsBytes = new byte[theFile.ContentLength];
+                    using (BinaryReader theReader = new BinaryReader(theFile.InputStream))
+                    {
+                        thePictureAsBytes = theReader.ReadBytes(theFile.ContentLength);
+                    }
+
+                    string thePictureDataAsString = Convert.ToBase64String(thePictureAsBytes);
+
+                    var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
+                    var db = mongoClient.GetDatabase("TurismoCR");
+                    var collection = db.GetCollection<Service>("Services");
+                    var userCookie = Request.Cookies["userSession"];
+                    var ownerUsername = userCookie.ToString();
+                    var filter = Builders<Service>.Filter.Eq("OwnerUsername", ownerUsername);
+                    //var sort = Builders<Service>.Sort.
+                    // filter services for curret owner user
+                    var result = await collection.Find(filter).ToListAsync();
+
+                    Imagen thePicture = new Imagen()
+                    {
+                        FileName = theFileName,
+                        PictureDataAsString = thePictureDataAsString,
+                        idServicio = result.Last().BackupID
+                    };
+                    //thePicture._id = ObjectId.GenerateNewId();
+
+                    
+
+                    var serviceCollection = db.GetCollection<Imagen>("ImgService");
+                    await serviceCollection.InsertOneAsync(thePicture);
                 }
 
-                string thePictureDataAsString = Convert.ToBase64String(thePictureAsBytes);
-
-                Imagen thePicture = new Imagen()
-                {
-                    FileName = theFileName,
-                    PictureDataAsString = thePictureDataAsString,
-                    //codPro = lastId.Id
-                };
-                //thePicture._id = ObjectId.GenerateNewId();
-
-                var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
-                var db = mongoClient.GetDatabase("TurismoCR");
-
-                var serviceCollection = db.GetCollection<Imagen>("ImgService");
-                await serviceCollection.InsertOneAsync(thePicture);
-
-                //Agregar redireccion a interfaz en vez de vista.
-                return View();
-
-
             }
-            /*else
-                ViewBag.Message = "Debe subir una imagen";*/
 
-            //Verifica redireccion.
-            return View();
+            return RedirectToAction("Index", "Home");
+
         }
 
         public async Task<ActionResult> DeleteServiceAsync(Service service) {

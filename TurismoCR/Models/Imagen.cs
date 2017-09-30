@@ -13,6 +13,6 @@ namespace TurismoCR.Models
         public ObjectId _id { get; set; }
         public string FileName { get; set; }
         public string PictureDataAsString { get; set; }
-        public int codPro { get; set; }
+        public String idServicio { get; set; }
     }
 }
