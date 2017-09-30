@@ -17,7 +17,7 @@
             var userCookie = Context.Request.Cookies["userSession"];
             var userName = userCookie.ToString();
         }
-        <div class="form-group" style="display:none;">
+        <div class="form-group" style="display: none;">
             <div class="col-md-3">
                 @Html.DropDownListFor(model => model.OwnerUsername,
                     new List<SelectListItem>
@@ -94,6 +94,22 @@
                 @Html.ValidationMessageFor(model => model.District, "", new { @class = "text-danger" })
             </div>
         </div>
+	    @* Service Latitude *@
+        <div class="form-group">
+            @Html.LabelFor(model => model.Latitude, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.Latitude, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Latitude, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @* Service Longitude *@
+        <div class="form-group">
+            @Html.LabelFor(model => model.Longitude, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.Longitude, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Longitude, "", new { @class = "text-danger" })
+            </div>
+        </div>
 	    @* Service StartDate *@
         <div class="form-group">
             @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -116,6 +132,20 @@
             <div class="col-md-3">
                 @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+	    @* Enabled *@
+        <div class="form-group">
+            @Html.LabelFor(model => model.Enabled, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.Enabled,
+                    new List<SelectListItem>
+                    {
+                        new SelectListItem {Value = "true", Text = "Servicio activado"},
+                        new SelectListItem {Value = "false", Text = "Servicio desactivado"}
+                    }
+                )
+                @Html.ValidationMessageFor(model => model.Enabled, "", new { @class = "text-danger" })
             </div>
         </div>
 	    @* Add Btn *@

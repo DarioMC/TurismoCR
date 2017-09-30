@@ -54,6 +54,16 @@ namespace TurismoCR.Models
 		[DisplayFormat(ConvertEmptyStringToNull = false)]
         public String District { get; set; }
 
+		[Display(Name = "Latitud del paquete (geolocalización)")]
+		[Required(ErrorMessage = "¡Campo Vacío!", AllowEmptyStrings = false)]
+		[DisplayFormat(ConvertEmptyStringToNull = false)]
+		public String Latitude { get; set; }
+
+		[Display(Name = "Longitud del paquete (geolocalización)")]
+		[Required(ErrorMessage = "¡Campo Vacío!", AllowEmptyStrings = false)]
+		[DisplayFormat(ConvertEmptyStringToNull = false)]
+		public String Longitude { get; set; }
+
 		[Display(Name = "Fecha de inicio")]
 		[Required(ErrorMessage = "¡Campo Vacío!", AllowEmptyStrings = false)]
 		[DisplayFormat(ConvertEmptyStringToNull = false)]
@@ -68,6 +78,9 @@ namespace TurismoCR.Models
         [Required(ErrorMessage = "¡Campo Vacío!", AllowEmptyStrings = false)]
         [DisplayFormat(ConvertEmptyStringToNull = false)]
         public String Price { get; set; }
+
+		[Display(Name = "Habilitado")]
+		public Boolean Enabled { get; set; }
 
 		#endregion
 
@@ -99,8 +112,9 @@ namespace TurismoCR.Models
 		public Service() { }
 
         public Service(ObjectId id, String ownerUsername, String name, String description,
-                      String category, String province, String canton, String district,
-                      String startDate, String endDate, String price) 
+                    String category, String province, String canton, String district,
+                    String latitude, String longitude, String startDate, String endDate, 
+                    String price, Boolean enabled) 
         {
             _id = id;
             BackupID = "bckid";
@@ -111,9 +125,12 @@ namespace TurismoCR.Models
             Province = province;
             Canton = canton;
             District = district;
+			Latitude = latitude;
+			Longitude = longitude;
             StartDate = startDate;
             EndDate = endDate;
             Price = price;
+            Enabled = enabled;
 		}
 
 		#endregion
