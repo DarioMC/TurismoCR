@@ -39,5 +39,8 @@
     <Content Remove="Views\Reseña\BuscarReseña.cshtml" />
     <Content Remove="Views\Reseña\InsertarReseña.cshtml" />
     <Content Remove="Views\Servicio\BuscarServicio.cshtml" />
+    <Content Remove="Views\Service\BorrarServicio.cshtml" />
+    <Content Remove="Views\Service\EditarServicio.cshtml" />
+    <Content Remove="Views\Service\BuscarServicio.cshtml" />
   </ItemGroup>
 </Project>

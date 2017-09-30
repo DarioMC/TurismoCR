@@ -164,8 +164,8 @@ namespace TurismoCR.Controllers
                 var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
                 var db = mongoClient.GetDatabase("TurismoCR");
 
-                var ServicioCollection = db.GetCollection<Imagen>("ImgServicio");
-                await ServicioCollection.InsertOneAsync(thePicture);
+                var serviceCollection = db.GetCollection<Imagen>("ImgService");
+                await serviceCollection.InsertOneAsync(thePicture);
 
                 //Agregar redireccion a interfaz en vez de vista.
                 return View();
@@ -179,42 +179,43 @@ namespace TurismoCR.Controllers
             return View();
         }
 
-        [HttpPost]
-        public async Task<ActionResult> BorrarServicioAsync(ObjectId idServ)
-        {
-            var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
-            var db = mongoClient.GetDatabase("TurismoCR");
-
-            var collection = db.GetCollection<Service>("Services");
-            var filter = Builders<Service>.Filter.Eq("_id", idServ);
-            var result = await collection.DeleteOneAsync(filter);
-
-            return View();
+        public async Task<ActionResult> DeleteServiceAsync(Service service) {
+            try {
+                ObjectId serviceID = ObjectId.Parse(service.BackupID);
+                var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
+                var db = mongoClient.GetDatabase("TurismoCR");
+                var collection = db.GetCollection<Service>("Services");
+                var filter = Builders<Service>.Filter.Eq("_id", serviceID);
+                await collection.DeleteOneAsync(filter);
+				// setting alert message
+				TempData["msg"] = "<script>alert('Servicio borrado con éxito!');</script>";
+            } catch {
+				// setting alert message
+				TempData["msg"] = "<script>alert('No hay comunicación con MongoDB.');</script>";    
+            }
+			// let's go to main page
+			return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
-        public async Task<ActionResult> BorrarImagenServicioAsync(ObjectId idImagen)
+        public async Task<ActionResult> DeleteImageServiceAsync(ObjectId idImagen)
         {
             var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
             var db = mongoClient.GetDatabase("TurismoCR");
-
-            var coleccion = db.GetCollection<Imagen>("ImgServicio");
-            var filtro = Builders<Imagen>.Filter.Eq("_id", idImagen);
-
-            var resultado = await coleccion.DeleteOneAsync(filtro);
-
-            //Agregar redireccion a otra vista en vez de View.
+            var colecction = db.GetCollection<Imagen>("ImgServicio");
+            var filter = Builders<Imagen>.Filter.Eq("_id", idImagen);
+            await colecction.DeleteOneAsync(filter);
             return View();
         }
 
-		public ActionResult BuscarServicio()
+		public ActionResult SearchService()
 		{
 			ViewData["Message"] = "Página para buscar servicios/paquetes turístico";
 			return View();
 		}
 
         [HttpPost]
-        public async Task<ActionResult> BuscarServicios()
+        public async Task<ActionResult> SearchServiceAsync()
         {
             var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
             var db = mongoClient.GetDatabase("TurismoCR");
