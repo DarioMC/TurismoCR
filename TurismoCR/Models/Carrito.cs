@@ -11,8 +11,8 @@ namespace TurismoCR.Models
         #region Atributos
 
         int idCarrito;
-        String usuario;
-        List<Models.Service> productos;
+        String usercar;
+        List<Models.Service> products;
 
         #endregion
 
@@ -24,16 +24,16 @@ namespace TurismoCR.Models
             set { this.idCarrito = value; }
         }
 
-        public String Usuario
+        public String UserCar
         {
-            get { return this.usuario; }
-            set { this.usuario = value; }
+            get { return this.usercar; }
+            set { this.usercar = value; }
         }
 
-        public List<Service> Productos
+        public List<Service> Products
         {
-            get { return this.productos; }
-            set { this.productos = value; }
+            get { return this.products; }
+            set { this.products = value; }
         }
 
         #endregion
@@ -45,8 +45,8 @@ namespace TurismoCR.Models
         public Carrito(int nId, String nUser, List<Service> nProds)
         {
             IdCarrito = nId;
-            Usuario = nUser;
-            Productos = nProds;
+            UserCar = nUser;
+            Products = nProds;
         }
 
         #endregion 

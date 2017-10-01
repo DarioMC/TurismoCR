@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TurismoCR.Models.Servicio>
+﻿@model IEnumerable<TurismoCR.Models.Service>
 
 @{
     ViewData["Title"] = "Index";
@@ -23,13 +23,13 @@
                     <tbody>
                         @foreach (var i in Model)
                         {
-                                <tr>
-                                    <td>@i.Categoria</td>
-                                    <td>@i.Descripcion</td>
-                                    <td>@i.Tarifa</td>
-                                    <td>@i.Provincia</td>
+                                <tr>}
+                                    <td>@i.Category</td>
+                                    <td>@i.Description</td>
+                                    <td>@i.Price</td>
+                                    <td>@i.Province</td>
                                     <td>@i.Canton</td>
-                                    <td>@i.Distrito</td>
+                                    <td>@i.District</td>
                                     <td><input type="submit" value="Eliminar" name="Edit" formaction="@Url.Action("DeleteService", i)" formmethod="post" class="btn btn-default" /></td>
                                </tr>
                         }
