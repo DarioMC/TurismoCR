@@ -1,0 +1,84 @@
+﻿@using MongoDB.Bson;
+@using static System.Convert;
+@model TurismoCR.Models.Service;
+
+@{
+    ViewData["Title"] = "Paquetes Turísticos En Oferta";
+    List<Service> enabledServices = ViewBag.enabledServices as List<Service>;
+}
+
+<h2>@ViewData["Title"]</h2>
+<br>
+
+<table id="t02">
+    <thead>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Categoria</th>
+        <th>Provincia</th>
+        <th>Cantón</th>
+        <th>Distrito</th>
+        <th>Latitud</th>
+        <th>Longitud</th>
+        <th>Inicio</th>
+        <th>Fin</th>
+        <th>Precio</th>
+        <th>Agregar a carrito</th>
+    </thead>
+    <tbody>
+        @foreach (var service in enabledServices) {
+            <tr>
+                <td>@service.Name</td>
+                <td>@service.Description</td>
+                <td>@service.Category</td>
+                <td>@service.Province</td>
+                <td>@service.Canton</td>
+                <td>@service.District</td>
+                <th>@service.Latitude</th>
+                <th>@service.Longitude</th>
+                <td>@service.StartDate</td>
+                <td>@service.EndDate</td>
+                <td>@service.Price</td>
+                <td>
+                    <p data-placement="top" data-toggle="tooltip" title="Agregar a carrito">
+                        <a class="btn btn-primary btn-xs" data-title="AddToCar" 
+                            data-toggle="modal" data-target="#addtocar">
+                            <span class="glyphicon glyphicon-shopping-cart"></span>
+                        </a>
+                    </p>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>  
+    table#t02 {  
+        width: 100%;  
+        background-color: #f1f1c1;  
+    }
+    table#t02 tr:nth-child(even) {  
+        background-color: #eee;  
+    }  
+    table#t02 tr:nth-child(odd) {  
+        background-color: #fff;  
+    }  
+    table#t02 th {  
+        color: white;  
+        background-color:#50896d;  
+    }  
+    table, th, td {  
+        border: 1px solid black;  
+    }  
+    table, th, td {  
+        border: 1px solid black;  
+        border-collapse: collapse;  
+    }  
+    table, th, td {  
+        border: 1px solid black;  
+        border-collapse: collapse;  
+    }  
+    th, td {  
+        padding: 15px;
+    }  
+</style> 

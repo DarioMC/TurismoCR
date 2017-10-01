@@ -63,7 +63,7 @@ namespace TurismoCR.Controllers
                 var ownerUsername = userCookie.ToString();
                 var filter = Builders<Service>.Filter.Eq("OwnerUsername", ownerUsername);
                 var sort = Builders<Service>.Sort.Ascending("Category");
-                // filter services for curret owner user
+                // filter services for current owner user
                 var result = await collection.Find(filter).Sort(sort).ToListAsync();
                 if (result.Count == 0) {
 					// setting alert message
@@ -75,7 +75,6 @@ namespace TurismoCR.Controllers
                     ViewData["Message"] = "Página para editar o borrar paquetes turísticos";
 					return View();
                 }
-
             } catch {
 				// setting alert message
 				TempData["msg"] = "<script>alert('No hay comunicación con MongoDB.');</script>";
@@ -144,20 +143,17 @@ namespace TurismoCR.Controllers
             return View();
         }
 
-        public async Task<ActionResult> AddImageServiceAsync(Imagenes TheFile)
-        {
-            List<HttpPostedFileBase> listaImagenes = new List<HttpPostedFileBase>();
+        public async Task<ActionResult> AddImageServiceAsync(Imagenes TheFile) {
+            List<HttpPostedFileBase> listImages = new List<HttpPostedFileBase>();
 
-            listaImagenes.Add(TheFile.img1);
-            listaImagenes.Add(TheFile.img2);
-            listaImagenes.Add(TheFile.img3);
-            listaImagenes.Add(TheFile.img4);
-            listaImagenes.Add(TheFile.img5);
+            listImages.Add(TheFile.img1);
+            listImages.Add(TheFile.img2);
+            listImages.Add(TheFile.img3);
+            listImages.Add(TheFile.img4);
+            listImages.Add(TheFile.img5);
 
-            foreach (HttpPostedFileBase theFile in listaImagenes)
-            { 
-                if (theFile.ContentLength > 0)
-                {
+            foreach (HttpPostedFileBase theFile in listImages) { 
+                if (theFile.ContentLength > 0) {
                     string theFileName = Path.GetFileName(theFile.FileName);
 
                     byte[] thePictureAsBytes = new byte[theFile.ContentLength];
@@ -175,7 +171,7 @@ namespace TurismoCR.Controllers
                     var ownerUsername = userCookie.ToString();
                     var filter = Builders<Service>.Filter.Eq("OwnerUsername", ownerUsername);
                     //var sort = Builders<Service>.Sort.
-                    // filter services for curret owner user
+                    // filter services for current owner user
                     var result = await collection.Find(filter).ToListAsync();
 
                     Imagen thePicture = new Imagen()
@@ -185,8 +181,6 @@ namespace TurismoCR.Controllers
                         idServicio = result.Last().BackupID
                     };
                     //thePicture._id = ObjectId.GenerateNewId();
-
-                    
 
                     var serviceCollection = db.GetCollection<Imagen>("ImgService");
                     await serviceCollection.InsertOneAsync(thePicture);
@@ -217,35 +211,43 @@ namespace TurismoCR.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> DeleteImageServiceAsync(ObjectId idImagen)
-        {
+        public async Task<ActionResult> DeleteImageServiceAsync(ObjectId idImagen) {
             var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
             var db = mongoClient.GetDatabase("TurismoCR");
-            var colecction = db.GetCollection<Imagen>("ImgServicio");
+            var collection = db.GetCollection<Imagen>("ImgServicio");
             var filter = Builders<Imagen>.Filter.Eq("_id", idImagen);
-            await colecction.DeleteOneAsync(filter);
+            await collection.DeleteOneAsync(filter);
             return View();
         }
 
-		public ActionResult SearchService()
-		{
-			ViewData["Message"] = "Página para buscar servicios/paquetes turístico";
-			return View();
+        public async Task<ActionResult> SearchService() {
+            try {
+				// setting MongoDB connection
+				var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
+				var db = mongoClient.GetDatabase("TurismoCR");
+				// getting reference to services
+				var collection = db.GetCollection<Service>("Services");
+                var filter = Builders<Service>.Filter.Eq("Enabled", true);
+				var sort = Builders<Service>.Sort.Ascending("Category");
+				// filter services for current owner user
+				var result = await collection.Find(filter).Sort(sort).ToListAsync();
+				if (result.Count == 0) {
+					// setting alert message
+					TempData["msg"] = "<script>alert('No hay paquetes registrados!');</script>";
+				}
+				else {
+					// saving services
+					ViewBag.enabledServices = result;
+					// show view
+					ViewData["Message"] = "Página para ver paquetes turístico en oferta.";
+					return View();
+				}
+            } catch {
+				// setting alert message
+				TempData["msg"] = "<script>alert('No hay comunicación con MongoDB.');</script>"; 
+            }
+			// let's go to main page
+			return RedirectToAction("Index", "Home");
 		}
-
-        [HttpPost]
-        public async Task<ActionResult> SearchServiceAsync()
-        {
-            var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
-            var db = mongoClient.GetDatabase("TurismoCR");
-
-            var coleccion = db.GetCollection<Service>("Servicios");
-            var filtro = new BsonDocument();
-            var sort = Builders<Service>.Sort.Ascending("Categoria");
-            var resultado = await coleccion.Find(filtro).Sort(sort).ToListAsync();
-
-            //Agregar redireccion a otra vista con la lista por parámetro.
-            return View();
-        }
     }
 }

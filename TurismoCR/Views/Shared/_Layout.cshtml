@@ -43,8 +43,7 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contacto</a></li>
                 </ul>
                 <!-- navbar-right -->
-                @if (Context.Request.Cookies["userSession"] != null && Context.Request.Cookies["rolSession"] != null)
-                {
+                @if (Context.Request.Cookies["userSession"] != null && Context.Request.Cookies["rolSession"] != null) {
                     var userCookie = Context.Request.Cookies["userSession"];
                     var userName = userCookie.ToString();
                     var rolCookie = Context.Request.Cookies["rolSession"];
@@ -57,11 +56,11 @@
                         </li>
 						@* TODO add other roles: "Administrator" *@
                         @if (rolName == "Client") {
-                            @*<li>
-                                <a asp-area="" asp-controller="Service" asp-action="BuscarServicio">
-                                    Buscar
+                            <li>
+                                <a asp-area="" asp-controller="Service" asp-action="SearchService">
+                                    <span class="glyphicon glyphicon-search"></span> Buscar
                                 </a>
-                            </li>*@
+                            </li>
 						    <li>
 							    <a asp-area="" asp-controller="Car" asp-action="Index">
                                     <span class="glyphicon glyphicon-shopping-cart"></span> Carrito
