@@ -52,7 +52,7 @@ CREATE (Oscar:User{
     Genre: "M",
     PhoneNumber: "",
     Email: "oscarch69@gmail.com",
-    UserName: "jodaniel",
+    UserName: "ochavarria",
     Password: "1234",
     Rol: "Client",
     Enabled: true
