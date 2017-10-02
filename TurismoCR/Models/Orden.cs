@@ -7,7 +7,7 @@ namespace TurismoCR.Models
 {
     public class Orden
     {
-        private Guid _id;
+        //ate Guid _id;
         [System.ComponentModel.DataAnnotations.Key]
         public int IdOrden { get; set; }
         public int IdCarrito { get; set; }

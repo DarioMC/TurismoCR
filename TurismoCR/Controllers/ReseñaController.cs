@@ -41,7 +41,7 @@ namespace TurismoCR.Controllers
                 //Cambiar redireccion a otra vista en vez de a simple View().
                 return View();
             }
-            catch(Exception ex)
+            catch
             {
 
                 //Cambiar redireccion a otra vista en vez de a simple View().
@@ -81,7 +81,7 @@ namespace TurismoCR.Controllers
                     return View(listaReseñas);
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 //Cambiar redireccion a otra vista en vez de a simple View().
                 return View();
@@ -114,7 +114,7 @@ namespace TurismoCR.Controllers
                 }
 
             }
-            catch (Exception ex)
+            catch
             {
 
                 //Cambiar redireccion a otra vista en vez de a simple View().
