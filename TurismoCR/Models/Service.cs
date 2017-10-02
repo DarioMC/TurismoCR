@@ -1,6 +1,7 @@
 ﻿using System;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Driver;
 
 namespace TurismoCR.Models
 {
@@ -68,6 +69,11 @@ namespace TurismoCR.Models
             Picture = picture;
 		}
 
-		#endregion
-	}
+        public static implicit operator UpdateDefinition<object>(Service v)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
 }
