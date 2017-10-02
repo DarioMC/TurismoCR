@@ -174,7 +174,7 @@ namespace TurismoCR.Controllers
                     // filter services for current owner user
                     var result = await collection.Find(filter).ToListAsync();
 
-                    Imagen thePicture = new Imagen()
+                    Picture thePicture = new Picture()
                     {
                         FileName = theFileName,
                         PictureDataAsString = thePictureDataAsString,
@@ -182,7 +182,7 @@ namespace TurismoCR.Controllers
                     };
                     //thePicture._id = ObjectId.GenerateNewId();
 
-                    var serviceCollection = db.GetCollection<Imagen>("ImgService");
+                    var serviceCollection = db.GetCollection<Picture>("ImgService");
                     await serviceCollection.InsertOneAsync(thePicture);
                 }
 
@@ -214,8 +214,8 @@ namespace TurismoCR.Controllers
         public async Task<ActionResult> DeleteImageServiceAsync(ObjectId idImagen) {
             var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
             var db = mongoClient.GetDatabase("TurismoCR");
-            var collection = db.GetCollection<Imagen>("ImgServicio");
-            var filter = Builders<Imagen>.Filter.Eq("_id", idImagen);
+            var collection = db.GetCollection<Picture>("ImgServicio");
+            var filter = Builders<Picture>.Filter.Eq("_id", idImagen);
             await collection.DeleteOneAsync(filter);
             return View();
         }

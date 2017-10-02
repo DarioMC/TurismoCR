@@ -8,7 +8,7 @@ using System.Web;
 namespace TurismoCR.Models
 {
     [Serializable]
-    public class Imagen
+    public class Picture
     {
         public ObjectId _id { get; set; }
         public string FileName { get; set; }
