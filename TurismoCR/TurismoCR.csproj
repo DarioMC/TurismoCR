@@ -22,7 +22,6 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" />
-    <PackageReference Include="mongocsharpdriver" Version="2.4.4" />
     <PackageReference Include="MongoDB.Driver" Version="2.4.4" />
     <PackageReference Include="Neo4jClient" Version="2.0.0.9" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
@@ -42,6 +41,9 @@
     <Content Remove="Views\Service\BorrarServicio.cshtml" />
     <Content Remove="Views\Service\EditarServicio.cshtml" />
     <Content Remove="Views\Service\BuscarServicio.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Models\Imagen.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">

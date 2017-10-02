@@ -4,11 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Neo4jClient;
 using TurismoCR.Models;
-using static TurismoCR.Controllers.ImageController;
-using System.IO;
 using MongoDB.Driver;
-using System.Threading.Tasks;
-using MongoDB.Bson;
 
 namespace TurismoCR.Controllers
 {
@@ -158,56 +154,5 @@ namespace TurismoCR.Controllers
 			// let's go to main page
 			return RedirectToAction("Index", "Home");
 		} // Reg
-
-		// Método para insertar una imagen o logotipo del vendedor-servicio
-		public async System.Threading.Tasks.Task<ActionResult> AgregarImagenLugarAsync(HttpPostedFileBase theFile) {
-            if (theFile.ContentLength > 0) {
-                string theFileName = Path.GetFileName(theFile.FileName);
-
-                byte[] thePictureAsBytes = new byte[theFile.ContentLength];
-                using (BinaryReader theReader = new BinaryReader(theFile.InputStream))
-                {
-                    thePictureAsBytes = theReader.ReadBytes(theFile.ContentLength);
-                }
-
-                string thePictureDataAsString = Convert.ToBase64String(thePictureAsBytes);
-
-                Imagen thePicture = new Imagen()
-                {
-                    FileName = theFileName,
-                    PictureDataAsString = thePictureDataAsString,
-                    //codPro = lastId.Id
-                };
-                //thePicture._id = ObjectId.GenerateNewId();
-
-                var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
-                var db = mongoClient.GetDatabase("TurismoCR");
-
-                var ServicioCollection = db.GetCollection<Imagen>("ImgLugar");
-                await ServicioCollection.InsertOneAsync(thePicture);
-
-                //Agregar redireccion a interfaz en vez de vista.
-                return View();
-
-            }
-            /*else
-                ViewBag.Message = "Debe subir una imagen";*/
-
-            //Verifica redireccion.
-            return View();
-        }
-
-        public async Task<ActionResult> BorrarImagenLugarAsync(ObjectId idImagen) {
-            var mongoClient = new MongoClient(connectionString: "mongodb://localhost");
-            var db = mongoClient.GetDatabase("TurismoCR");
-
-            var coleccion = db.GetCollection<Imagen>("ImgLugar");
-            var filtro = Builders<Imagen>.Filter.Eq("_id", idImagen);
-
-            var resultado = await coleccion.DeleteOneAsync(filtro);
-
-            //Agregar redireccion a otra vista en vez de View.
-            return View();
-        }
     }
 }

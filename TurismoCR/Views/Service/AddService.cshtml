@@ -6,153 +6,108 @@
 
 <h2>@ViewData["Title"]</h2>
 
-@using (Html.BeginForm("AddServiceAsync", "Service", FormMethod.Post)) 
-{
-    @* FORM *@
-    <div class="form-horizontal">
-        <h4>Ingrese los datos del paquete turístico a registrar</h4>
-        <hr />
-	    @* Owner Username *@
-        @{
-            var userCookie = Context.Request.Cookies["userSession"];
-            var userName = userCookie.ToString();
-        }
-        <div class="form-group" style="display: none;">
-            <div class="col-md-3">
-                @Html.DropDownListFor(model => model.OwnerUsername,
-                    new List<SelectListItem>
-                    {
-                        new SelectListItem {Value = @userName, Text = "Propietario" }
-                    },
-                    htmlAttributes: new { @id = "usernameDropDownList" }
-                )
-            </div>
-        </div>
-    	@* Service Name *@
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-3">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
-	    @* Service Description *@
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-3">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-	    @* Service Category *@
-        <div class="form-group">
-            @Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-3">
-			    @Html.DropDownListFor(model => model.Category,
-                    new List<SelectListItem>
-                    {
-                        new SelectListItem {Value = "Playa", Text = "Playa" },
-			            new SelectListItem {Value = "Montaña", Text = "Montaña" },
-			            new SelectListItem {Value = "Volcán", Text = "Volcán" }
-                    }
-                )
-                @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
-            </div>
-        </div>
-	    @* Service Province *@
-        <div class="form-group">
-            @Html.LabelFor(model => model.Province, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-3">
-			    @Html.DropDownListFor(model => model.Province,
-                    new List<SelectListItem>
-                    {
-                        new SelectListItem {Value = "San José", Text = "San José" },
-                        new SelectListItem {Value = "Alajuela", Text = "Alajuela" },
-                        new SelectListItem {Value = "Cartago", Text = "Cartago" },
-			            new SelectListItem {Value = "Heredia", Text = "Heredia" },
-			            new SelectListItem {Value = "Guanacaste", Text = "Guanacaste" },
-			            new SelectListItem {Value = "Puntarenas", Text = "Puntarenas" },
-			            new SelectListItem {Value = "Limón", Text = "Limón" }
-                    }
-                )
-                @Html.ValidationMessageFor(model => model.Province, "", new { @class = "text-danger" })
-            </div>
-        </div>
-	    @* Service Canton *@
-        <div class="form-group">
-            @Html.LabelFor(model => model.Canton, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-3">
-                @Html.EditorFor(model => model.Canton, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Canton, "", new { @class = "text-danger" })
-            </div>
-        </div>
-	    @* Service District *@
-        <div class="form-group">
-            @Html.LabelFor(model => model.District, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-3">
-                @Html.EditorFor(model => model.District, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.District, "", new { @class = "text-danger" })
-            </div>
-        </div>
-	    @* Service Latitude *@
-        <div class="form-group">
-            @Html.LabelFor(model => model.Latitude, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-3">
-                @Html.EditorFor(model => model.Latitude, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Latitude, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        @* Service Longitude *@
-        <div class="form-group">
-            @Html.LabelFor(model => model.Longitude, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-3">
-                @Html.EditorFor(model => model.Longitude, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Longitude, "", new { @class = "text-danger" })
-            </div>
-        </div>
-	    @* Service StartDate *@
-        <div class="form-group">
-            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-3">
-                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { id="selectServiceStartDate", name="selectDate", type="datetime-local", @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-	    @* Service EndDate *@
-        <div class="form-group">
-            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-3">
-                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { id="selectServiceEndDate", name="selectDate", type="datetime-local", @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-	    @* Service Price *@
-        <div class="form-group">
-            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-3">
-                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
-            </div>
-        </div>
-	    @* Enabled *@
-        <div class="form-group">
-            @Html.LabelFor(model => model.Enabled, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-3">
-                @Html.DropDownListFor(model => model.Enabled,
-                    new List<SelectListItem>
-                    {
-                        new SelectListItem {Value = "true", Text = "Servicio activado"},
-                        new SelectListItem {Value = "false", Text = "Servicio desactivado"}
-                    }
-                )
-                @Html.ValidationMessageFor(model => model.Enabled, "", new { @class = "text-danger" })
-            </div>
-        </div>
-	    @* Add Btn *@
-	    <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Agregar" class="btn btn-success" />
-            </div>
+<form method="post" enctype="multipart/form-data" asp-controller="Service" asp-action="AddServicePost">
+	<h4>Ingrese los datos del paquete turístico a registrar</h4>
+    <hr/>
+	@* Service Name *@
+    <div class="form-group row">
+	    <label class="col-sm-2 col-form-label" for="serviceName">Nombre</label>
+        <div class="col-sm-3">
+		    <input class="form-control" id="serviceName" type="text" name="serviceName"/>
         </div>
 	</div>
-}
+	@* Service Description *@
+    <div class="form-group row">
+		<label class="col-sm-2 col-form-label" for="serviceDescription">Descripción</label>
+        <div class="col-sm-3">
+		    <input class="form-control" id="serviceDescription" type="text" name="serviceDescription"/>
+        </div>
+	</div>
+	@* Service Category *@
+    <div class="form-group row">
+		<label class="col-sm-2 col-form-label" for="serviceCategory">Categoría</label>
+        <div class="col-sm-3">
+		    <input class="form-control" id="serviceCategory" type="text" name="serviceCategory"/>
+        </div>
+	</div>
+	@* Service Province *@
+    <div class="form-group row">
+		<label class="col-sm-2 col-form-label" for="serviceProvince">Provincia</label>
+        <div class="col-sm-3">
+			<input class="form-control" id="serviceProvince" type="text" name="serviceProvince"/>
+        </div>
+	</div>
+	@* Service Canton *@
+    <div class="form-group row">
+    	<label class="col-sm-2 col-form-label" for="serviceCanton">Cantón</label>
+        <div class="col-sm-3">
+			<input class="form-control" id="serviceCanton" type="text" name="serviceCanton"/>
+        </div>
+	</div>
+    @* Service District *@
+    <div class="form-group row">
+		<label class="col-sm-2 col-form-label" for="serviceDistrict">Distrito</label>
+        <div class="col-sm-3">
+			<input class="form-control" id="serviceDistrict" type="text" name="serviceDistrict"/>
+        </div>
+	</div>
+	@* Service Latitude *@
+    <div class="form-group row">
+		<label class="col-sm-2 col-form-label" for="serviceLatitude">Latitud</label>
+        <div class="col-sm-3">
+			<input class="form-control" id="serviceLatitude" type="text" name="serviceLatitude"/>
+        </div>
+	</div>
+	@* Service Longitude *@
+    <div class="form-group row">
+		<label class="col-sm-2 col-form-label" for="serviceLongitude">Longitud</label>
+        <div class="col-sm-3">
+			<input class="form-control" id="serviceLongitude" type="text" name="serviceLongitude"/>
+        </div>
+	</div>
+	@* Service StartDate *@
+    <div class="form-group row">
+		<label class="col-sm-2 col-form-label" for="selectServiceStartDate">Fecha de inicio</label>
+        <div class="col-sm-3">
+				<input class="form-control" id= "selectServiceStartDate" type="text" name="selectServiceStartDate"/>
+        </div>
+	</div>
+	@* Service EndDate *@
+    <div class="form-group row">
+		<label class="col-sm-2 col-form-label" for="selectServiceEndDate">Fecha de finalización</label>
+        <div class="col-sm-3">
+			<input class="form-control" id="selectServiceEndDate" type="text" name="selectServiceEndDate"/>
+        </div>
+	</div>
+	@* Service Price *@
+    <div class="form-group row">
+		<label class="col-sm-2 col-form-label" for="servicePrice">Precio</label>
+        <div class="col-sm-3">
+			<input class="form-control" id="servicePrice" type="text" name="servicePrice"/>
+        </div>
+	</div>
+	@* Service Enabled *@
+	<div class="form-group row">
+		<label class="col-sm-2 col-form-label" for="serviceEnabled">Estado</label>
+        <div class="col-sm-3">
+			<select class="form-control" id="serviceEnabled">
+			    <option value="false">Desactivado</option>
+				<option value="true">Activado</option>
+            </select>
+		</div>
+    </div>
+	@* Service Picture *@
+	<div class="form-group row">
+		<label class="col-sm-2 col-form-label" for="pictureFile">Imagen</label>
+        <div class="col-sm-4">
+			<input class="form-control" type="file" id="pictureFile" name="pictureFile"/>
+        </div>
+    </div>
+	<br>
+	@* Add Btn *@
+    <div class="form-group row">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Agregar" class="btn btn-success" />
+        </div>
+    </div>
+</form>

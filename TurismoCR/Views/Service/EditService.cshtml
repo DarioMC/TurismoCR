@@ -161,6 +161,18 @@
                 @Html.ValidationMessageFor(model => model.Enabled, "", new { @class = "text-danger" })
             </div>
         </div>
+	    @* Picture *@
+        <div class="form-group" style="display:none;">
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.Picture,
+                    new List<SelectListItem>
+                    {
+                        new SelectListItem {Value = "", Text = "" }
+                    },
+                    htmlAttributes: new { @id = "bckidDropDownList" }
+                )
+            </div>
+        </div>
         @* Edit Btn *@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
