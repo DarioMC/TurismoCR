@@ -12,24 +12,23 @@
             {
                 <table class="table table-striped">
                     <tr>
-                        <th> Categoria </th>
+                        <th> Categoría </th>
+                        <th> Nombre </th>
                         <th> Descripcion </th>
-                        <th> Tarifa </th>
-                        <th> Provincia </th>
-                        <th> Canton </th>
-                        <th> Distrito </th>
-                        <th> Eliminar </th>
+                        <th> Tarifa </th> 
+                        <th> Cantidad </th>
+                        <th> Subtotal </th>
                     </tr>
                     <tbody>
                         @foreach (var i in Model)
                         {
                                 <tr>}
                                     <td>@i.Category</td>
+                                    <td>@i.Name</td>
                                     <td>@i.Description</td>
                                     <td>@i.Price</td>
-                                    <td>@i.Province</td>
-                                    <td>@i.Canton</td>
-                                    <td>@i.District</td>
+                                    <!-- <td@i.Quantity</td> -->
+                                     <!-- <td@i.SubTotal</td> -->
                                     <td><input type="submit" value="Eliminar" name="Edit" formaction="@Url.Action("DeleteService", i)" formmethod="post" class="btn btn-default" /></td>
                                </tr>
                         }
