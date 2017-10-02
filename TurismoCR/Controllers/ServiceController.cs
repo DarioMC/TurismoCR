@@ -35,8 +35,7 @@ namespace TurismoCR.Controllers
 										   IFormFile pictureFile)
 		{
 			// create service
-			Service service = new Service("bckid",
-										  Request.Cookies["userSession"],
+			Service service = new Service(Request.Cookies["userSession"],
 										  serviceName,
 										  serviceDescription,
 										  serviceCategory,
@@ -126,7 +125,7 @@ namespace TurismoCR.Controllers
 				}
 				else
 				{
-					// saving services
+					// send services to view
 					ViewBag.ownerServices = result;
 					// show view
 					ViewData["Message"] = "Página para editar o borrar paquetes turísticos";
@@ -143,22 +142,46 @@ namespace TurismoCR.Controllers
 
 		}
 
-		public ActionResult EditService(Service service)
+		public ActionResult EditService()
 		{
-			// saving service id to edit
-			Response.Cookies.Append("serviceIDToEdit",
-				service.BackupID,
-				new CookieOptions
-				{
-					Expires = DateTimeOffset.Now.AddMinutes(20)
-				}
-			);
 			ViewData["Message"] = "Página para editar paquete turístico";
-			return View(service);
+            return View();
 		}
 
-		[HttpPost]
-		public async Task<ActionResult> EditServiceAsync(Service serviceChanged)
+        [HttpPost("EditValidService")]
+		public async Task<ActionResult> EditValidService(String serviceID)
+		{
+            try
+            {
+                // setting MongoDB connection
+                var mongoClient = new MongoClient("mongodb://localhost");
+                var db = mongoClient.GetDatabase("TurismoCR");
+                // getting reference to services
+                var collection = db.GetCollection<Service>("Services");
+                var filter = Builders<Service>.Filter.Eq("_id", serviceID);
+                var sort = Builders<Service>.Sort.Ascending("Category");
+                // filter services for current owner user
+                var result = await collection.Find(filter).Sort(sort).ToListAsync();
+                if (result.Count != 0)
+                {
+                    // TODO Save serviceID in Cookie
+                    //      or Sent service to view
+                    // show view
+                    ViewData["Message"] = "Página para editar paquete turístico";
+					return View();
+                }
+            }
+            catch 
+            {
+				// setting alert message
+				TempData["msg"] = "<script>alert('No hay conexión con MongoDB o el paquete no existe.');</script>";
+            }
+			// let's go to main page
+			return RedirectToAction("Index", "Home");
+		}
+
+		/*[HttpPost]
+		public async Task<ActionResult> EditServicePost(Service serviceChanged)
 		{
 			// check if service is well defined
 			var isServiceNullOrEmpty = serviceChanged
@@ -260,6 +283,6 @@ namespace TurismoCR.Controllers
 			}
 			// let's go to main page
 			return RedirectToAction("Index", "Home");
-		}
+		}*/
 	}
 }

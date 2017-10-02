@@ -11,9 +11,7 @@ namespace TurismoCR.Models
 
 		[BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public ObjectId _id { get; set; }
-
-        public String BackupID { get; set; }
+        public String _id { get; set; }
 
 		public String OwnerUsername { get; set; }
 
@@ -49,12 +47,11 @@ namespace TurismoCR.Models
 
 		public Service() { }
 
-        public Service(String bckid, String ownerUsername, String name, 
+        public Service(String ownerUsername, String name, 
                    String description,String category, String province, String canton, 
                    String district, String latitude, String longitude, String startDate, 
                    String endDate, String price, Boolean enabled, String picture)
         {
-            BackupID = bckid;
             OwnerUsername = ownerUsername;
             Name = name;
             Description = description;

@@ -7,178 +7,20 @@
 
 <h2>@ViewData["Title"]</h2>
 
-@using (Html.BeginForm("EditServiceAsync", "Service",  FormMethod.Post))
-{
-    @* FORM *@
-    <div class="form-horizontal">
-        <h4>Por favor edite los datos que requiera cambiar.</h4>
-	    <hr />
-	    @* Backup ID *@
-	    <div class="form-group" style="display:none;">
-            <div class="col-md-3">
-                @Html.DropDownListFor(model => model.BackupID,
-                    new List<SelectListItem>
-                    {
-                        new SelectListItem {Value = "bckid", Text = "bckid" }
-                    },
-                    htmlAttributes: new { @id = "bckidDropDownList" }
-                )
-            </div>
-        </div>
-	    @* Owner Username *@
-        @{
-            var userCookie = Context.Request.Cookies["userSession"];
-            var userName = userCookie.ToString();
-        }
-        <div class="form-group" style="display:none;">
-            <div class="col-md-3">
-                @Html.DropDownListFor(model => model.OwnerUsername,
-                    new List<SelectListItem>
-                    {
-                        new SelectListItem {Value = @userName, Text = "Propietario" }
-                    },
-                    htmlAttributes: new { @id = "usernameDropDownList" }
-                )
-            </div>
-        </div>
-        @* Service Name *@
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-3">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        @* Service Description *@
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-3">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        @* Service Category *@
-        <div class="form-group">
-            @Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-3">
-                @Html.DropDownListFor(model => model.Category,
-                    new List<SelectListItem>
-                    {
-                        new SelectListItem {Value = "Beach", Text = "Playa" },
-                        new SelectListItem {Value = "Montaña", Text = "Montaña" },
-                        new SelectListItem {Value = "Volcán", Text = "Volcán" }
-                    }
-                )
-                @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        @* Service Province *@
-        <div class="form-group">
-            @Html.LabelFor(model => model.Province, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-3">
-                @Html.DropDownListFor(model => model.Province,
-                    new List<SelectListItem>
-                    {
-                        new SelectListItem {Value = "San José", Text = "San José" },
-                        new SelectListItem {Value = "Alajuela", Text = "Alajuela" },
-                        new SelectListItem {Value = "Cartago", Text = "Cartago" },
-                        new SelectListItem {Value = "Heredia", Text = "Heredia" },
-                        new SelectListItem {Value = "Guanacaste", Text = "Guanacaste" },
-                        new SelectListItem {Value = "Puntarenas", Text = "Puntarenas" },
-                        new SelectListItem {Value = "Limón", Text = "Limón" }
-                    }
-                )
-                @Html.ValidationMessageFor(model => model.Province, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        @* Service Canton *@
-        <div class="form-group">
-            @Html.LabelFor(model => model.Canton, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-3">
-                @Html.EditorFor(model => model.Canton, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Canton, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        @* Service District *@
-        <div class="form-group">
-            @Html.LabelFor(model => model.District, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-3">
-                @Html.EditorFor(model => model.District, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.District, "", new { @class = "text-danger" })
-            </div>
-        </div>
-	    @* Service Latitude *@
-        <div class="form-group">
-            @Html.LabelFor(model => model.Latitude, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-3">
-                @Html.EditorFor(model => model.Latitude, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Latitude, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        @* Service Longitude *@
-        <div class="form-group">
-            @Html.LabelFor(model => model.Longitude, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-3">
-                @Html.EditorFor(model => model.Longitude, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Longitude, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        @* Service StartDate *@
-        <div class="form-group">
-            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-3">
-                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { id="selectServiceStartDate", name="selectDate", type="datetime-local", @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        @* Service EndDate *@
-        <div class="form-group">
-            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-3">
-                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { id="selectServiceEndDate", name="selectDate", type="datetime-local", @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        @* Service Price *@
-        <div class="form-group">
-            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-3">
-                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
-            </div>
-        </div>
-	    @* Enabled *@
-        <div class="form-group">
-            @Html.LabelFor(model => model.Enabled, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-3">
-                @Html.DropDownListFor(model => model.Enabled,
-                    new List<SelectListItem>
-                    {
-                        new SelectListItem {Value = "true", Text = "Servicio activado"},
-                        new SelectListItem {Value = "false", Text = "Servicio desactivado"}
-                    }
-                )
-                @Html.ValidationMessageFor(model => model.Enabled, "", new { @class = "text-danger" })
-            </div>
-        </div>
-	    @* Picture *@
-        <div class="form-group" style="display:none;">
-            <div class="col-md-3">
-                @Html.DropDownListFor(model => model.Picture,
-                    new List<SelectListItem>
-                    {
-                        new SelectListItem {Value = "", Text = "" }
-                    },
-                    htmlAttributes: new { @id = "bckidDropDownList" }
-                )
-            </div>
-        </div>
-        @* Edit Btn *@
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Editar" class="btn btn-success" />
-            </div>
+<form method="post" enctype="multipart/form-data" asp-controller="Service" asp-action="EditValidService">
+    <h4>Ingrese el identificador del servicio </h4>
+    <hr/>
+    @* Service ID *@
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="serviceID">Identificador</label>
+        <div class="col-sm-3">
+            <input class="form-control" id="serviceID" type="text" name="serviceID"/>
         </div>
     </div>
-
-}
+    @* Add Btn *@
+    <div class="form-group row">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Validar" class="btn btn-success" />
+        </div>
+    </div>
+</form>
