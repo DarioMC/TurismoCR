@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TurismoCR.Models;
 using TurismoCR.Data;
+using Microsoft.AspNetCore.Http;
 
 namespace TurismoCR.Controllers
 {
@@ -22,13 +23,28 @@ namespace TurismoCR.Controllers
             return View();
         }
 
-		public ActionResult InsertarReseña() {
+		public ActionResult InsertarReseña(int idOrden)
+        {
+
 			ViewData["Message"] = "Página para agregar reseña sobre servicio/paquete turístico";
-			return View();
+
+            Response.Cookies.Append("idServicio",
+                idOrden.ToString(),
+                new CookieOptions
+                {
+                    Expires = DateTimeOffset.Now.AddSeconds(120)
+                }
+            );
+
+            return View();
 		}
 
         public ActionResult InsertarReseñas(Reseña reseña)
         {
+            reseña.Fecha = DateTime.Now;
+            reseña.IdServicio = Convert.ToInt32(Request.Cookies["idServicio"].ToString());
+            reseña.Usuario = Request.Cookies["userSession"].ToString();
+
 
             try
             {
@@ -39,7 +55,7 @@ namespace TurismoCR.Controllers
                 _context.SaveChanges();
 
                 //Cambiar redireccion a otra vista en vez de a simple View().
-                return View();
+                return RedirectToAction("Index", "Orden");
             }
             catch
             {
@@ -55,8 +71,10 @@ namespace TurismoCR.Controllers
 			return View();
 		}
 
-        public ActionResult BuscarReseñas(String servicioId)
+        public ActionResult MisReseñas()
         {
+            String usuario = Request.Cookies["userSession"].ToString();
+
             try
             {
 
@@ -64,7 +82,7 @@ namespace TurismoCR.Controllers
                 using (_context)
                 {
                     var reseñas = from p in _context.Reseñas
-                                where p.IdResenia.Equals(servicioId)
+                                where p.Usuario.Equals(usuario)
                                 select p;
 
                     List<Reseña> listaReseñas = new List<Reseña>();
@@ -78,7 +96,8 @@ namespace TurismoCR.Controllers
                         }
                     }
                     //Cambiar redireccion a otra vista en vez de a simple View().
-                    return View(listaReseñas);
+                    ViewBag.listaReseñas = listaReseñas;
+                    return View();
                 }
             }
             catch
@@ -87,11 +106,6 @@ namespace TurismoCR.Controllers
                 return View();
             }
         }
-
-		public ActionResult BorrarReseña() {
-			ViewData["Message"] = "Página para borrar reseña sobre servicio/paquete turístico";
-			return View();
-		}
 
         public ActionResult BorrarReseñas(int idReseña)
         {
@@ -104,13 +118,13 @@ namespace TurismoCR.Controllers
                     var objeto = from p in _context.Reseñas
                                  where p.IdResenia.Equals(idReseña)
                                  select p;
-
-                    _context.Remove(objeto);
+                    
+                    _context.Remove(objeto.First());
 
                     _context.SaveChanges();
 
                     //Cambiar redireccion a otra vista en vez de a simple View().
-                    return View();
+                    return RedirectToAction("MisReseñas", "Reseña");
                 }
 
             }

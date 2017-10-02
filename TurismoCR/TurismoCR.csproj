@@ -15,7 +15,6 @@
   <ItemGroup>
     <Folder Include="wwwroot\images\" />
     <Folder Include="Views\User\" />
-    <Folder Include="Views\Reseña\" />
   </ItemGroup>
 
   <ItemGroup>

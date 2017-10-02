@@ -10,23 +10,24 @@ namespace TurismoCR.Models
         //ate Guid _id;
         [System.ComponentModel.DataAnnotations.Key]
         public int IdOrden { get; set; }
-        public int IdCarrito { get; set; }
+        public String IdCarrito { get; set; }
         public DateTime Fecha { get; set; }
         public String Usuario { get; set; }
         public int Tarifa { get; set; }
         public String Categoria { get; set; }
-        public String Descripcion { get; set; }
+        public String Descripción { get; set; }
 
         #region Constructor
 
         public Orden() { }
 
-        public Orden(String nUser, DateTime nFecha, 
+        public Orden(String nIdCarrito, String nUser, DateTime nFecha, 
                      String nCat, String nDesc, int nPrecio)
         {
+            IdCarrito = nIdCarrito;
             Usuario = nUser;
             Fecha = nFecha;
-            Descripcion = nDesc;
+            Descripción = nDesc;
             Categoria = nCat;
             Tarifa = nPrecio;
         }
