@@ -20,55 +20,55 @@ namespace TurismoCR.Controllers
 		}
 
 		[HttpPost("AddServicePost")]
-		public ActionResult AddServicePost(String serviceName, 
-                                           String serviceDescription, 
-                                           String serviceCategory,
-                                           String serviceProvince,
-                                           String serviceCanton,
-                                           String serviceDistrict,
-                                           String serviceLatitude,
-                                           String serviceLongitude,
-                                           String selectServiceStartDate,
-                                           String selectServiceEndDate,
-                                           String servicePrice,
-                                           Boolean serviceEnabled,
-                                           IFormFile pictureFile)
+		public ActionResult AddServicePost(String serviceName,
+										   String serviceDescription,
+										   String serviceCategory,
+										   String serviceProvince,
+										   String serviceCanton,
+										   String serviceDistrict,
+										   String serviceLatitude,
+										   String serviceLongitude,
+										   String selectServiceStartDate,
+										   String selectServiceEndDate,
+										   String servicePrice,
+										   Boolean serviceEnabled,
+										   IFormFile pictureFile)
 		{
-            // create service
-            Service service = new Service("bckid",
-                                          Request.Cookies["userSession"],
-                                          serviceName,
-                                          serviceDescription,
-                                          serviceCategory,
-                                          serviceProvince,
-                                          serviceCanton,
-                                          serviceDistrict,
-                                          serviceLatitude,
-                                          serviceLongitude,
-                                          selectServiceStartDate,
-                                          selectServiceEndDate,
-                                          servicePrice,
-                                          serviceEnabled,
-                                          "picture");
-            // save image on service
-            try
-            {
-                if (pictureFile.Length > 0)
-                {
-                    using (var ms = new MemoryStream())
-                    {
-                        pictureFile.CopyTo(ms);
-                        var fileBytes = ms.ToArray();
-                        string s = Convert.ToBase64String(fileBytes);
-                        // act on the Base64 data
-                        service.Picture = s;
-                    }
-                }
-            } 
-            catch 
-            {
-                TempData["msg"] = "<script>alert('No se pudo cargar la imagen!');</script>";
-            }
+			// create service
+			Service service = new Service("bckid",
+										  Request.Cookies["userSession"],
+										  serviceName,
+										  serviceDescription,
+										  serviceCategory,
+										  serviceProvince,
+										  serviceCanton,
+										  serviceDistrict,
+										  serviceLatitude,
+										  serviceLongitude,
+										  selectServiceStartDate,
+										  selectServiceEndDate,
+										  servicePrice,
+										  serviceEnabled,
+										  "picture");
+			// save image on service
+			try
+			{
+				if (pictureFile.Length > 0)
+				{
+					using (var ms = new MemoryStream())
+					{
+						pictureFile.CopyTo(ms);
+						var fileBytes = ms.ToArray();
+						string s = Convert.ToBase64String(fileBytes);
+						// act on the Base64 data
+						service.Picture = s;
+					}
+				}
+			}
+			catch
+			{
+				TempData["msg"] = "<script>alert('No se pudo cargar la imagen!');</script>";
+			}
 			// check if service is well defined
 			var isServiceNullOrEmpty = service
 				.GetType()
