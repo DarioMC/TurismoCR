@@ -160,9 +160,8 @@ namespace TurismoCR.Controllers
                 // getting reference to services
                 var collection = db.GetCollection<Service>("Services");
                 var filter = Builders<Service>.Filter.Eq("_id", serviceID);
-                var sort = Builders<Service>.Sort.Ascending("Category");
                 // filter services for current owner user
-                var result = await collection.Find(filter).Sort(sort).ToListAsync();
+                var result = await collection.Find(filter).ToListAsync();
                 // if theres any result
                 if (result.Count != 0)
                 {
@@ -177,7 +176,7 @@ namespace TurismoCR.Controllers
                     // send service to view
                     ViewBag.serviceToEdit = result.First();
                     // show view
-                    ViewData["Message"] = "Página para editar paquete turístico";
+                    ViewData["Message"] = "Página para editar paquete turístico.";
 					return View();
                 }
             }
@@ -278,28 +277,38 @@ namespace TurismoCR.Controllers
 			return View();
 		}
 
-		/*public async Task<ActionResult> DeleteServiceAsync(Service service)
-		{
+		[HttpPost("DeleteServicePost")]
+        public async Task<ActionResult> DeleteServicePost(String serviceID)
+        {
 			try
 			{
-				ObjectId serviceID = ObjectId.Parse(service.BackupID);
+				// setting MongoDB connection
 				var mongoClient = new MongoClient("mongodb://localhost");
 				var db = mongoClient.GetDatabase("TurismoCR");
+				// getting reference to services
 				var collection = db.GetCollection<Service>("Services");
 				var filter = Builders<Service>.Filter.Eq("_id", serviceID);
-				await collection.DeleteOneAsync(filter);
-				// setting alert message
-				TempData["msg"] = "<script>alert('Servicio borrado con éxito!');</script>";
+				// filter services for specific service id
+				var result = await collection.Find(filter).ToListAsync();
+                // if theres any result
+                if (result.Count != 0)
+                {
+                    // delete service
+                    await collection.DeleteOneAsync(filter);
+                    // setting alert message
+                    TempData["msg"] = "<script>alert('El paquete ha sido borrado');</script>";
+                }
 			}
 			catch
 			{
 				// setting alert message
-				TempData["msg"] = "<script>alert('No hay comunicación con MongoDB.');</script>";
+				TempData["msg"] = "<script>alert('No hay conexión con MongoDB o el paquete no existe.');</script>";
 			}
-			// let's go to main page
+            // let's go to main page
 			return RedirectToAction("Index", "Home");
-		}
+        }
 
+		/*
 		public async Task<ActionResult> SearchService()
 		{
 			try
