@@ -308,7 +308,6 @@ namespace TurismoCR.Controllers
 			return RedirectToAction("Index", "Home");
         }
 
-		/*
 		public async Task<ActionResult> SearchService()
 		{
 			try
@@ -319,9 +318,8 @@ namespace TurismoCR.Controllers
 				// getting reference to services
 				var collection = db.GetCollection<Service>("Services");
 				var filter = Builders<Service>.Filter.Eq("Enabled", true);
-				var sort = Builders<Service>.Sort.Ascending("Category");
 				// filter services for current owner user
-				var result = await collection.Find(filter).Sort(sort).ToListAsync();
+				var result = await collection.Find(filter).ToListAsync();
 				if (result.Count == 0)
 				{
 					// setting alert message
@@ -343,6 +341,6 @@ namespace TurismoCR.Controllers
 			}
 			// let's go to main page
 			return RedirectToAction("Index", "Home");
-		}*/
+		}
 	}
 }
