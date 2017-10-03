@@ -240,47 +240,33 @@ namespace TurismoCR.Controllers
 			{
 				TempData["msg"] = "<script>alert('No se pudo cargar la imagen!');</script>";
 			}
-			// check if service is well defined
-			var isServiceNullOrEmpty = service
-				.GetType()
-				.GetProperties()
-				.Where(pi => pi.GetValue(service) is string)
-				.Select(pi => (string)pi.GetValue(service))
-				.Any(String.IsNullOrEmpty);
-			if (isServiceNullOrEmpty == true)
+            // edit service
+		    try
+			{
+				// setting MongoDB connection
+				var mongoClient = new MongoClient("mongodb://localhost");
+				var db = mongoClient.GetDatabase("TurismoCR");
+				// getting reference to services
+				var serviceCollection = db.GetCollection<Service>("Services");
+                // creating filter to search specific service id
+                String serviceID = "";
+                if (Request.Cookies["serviceIDToEdit"] != null){
+                    serviceID = Request.Cookies["serviceIDToEdit"];
+                }
+                var filter = Builders<Service>.Filter.Eq("_id", serviceID);
+				// deleting service by reference
+                await serviceCollection.DeleteOneAsync(filter);
+				// inserting service by reference
+				await serviceCollection.InsertOneAsync(service);
+                // delete service id cookie
+                Response.Cookies.Delete("serviceIDToEdit");
+				// setting alert message
+				TempData["msg"] = "<script>alert('Paquete editado exitosamente.');</script>";
+			}
+			catch
 			{
 				// setting alert message
-				TempData["msg"] = "<script>alert('Hay campos vacíos!');</script>";
-			}
-			else
-			{
-			    try
-				{
-					// setting MongoDB connection
-					var mongoClient = new MongoClient("mongodb://localhost");
-					var db = mongoClient.GetDatabase("TurismoCR");
-					// getting reference to services
-					var serviceCollection = db.GetCollection<Service>("Services");
-                    // creating filter to search specific service id
-                    String serviceID = "";
-                    if (Request.Cookies["serviceIDToEdit"] != null){
-                        serviceID = Request.Cookies["serviceIDToEdit"];
-                    }
-                    var filter = Builders<Service>.Filter.Eq("_id", serviceID);
-					// deleting service by reference
-                    await serviceCollection.DeleteOneAsync(filter);
-					// inserting service by reference
-					await serviceCollection.InsertOneAsync(service);
-                    // delete service id cookie
-                    Response.Cookies.Delete("serviceIDToEdit");
-					// setting alert message
-					TempData["msg"] = "<script>alert('Paquete editado exitosamente.');</script>";
-				}
-				catch
-				{
-					// setting alert message
-					TempData["msg"] = "<script>alert('No hay comunicación con MongoDB.');</script>";
-				}
+				TempData["msg"] = "<script>alert('No hay comunicación con MongoDB.');</script>";
 			}
 			// let's go to main page
 			return RedirectToAction("Index", "Home");
