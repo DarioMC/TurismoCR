@@ -1,40 +1,51 @@
 ﻿@model IEnumerable<TurismoCR.Models.Service>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Carrito";
 }
 
 <h2>Carrito</h2>
-    <div class="container"style="width:60%;margin:2%">
-        @using (Html.BeginForm(FormMethod.Post))
+<div class="container" style="width:60%;margin:2%">
+    @using (Html.BeginForm(FormMethod.Post))
+    {
+        @if (Model != null)
         {
-            @if (Model != null)
-            {
-                <table class="table table-striped">
-                    <tr>
-                        <th> Categoría </th>
-                        <th> Nombre </th>
-                        <th> Descripcion </th>
-                        <th> Tarifa </th> 
-                        <th> Cantidad </th>
-                        <th> Subtotal </th>
-                    </tr>
-                    <tbody>
-                        @foreach (var i in Model)
-                        {
-                                <tr>}
-                                    <td>@i.Category</td>
-                                    <td>@i.Name</td>
-                                    <td>@i.Description</td>
-                                    <td>@i.Price</td>
-                                    <!-- <td@i.Quantity</td> -->
-                                     <!-- <td@i.SubTotal</td> -->
-                                    <td><input type="submit" value="Eliminar" name="Edit" formaction="@Url.Action("DeleteService", i)" formmethod="post" class="btn btn-default" /></td>
-                               </tr>
-                        }
-                    </tbody>
-               </table>
-            }
+            <table class="table table-striped">
+                <tr>
+                    <th> Categoría </th>
+                    <th> Nombre </th>
+                    <th> Descripcion </th>
+                    <th> Tarifa </th>
+                    <th> Cantidad </th>
+                    <th> Subtotal </th>
+                    <th> Elimiar </th>
+                </tr>
+                <tbody>
+                    @foreach (var i in Model)
+                    {
+                        <tr>
+                            <td>@i.Category</td>
+                            <td>@i.Name</td>
+                            <td>@i.Description</td>
+                            <td>@i.Price</td>
+                            <td>@i.Price</td>
+                            <td>@i.Price</td>
+                            <td>
+                                <input type="submit" value="Eliminar" name="Edit" formaction="@Url.Action("DeleteService", i)" formmethod="post" class="btn btn-danger" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <input type="submit" value="Seguir Comprando" name="Edit" formaction="" formmethod="post" class="btn btn-default" />
+            <input type="submit" value="Procesar Orden" name="Edit" formaction="" formmethod="post" class="btn btn-default" />
         }
-    </div>
+        else
+        {
+            <div class="container" style="width:60%;margin:2%">
+                <h2>No tienes productos en el carrito </h2>
+            </div>
+        }
+    }
+</div>
 

@@ -21,26 +21,25 @@ namespace TurismoCR.Controllers
         public IActionResult Index()
         {
             var result = consultServices();
+
             return View(result);
         }
 
-        //Elimina un Agrega un Servicio 
+        //Agrega un Servicio 
         [HttpPost]
-        public void AddService(Service service )
+        public ActionResult AddService(Service service)
         {
             var redisDB = RedisInstance();
-            car.Products.Add(service);
+            var ownerUsername = Request.Cookies["userSession"];
 
-            String result = redisDB.StringGet("doncangrejo");
+
+            String result = redisDB.StringGet(ownerUsername);
             var tempcar = JsonConvert.DeserializeObject<Carrito>(result);
             tempcar.Products.Add(service);
 
             String json = JsonConvert.SerializeObject(tempcar);
-            redisDB.StringSet("doncangrejo",json);
-
-            //return View(tempcar.Productos);
-            
-            
+            redisDB.StringSet(ownerUsername, json);
+            return RedirectToAction("Index", "Home");
         }
 
         //Elimina un servicio
@@ -50,28 +49,28 @@ namespace TurismoCR.Controllers
             try
             {
                 var redisDB = RedisInstance();
-
+                var ownerUsername = Request.Cookies["userSession"];
                 var tempProduc = new List<Service>();
 
-                String result = redisDB.StringGet("doncangrejo");
+                String result = redisDB.StringGet(ownerUsername);
                 var car = JsonConvert.DeserializeObject<Carrito>(result);
                 tempProduc = car.Products;
 
                 //Se convierte a string para la comparacion, ya que el id no es fijo.  
-                
+
                 var y = delSer.ToString();
                 foreach (var i in tempProduc)
                 {
-                    var x= i.ToString();
-                    
+                    var x = i.ToString();
+
                     if (x.Equals(y))
                     {
                         tempProduc.Remove(i);
-                        redisDB.KeyDelete("doncangrejo");
+                        redisDB.KeyDelete(ownerUsername);
                         car.Products = tempProduc;
                         String json = JsonConvert.SerializeObject(car);
 
-                        redisDB.StringGetSet("doncangrejo", json);
+                        redisDB.StringGetSet(ownerUsername, json);
 
                         return View("Index", tempProduc);
 
@@ -91,32 +90,31 @@ namespace TurismoCR.Controllers
         {
 
             var redisDB = RedisInstance();
+            var ownerUsername = Request.Cookies["userSession"];
 
-            String result = redisDB.StringGet("doncangrejo");
+            String result = redisDB.StringGet(ownerUsername);
 
             //Verifica si ese usuario ya tiene un carrito creado. 
             if (result == null)
             {
 
                 car.IdCarrito = 1;
-                car.UserCar = "doncangrejo";
+                car.UserCar = ownerUsername;
                 car.Products = new List<Service>();
-                //revisar la clase temporal Servicio
-                //car.Products.Add();
-                //car.Products.Add(new Service(new DateTime(12, 12, 12), new DateTime(12, 12, 12), "Gold", "Vista al volcan ", "15500", "Cartago", "Cartago", "Cartago"));
-                //car.Productos.Add(new Servicio(new DateTime(12, 12, 12), new DateTime(12, 12, 12), "Turista", "Vista a la playa", "10000", "Limon", "Limon", "Limon"));
 
+               
                 String json = JsonConvert.SerializeObject(car);
-                redisDB.StringSet("doncangrejo", json);
-                return car.Products; 
+                redisDB.StringSet(ownerUsername, json);
+                return car.Products;
 
             }
-            else {
+            else
+            {
                 var tempcar = JsonConvert.DeserializeObject<Carrito>(result);
                 var products = tempcar.Products;
                 return products;
             }
-            
+
         }
 
         //Devulve una instancia de la base de datos. 
@@ -125,7 +123,7 @@ namespace TurismoCR.Controllers
             var products = new List<Service>();
             ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("localhost");
             IDatabase redisDB = redis.GetDatabase();
-            return redisDB; 
+            return redisDB;
         }
 
 
