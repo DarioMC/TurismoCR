@@ -1,7 +1,38 @@
-﻿
+﻿@using TurismoCR.Models;
 @{
     ViewData["Title"] = "Index";
+    List<Orden> listaOrdenes = ViewBag.Ordenes as List<Orden>;
+
 }
 
-<h2>Index</h2>
+<h2>Mis Órdenes</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>IDCarrito</th>
+            <th>Fecha</th>
+            <th>Usuario</th>
+            <th>Tarifa</th>
+            <th>Categoria</th>
+            <th>Descripcion</th>
+            <th>Reseñas</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Orden orden in listaOrdenes) {
+                <tr>
+                    <td>@orden.IdCarrito</td>
+                    <td>@orden.Fecha</td>
+                    <td>@orden.Usuario</td>
+                    <td>@orden.Tarifa</td>
+                    <td>@orden.Categoria</td>
+                    <td>@orden.Descripción</td>
+                    <td>
+                        <a href="@Url.Action("InsertarReseña", "Reseña", new { idOrden = orden.IdOrden })">Agregar Reseña</a>
+                    </td>
+                </tr>
+            }
+    </tbody>
+</table>
 

@@ -20,9 +20,39 @@ namespace TurismoCR.Controllers
 
         public IActionResult Index()
         {
-            
-            
-            return View();
+            String usuarioId = Request.Cookies["userSession"].ToString();
+
+            try
+            {
+                using (_context)
+                {
+                    //Busca todas las ordenes de compra de un usuario.
+                    var ordenes = from p in _context.Ordenes
+                                  where p.Usuario.Equals(usuarioId)
+                                  select p;
+
+                    List<Orden> ordenesCompra = new List<Orden>();
+
+                    if (ordenes != null)
+                    {
+                        foreach (Orden orden in ordenes)
+                        {
+                            //Agrega todos los resultados a una lista.
+                            ordenesCompra.Add(orden);
+                        }
+                    }
+
+                    ViewBag.Ordenes = ordenesCompra;
+
+                    return View();
+
+                }
+            }
+            catch
+            {
+                //Agregar redireccion de interfaz en vez de View.
+                return View();
+            }
         }
 
 		public ActionResult VerOrdenesCompra() {
@@ -43,7 +73,7 @@ namespace TurismoCR.Controllers
                 //Agregar redireccion de interfaz en vez de View.
                 return View();
             }
-            catch(Exception)
+            catch
             {
                 //Agregar redireccion de interfaz en vez de View.
                 return View();
@@ -80,7 +110,7 @@ namespace TurismoCR.Controllers
 
                 }
             }
-            catch(Exception)
+            catch
             {
                 //Agregar redireccion de interfaz en vez de View.
                 return View();

@@ -1,0 +1,35 @@
+﻿@using TurismoCR.Models;
+@{
+    ViewData["Title"] = "Index";
+    List<Reseña> listaReseña = ViewBag.listaReseñas as List<Reseña>;
+
+}
+<h2>MisReseñas</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Orden</th>
+            <th>Fecha</th>
+            <th>Usuario</th>
+            <th>Calificacion</th>
+            <th>Comentario</th>
+            <th>Borrar</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Reseña reseña in listaReseña)
+        {
+            <tr>
+                <td>@reseña.IdServicio</td>
+                <td>@reseña.Fecha</td>
+                <td>@reseña.Usuario</td>
+                <td>@reseña.Calificacion</td>
+                <td>@reseña.Comentario</td>
+                <td>
+                    <a href="@Url.Action("BorrarReseñas", "Reseña", new { idReseña = reseña.IdResenia })">Borrar Reseña</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
