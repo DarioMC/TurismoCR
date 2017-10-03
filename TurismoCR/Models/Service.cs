@@ -42,11 +42,13 @@ namespace TurismoCR.Models
 
         public String Picture { get; set; }
 
-		#endregion
+        
 
-		#region Constructor & Destructor
+        #endregion
 
-		public Service() { }
+        #region Constructor & Destructor
+
+        public Service() { }
 
         public Service(String ownerUsername, String name, 
                    String description,String category, String province, String canton, 

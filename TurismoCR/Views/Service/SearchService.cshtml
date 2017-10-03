@@ -25,6 +25,8 @@
             <th>Precio</th>
 		    <th>Contacto</th>
 		    <th>Mapa</th>
+            <th>Cantidad</th>
+            <th>Total </th>
             <th>Agregar a carrito</th>
         </thead>
         <tbody>
@@ -83,6 +85,33 @@
                             </a>
                         </p>
                     </td>
+                    <td>@Html.DropDownList("dropdown", new SelectList(
+                  new List<Object>{
+                       new { value = 1 , text = "1"  },
+                       new { value = 2 , text = "2" },
+                       new { value = 3 , text = "3"},
+                       new { value = 4 , text = "4"},
+                       new { value = 5 , text = "5"},
+                       new { value = 6 , text = "6"},
+                       new { value = 7 , text = "7"},
+                       new { value = 8 , text = "8"},
+                       new { value = 9 , text = "9"},
+                       new { value = 10 , text = "10"},
+                       new { value = 11 , text = "11"},
+                       new { value = 12 , text = "12"},
+                       new { value = 13 , text = "13"},
+                       new { value = 14 , text = "14"},
+                       new { value = 15 , text = "15"},
+                       new { value = 16 , text = "16"},
+                       new { value = 17 , text = "17"},
+                       new { value = 18 , text = "18"},
+                       new { value = 19 , text = "19"},
+                       new { value = 20 , text = "20"}
+                    },
+                  "value",
+                  "text"),"Qty", new { @class="from-control"})
+                    </td>
+                    <td>@service.Price</td>
                     <td>
                         <input type="submit" value="Agregar" name="Edit" formaction="@Url.Action("AddService", "Car", service)" formmethod="post" class="btn btn-success" />
                     </td>
@@ -91,6 +120,12 @@
         </tbody>
     </table>
 }
+<script>
+$(".comboboxClass").change(function() {
+    var id = $(this).attr("id");
+    $("form").submit();
+}
+</script>
 <style>  
     table#t02 {  
         width: 100%;  
@@ -118,6 +153,6 @@
         border-collapse: collapse;  
     }  
     th, td {  
-        padding: 15px;
+        padding: 10px;
     }  
 </style> 

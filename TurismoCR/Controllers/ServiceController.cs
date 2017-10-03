@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Http;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using TurismoCR.Models;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace TurismoCR.Controllers
 {
@@ -310,6 +312,8 @@ namespace TurismoCR.Controllers
 
 		public async Task<ActionResult> SearchService()
 		{
+            
+
 			try
 			{
 				// setting MongoDB connection
@@ -342,5 +346,15 @@ namespace TurismoCR.Controllers
 			// let's go to main page
 			return RedirectToAction("Index", "Home");
 		}
+        public List<int> CreateintDropdown()
+        {
+            var templist = new List<int>();
+            for (int i=1; i < 21; i++)
+            {
+                templist.Add(i);
+            }
+
+            return templist; 
+        }
 	}
 }
