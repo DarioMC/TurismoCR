@@ -115,14 +115,14 @@
             </div>
         </div>
         @* Enabled *@
-        <div class="form-group" style="display: none;">
+        <div class="form-group">
             @Html.LabelFor(model => model.Enabled, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-3">
                 @Html.DropDownListFor(model => model.Enabled,
                     new List<SelectListItem>
                     {
-                        new SelectListItem {Value = "true", Text = "Usuario activado"}
-                        @*new SelectListItem {Value = "false", Text = "Usuario desactivado"}*@
+                        new SelectListItem {Value = "true", Text = "Usuario activado"},
+                        new SelectListItem {Value = "false", Text = "Usuario desactivado"}
                     }
                 )
                 @Html.ValidationMessageFor(model => model.Enabled, "", new { @class = "text-danger" })
