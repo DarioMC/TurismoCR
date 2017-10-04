@@ -15,7 +15,7 @@ namespace TurismoCR.Controllers
 {
     public class CarController : Controller
     {
-        List<Service> listser = new List<Service>();
+        
         Carrito car = new Carrito();
 
         public IActionResult Index()
@@ -27,7 +27,7 @@ namespace TurismoCR.Controllers
 
         //Agrega un Servicio 
         [HttpPost]
-        public ActionResult AddService(Service service)
+        public ActionResult AddService(CarService service)
         {
             var redisDB = RedisInstance();
             var ownerUsername = Request.Cookies["userSession"];
@@ -44,13 +44,13 @@ namespace TurismoCR.Controllers
 
         //Elimina un servicio
         [HttpPost]
-        public ActionResult DeleteService(Service delSer)
+        public ActionResult DeleteService(CarService delSer)
         {
             try
             {
                 var redisDB = RedisInstance();
                 var ownerUsername = Request.Cookies["userSession"];
-                var tempProduc = new List<Service>();
+                var tempProduc = new List<CarService>();
 
                 String result = redisDB.StringGet(ownerUsername);
                 var car = JsonConvert.DeserializeObject<Carrito>(result);
@@ -86,7 +86,7 @@ namespace TurismoCR.Controllers
 
 
         //Connsulta en la base si ese carro tiene servicios un servicio
-        private List<Service> consultServices()
+        private List<CarService> consultServices()
         {
 
             var redisDB = RedisInstance();
@@ -100,9 +100,9 @@ namespace TurismoCR.Controllers
 
                 car.IdCarrito = 1;
                 car.UserCar = ownerUsername;
-                car.Products = new List<Service>();
+                car.Products = new List<CarService>();
 
-               
+
                 String json = JsonConvert.SerializeObject(car);
                 redisDB.StringSet(ownerUsername, json);
                 return car.Products;
@@ -112,7 +112,15 @@ namespace TurismoCR.Controllers
             {
                 var tempcar = JsonConvert.DeserializeObject<Carrito>(result);
                 var products = tempcar.Products;
-                return products;
+                if (products.Count == 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    return products;
+                }
+                
             }
 
         }

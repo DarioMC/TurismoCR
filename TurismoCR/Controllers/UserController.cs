@@ -38,8 +38,8 @@ namespace TurismoCR.Controllers
 					// setting Neo4j connection
 					var client = new GraphClient(
 						// cambiar password (adrian) por el de su base Neo4j
-						new Uri("http://localhost:7474/db/data"), "neo4j", "adrian"
-					);
+						new Uri("http://localhost:7474/db/data"), "neo4j", "chavacampos14"
+                    );
 					client.Connect();
 					// getting user from Neo4j
 					var userConsulted = client
@@ -157,7 +157,7 @@ namespace TurismoCR.Controllers
 					// setting Neo4j connection
 					var client = new GraphClient(
 						// cambiar password (adrian) por el de su base Neo4j
-						new Uri("http://localhost:7474/db/data"), "neo4j", "adrian"
+						new Uri("http://localhost:7474/db/data"), "neo4j", "chavacampos14"
 					);
 					client.Connect();
 					// getting user from Neo4j

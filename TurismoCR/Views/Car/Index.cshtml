@@ -1,7 +1,8 @@
-﻿@model IEnumerable<TurismoCR.Models.Service>
+﻿@model IEnumerable<TurismoCR.Models.CarService>
 
 @{
     ViewData["Title"] = "Carrito";
+    var Total = 0; 
 }
 
 <h2>Carrito</h2>
@@ -28,17 +29,20 @@
                             <td>@i.Name</td>
                             <td>@i.Description</td>
                             <td>@i.Price</td>
-                            <td>@i.Price</td>
-                            <td>@i.Price</td>
+                            <td>@i.Quanty</td>
+                            <td>@(Int32.Parse(i.Quanty)*Int32.Parse(i.Price))</td>
                             <td>
                                 <input type="submit" value="Eliminar" name="Edit" formaction="@Url.Action("DeleteService", i)" formmethod="post" class="btn btn-danger" />
                             </td>
                         </tr>
+                        Total = Total + (Int32.Parse(i.Quanty) * Int32.Parse(i.Price));
                     }
                 </tbody>
             </table>
+            <span id="xxx">Total= @Total</span>
             <input type="submit" value="Seguir Comprando" name="Edit" formaction="@Url.Action("Index","Home")" formmethod="post" class="btn btn-default" />
             <input type="submit" value="Procesar Orden" name="Edit" formaction="" formmethod="post" class="btn btn-default" />
+            
         }
         else
         {

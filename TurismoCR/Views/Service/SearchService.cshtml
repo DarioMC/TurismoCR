@@ -112,11 +112,13 @@
                        new { value = 20*Int32.Parse(service.Price), text = "20"}
                     },
                   "value",
-                  "text"),"Qty",new { onchange= "AddValue("+i+")" })
+                  "text"),new { onchange= "AddValue("+i+")" })
                     </td>
-                    <td id=@Total></td>
+                    <td id=@Total>@service.Price</td>
                     <td>
-                        <input type="submit" value="Agregar" name="Edit" formaction="@Url.Action("AddService", "Car", service)" formmethod="post" class="btn btn-success" />
+                        <input type="submit" value="Agregar" name="Edit" 
+                               formaction="@Url.Action("AddService", "Car", new CarService(service,"4"))" 
+                                                                    formmethod="post" class="btn btn-success" />
                     </td>
                 </tr>
                 i = i+1;
@@ -124,7 +126,6 @@
              
         </tbody>
     </table>
-    <span id="xxx"></span>
 }
 
 
@@ -139,12 +140,6 @@
 </script>
 
 
-<script>
-$(".comboboxClass").change(function() {
-    var id = $(this).attr("id");
-    $("form").submit();
-})
-</script>
 }
 <style>  
     table#t02 {  
