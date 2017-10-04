@@ -59,8 +59,16 @@
                                 @userName
                             </a>
                         </li>
-						@* TODO add other roles: "Administrator" *@
-                        @if (rolName == "Client") {
+						@if (rolName == "Administrator") 
+						{
+						   <li>
+                                <a asp-area="" asp-controller="User" asp-action="RegisterAdmin">
+                                   Registrar Usuario
+                                </a>
+                            </li>     
+						}
+                        @if (rolName == "Client") 
+						{
                             <li>
                                 <a asp-area="" asp-controller="Service" asp-action="SearchService">
                                     <span class="glyphicon glyphicon-search"></span> Buscar

@@ -8,31 +8,37 @@ using MongoDB.Driver;
 
 namespace TurismoCR.Controllers
 {
-    public class UserController : Controller
-    {
-        public ActionResult Login() {
-            ViewData["Message"] = "Página de inicio de sesión.";
+	public class UserController : Controller
+	{
+		public ActionResult Login()
+		{
+			ViewData["Message"] = "Página de inicio de sesión.";
 			return View();
 		}
 
-        [HttpPost]
-		public ActionResult Auth(User user) {
+		[HttpPost]
+		public ActionResult Auth(User user)
+		{
 			// check if user is well defined
 			var isUserNullOrEmpty = user
-                .GetType()
-                .GetProperties()
-	            .Where(pi => pi.GetValue(user) is string)
-	            .Select(pi => (string)pi.GetValue(user))
-	            .Any(value => String.IsNullOrEmpty(value));
-            if (isUserNullOrEmpty == true) {
+				.GetType()
+				.GetProperties()
+				.Where(pi => pi.GetValue(user) is string)
+				.Select(pi => (string)pi.GetValue(user))
+				.Any(String.IsNullOrEmpty);
+			if (isUserNullOrEmpty == true)
+			{
 				// setting alert message
 				TempData["msg"] = "<script>alert('Hay campos vacíos!');</script>";
-            } else {
-				try {
+			}
+			else
+			{
+				try
+				{
 					// setting Neo4j connection
 					var client = new GraphClient(
 						// cambiar password (adrian) por el de su base Neo4j
-						new Uri("http://localhost:7474/db/data"), "neo4j", "chavacampos14"
+						new Uri("http://localhost:7474/db/data"), "neo4j", "adrian"
 					);
 					client.Connect();
 					// getting user from Neo4j
@@ -43,12 +49,15 @@ namespace TurismoCR.Controllers
 						.Return(userNeo4j => userNeo4j.As<User>())
 						.Results;
 					// if user exist in Neo4j
-					if (userConsulted.Any()) {
+					if (userConsulted.Any())
+					{
 						var foundUser = userConsulted.First();
 						// checking if user is enabled
-						if (foundUser.Enabled == true) {
+						if (foundUser.Enabled == true)
+						{
 							// if password is valid
-							if (foundUser.Password == user.Password) {
+							if (foundUser.Password == user.Password)
+							{
 								// adding user session cookie
 								Response.Cookies.Append("userSession",
 									foundUser.UserName,
@@ -67,64 +76,88 @@ namespace TurismoCR.Controllers
 								);
 								// setting alert message
 								TempData["msg"] = "<script>alert('Excelente, tu usuario ha sido identificado.');</script>";
-							} else {
+							}
+							else
+							{
 								// setting alert message
 								TempData["msg"] = "<script>alert('Contraseña incorrecta.');</script>";
 							}
-						} else {
+						}
+						else
+						{
 							TempData["msg"] = "<script>alert('Tu usuario ha sido desactivado.');</script>";
 						}
-					} else {
+					}
+					else
+					{
 						// setting alert message
 						TempData["msg"] = "<script>alert('No existe el usuario en el sistema.');</script>";
 					}
-				} catch {
+				}
+				catch
+				{
 					// setting alert message
 					TempData["msg"] = "<script>alert('No hay comunicación con Neo4j.');</script>";
-				}    
-            }
-            // let's go to main page
-            return RedirectToAction("Index", "Home");
+				}
+			}
+			// let's go to main page
+			return RedirectToAction("Index", "Home");
 		} // Auth
 
-		public ActionResult LogOut() {
-            if (Request.Cookies["userSession"] != null) {
-                Response.Cookies.Delete("userSession");
+		public ActionResult LogOut()
+		{
+			if (Request.Cookies["userSession"] != null)
+			{
+				Response.Cookies.Delete("userSession");
 			}
-			if (Request.Cookies["rolSession"] != null) {
+			if (Request.Cookies["rolSession"] != null)
+			{
 				Response.Cookies.Delete("rolSession");
 			}
-            return RedirectToAction("Index", "Home");
-        }
+			return RedirectToAction("Index", "Home");
+		}
 
-		public ActionResult Register() {
+		public ActionResult Register()
+		{
 			ViewData["Message"] = "Página de registro.";
 			return View();
 		}
 
-		public ActionResult RegisterOwnerPlace() {
+		public ActionResult RegisterOwnerPlace()
+		{
+			ViewData["Message"] = "Página de registro.";
+			return View();
+		}
+
+		public ActionResult RegisterAdmin()
+		{
 			ViewData["Message"] = "Página de registro.";
 			return View();
 		}
 
 		[HttpPost]
-		public ActionResult Reg(User user) {
+		public ActionResult Reg(User user)
+		{
 			// check if user is well defined
 			var isUserNullOrEmpty = user
 				.GetType()
 				.GetProperties()
 				.Where(pi => pi.GetValue(user) is string)
 				.Select(pi => (string)pi.GetValue(user))
-				.Any(value => String.IsNullOrEmpty(value));
-			if (isUserNullOrEmpty == true) {
+				.Any(String.IsNullOrEmpty);
+			if (isUserNullOrEmpty == true)
+			{
 				// setting alert message
 				TempData["msg"] = "<script>alert('Hay campos vacíos!');</script>";
-            } else {
-				try {
+			}
+			else
+			{
+				try
+				{
 					// setting Neo4j connection
 					var client = new GraphClient(
 						// cambiar password (adrian) por el de su base Neo4j
-						new Uri("http://localhost:7474/db/data"), "neo4j", "chavacampos14"
+						new Uri("http://localhost:7474/db/data"), "neo4j", "adrian"
 					);
 					client.Connect();
 					// getting user from Neo4j
@@ -135,10 +168,13 @@ namespace TurismoCR.Controllers
 						.Return(userNeo4j => userNeo4j.As<User>())
 						.Results;
 					// if user exist in Neo4j
-					if (userConsulted.Any()) {
+					if (userConsulted.Any())
+					{
 						// setting alert message
 						TempData["msg"] = "<script>alert('Este usuario ya está registrado en Neo4j.');</script>";
-					} else {
+					}
+					else
+					{
 						client.Cypher
 							  .Create("(userNeo4j:User {user})")
 							  .WithParam("user", user)
@@ -146,13 +182,15 @@ namespace TurismoCR.Controllers
 						// setting alert message
 						TempData["msg"] = "<script>alert('Usuario exitosamente registrado.');</script>";
 					}
-				} catch {
+				}
+				catch
+				{
 					// setting alert message
 					TempData["msg"] = "<script>alert('No hay comunicación con Neo4j.');</script>";
 				}
-            }
+			}
 			// let's go to main page
 			return RedirectToAction("Index", "Home");
 		} // Reg
-    }
+	}
 }
