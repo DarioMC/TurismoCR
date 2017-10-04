@@ -116,7 +116,10 @@ namespace TurismoCR.Controllers
             }
 
         }
-
+        private ActionResult Follow()
+        {
+            return RedirectToAction("Index", "Home");
+        }
         //Devulve una instancia de la base de datos. 
         private IDatabase RedisInstance()
         {

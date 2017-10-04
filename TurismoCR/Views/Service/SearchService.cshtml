@@ -6,6 +6,7 @@
 @{
     ViewData["Title"] = "Paquetes Turísticos En Oferta";
     List<Service> enabledServices = ViewBag.enabledServices as List<Service>;
+    var i = 1; 
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -30,8 +31,10 @@
             <th>Agregar a carrito</th>
         </thead>
         <tbody>
+            
             @foreach (var service in enabledServices)
             {
+                var Total = "Total" + i; 
                 <tr>
                     <td>@service.Name</td>
                     <td>@service.Description</td>
@@ -48,7 +51,7 @@
                             // setting Neo4j connection
                             var client = new GraphClient(
                                 // cambiar password (adrian) por el de su base Neo4j
-                                new Uri("http://localhost:7474/db/data"), "neo4j", "adrian"
+                                new Uri("http://localhost:7474/db/data"), "neo4j", "chavacampos14"
                             );
                             client.Connect();
                             var ownerConsulted = client
@@ -85,47 +88,64 @@
                             </a>
                         </p>
                     </td>
-                    <td>@Html.DropDownList("dropdown", new SelectList(
+                    <td>@Html.DropDownList("dropdown"+ i, new SelectList(
                   new List<Object>{
-                       new { value = 1 , text = "1"  },
-                       new { value = 2 , text = "2" },
-                       new { value = 3 , text = "3"},
-                       new { value = 4 , text = "4"},
-                       new { value = 5 , text = "5"},
-                       new { value = 6 , text = "6"},
-                       new { value = 7 , text = "7"},
-                       new { value = 8 , text = "8"},
-                       new { value = 9 , text = "9"},
-                       new { value = 10 , text = "10"},
-                       new { value = 11 , text = "11"},
-                       new { value = 12 , text = "12"},
-                       new { value = 13 , text = "13"},
-                       new { value = 14 , text = "14"},
-                       new { value = 15 , text = "15"},
-                       new { value = 16 , text = "16"},
-                       new { value = 17 , text = "17"},
-                       new { value = 18 , text = "18"},
-                       new { value = 19 , text = "19"},
-                       new { value = 20 , text = "20"}
+                       new { value = 1*Int32.Parse(service.Price) , text = "1"  },
+                       new { value = 2*Int32.Parse(service.Price) , text = "2" },
+                       new { value = 3*Int32.Parse(service.Price), text = "3"},
+                       new { value = 4*Int32.Parse(service.Price) , text = "4"},
+                       new { value = 5*Int32.Parse(service.Price), text = "5"},
+                       new { value = 6*Int32.Parse(service.Price), text = "6"},
+                       new { value = 7*Int32.Parse(service.Price), text = "7"},
+                       new { value = 8*Int32.Parse(service.Price), text = "8"},
+                       new { value = 9*Int32.Parse(service.Price), text = "9"},
+                       new { value = 10*Int32.Parse(service.Price), text = "10"},
+                       new { value = 11*Int32.Parse(service.Price), text = "11"},
+                       new { value = 12*Int32.Parse(service.Price), text = "12"},
+                       new { value = 13*Int32.Parse(service.Price), text = "13"},
+                       new { value = 14*Int32.Parse(service.Price), text = "14"},
+                       new { value = 15*Int32.Parse(service.Price), text = "15"},
+                       new { value = 16*Int32.Parse(service.Price), text = "16"},
+                       new { value = 17*Int32.Parse(service.Price), text = "17"},
+                       new { value = 18*Int32.Parse(service.Price), text = "18"},
+                       new { value = 19*Int32.Parse(service.Price), text = "19"},
+                       new { value = 20*Int32.Parse(service.Price), text = "20"}
                     },
                   "value",
-                  "text"),"Qty", new { @class="from-control"})
+                  "text"),"Qty",new { onchange= "AddValue("+i+")" })
                     </td>
-                    <td>@service.Price</td>
+                    <td id=@Total></td>
                     <td>
                         <input type="submit" value="Agregar" name="Edit" formaction="@Url.Action("AddService", "Car", service)" formmethod="post" class="btn btn-success" />
                     </td>
                 </tr>
+                i = i+1;
              }
+             
         </tbody>
     </table>
+    <span id="xxx"></span>
 }
+
+
+@section Scripts {
+ 
+<script type="text/javascript">
+        function AddValue(i)
+        {
+            var total = $("#dropdown" + i + " Option:Selected").val();
+            $("#Total"+i).text(total);  
+        }
+</script>
+
+
 <script>
 $(".comboboxClass").change(function() {
     var id = $(this).attr("id");
     $("form").submit();
-}
+})
 </script>
+}
 <style>  
     table#t02 {  
         width: 100%;  
