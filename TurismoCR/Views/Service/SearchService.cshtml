@@ -6,7 +6,9 @@
 @{
     ViewData["Title"] = "Paquetes Turísticos En Oferta";
     List<Service> enabledServices = ViewBag.enabledServices as List<Service>;
-    var i = 1; 
+    var i = 1;
+    var quant = 1; 
+    
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -99,26 +101,33 @@
                        new { value = 7*Int32.Parse(service.Price), text = "7"},
                        new { value = 8*Int32.Parse(service.Price), text = "8"},
                        new { value = 9*Int32.Parse(service.Price), text = "9"},
-                       new { value = 10*Int32.Parse(service.Price), text = "10"},
-                       new { value = 11*Int32.Parse(service.Price), text = "11"},
-                       new { value = 12*Int32.Parse(service.Price), text = "12"},
-                       new { value = 13*Int32.Parse(service.Price), text = "13"},
-                       new { value = 14*Int32.Parse(service.Price), text = "14"},
-                       new { value = 15*Int32.Parse(service.Price), text = "15"},
-                       new { value = 16*Int32.Parse(service.Price), text = "16"},
-                       new { value = 17*Int32.Parse(service.Price), text = "17"},
-                       new { value = 18*Int32.Parse(service.Price), text = "18"},
-                       new { value = 19*Int32.Parse(service.Price), text = "19"},
-                       new { value = 20*Int32.Parse(service.Price), text = "20"}
+                       new { value = 10*Int32.Parse(service.Price), text = "10"}
                     },
                   "value",
                   "text"),new { onchange= "AddValue("+i+")" })
                     </td>
                     <td id=@Total>@service.Price</td>
                     <td>
-                        <input type="submit" value="Agregar" name="Edit" 
-                               formaction="@Url.Action("AddService", "Car", new CarService(service,"4"))" 
-                                                                    formmethod="post" class="btn btn-success" />
+                        <!-- Problema !!!! NO se puede mezclar javascript con C#  Se le pone el parametro fijo a la funcion 
+                            Si se pudiera hacer tal vez una variable global, pero no se puede pasar por parametro service a una 
+                            funcion de javascript. 
+                            $ajax tampoco es una solucion. 
+                            <input type="submit" value="Agregar" name="Edit" onclick="AddService("i,service");" 
+                                class="btn btn-success" />
+                           
+                            function AddService(i, ser) {
+                            var Quant = $("#dropdown" + i + " Option:Selected").text();
+                            $("#Total" + i).text(Quant);
+            
+                            }
+
+                            Cear un array de servicios coger la pos y accerder al array de servicio mediante el i
+
+                            -->
+                        
+                        <input type="submit" value="Agregar" name="Edit" formaction="@Url.Action("AddService", "Car", new CarService(service,"7"))" 
+                               formmethod="post" class="btn btn-success" />
+
                     </td>
                 </tr>
                 i = i+1;
@@ -126,16 +135,20 @@
              
         </tbody>
     </table>
-}
+    <span id="xxx"></span>
+}   
 
 
 @section Scripts {
- 
+<!-- Funcion para cambiar a valor la cantidad -->
 <script type="text/javascript">
         function AddValue(i)
-        {
+        {    
             var total = $("#dropdown" + i + " Option:Selected").val();
-            $("#Total"+i).text(total);  
+            $("#Total" + i).text(total);  
+            var value = $("#dropdown" + i + " Option:Selected").text();
+            
+            
         }
 </script>
 
