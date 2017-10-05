@@ -3,24 +3,142 @@
 
 @{
     ViewData["Title"] = "Edición de paquete";
+    Service serviceToEdit = ViewBag.serviceToEdit as Service;
 }
 
 <h2>@ViewData["Title"]</h2>
 
-<form method="post" enctype="multipart/form-data" asp-controller="Service" asp-action="EditValidService">
-    <h4>Ingrese el identificador del servicio </h4>
+<form method="post" enctype="multipart/form-data" asp-controller="Service" asp-action="EditServicePost">
+    <h4>Edite los datos del paquete turístico</h4>
     <hr/>
-    @* Service ID *@
+	@* Service ID *@
     <div class="form-group row">
-        <label class="col-sm-2 col-form-label" for="serviceID">Identificador</label>
+        <label class="col-sm-2 col-form-label" for="serviceID">GUID</label>
         <div class="col-sm-3">
-            <input class="form-control" id="serviceID" type="text" name="serviceID"/>
+            <input class="form-control" id="serviceID" 
+                type="text" name="serviceID" value="@serviceToEdit.RandID" readonly="readonly"/>
         </div>
     </div>
+    @* Service Name *@
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="serviceName">Nombre</label>
+        <div class="col-sm-3">
+            <input class="form-control" id="serviceName" 
+                type="text" name="serviceName" value="@serviceToEdit.Name"/>
+        </div>
+    </div>
+    @* Service Description *@
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="serviceDescription">Descripción</label>
+        <div class="col-sm-3">
+            <input class="form-control" id="serviceDescription" 
+                type="text" name="serviceDescription" value="@serviceToEdit.Description"/>
+        </div>
+    </div>
+    @* Service Category *@
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="serviceCategory">Categoría</label>
+        <div class="col-sm-3">
+            <input class="form-control" id="serviceCategory" 
+                type="text" name="serviceCategory" value="@serviceToEdit.Category"/>
+        </div>
+    </div>
+    @* Service Province *@
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="serviceProvince">Provincia</label>
+        <div class="col-sm-3">
+            <input class="form-control" id="serviceProvince" 
+                type="text" name="serviceProvince" value="@serviceToEdit.Province"/>
+        </div>
+    </div>
+    @* Service Canton *@
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="serviceCanton">Cantón</label>
+        <div class="col-sm-3">
+            <input class="form-control" id="serviceCanton" 
+                type="text" name="serviceCanton" value="@serviceToEdit.Canton"/>
+        </div>
+    </div>
+    @* Service District *@
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="serviceDistrict">Distrito</label>
+        <div class="col-sm-3">
+            <input class="form-control" id="serviceDistrict" 
+                type="text" name="serviceDistrict" value="@serviceToEdit.District"/>
+        </div>
+    </div>
+    @* Service Latitude *@
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="serviceLatitude">Latitud</label>
+        <div class="col-sm-3">
+            <input class="form-control" id="serviceLatitude" 
+                type="text" name="serviceLatitude" value="@serviceToEdit.Latitude"/>
+        </div>
+    </div>
+    @* Service Longitude *@
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="serviceLongitude">Longitud</label>
+        <div class="col-sm-3">
+            <input class="form-control" id="serviceLongitude" 
+                type="text" name="serviceLongitude" value="@serviceToEdit.Longitude"/>
+        </div>
+    </div>
+    @* Service StartDate *@
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="selectServiceStartDate">Fecha de inicio</label>
+        <div class="col-sm-3">
+                <input class="form-control" id="selectServiceStartDate" 
+                    type="text" name="selectServiceStartDate" value="@serviceToEdit.StartDate"/>
+        </div>
+    </div>
+    @* Service EndDate *@
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="selectServiceEndDate">Fecha de finalización</label>
+        <div class="col-sm-3">
+            <input class="form-control" id="selectServiceEndDate" 
+                type="text" name="selectServiceEndDate" value="@serviceToEdit.EndDate"/>
+        </div>
+    </div>
+    @* Service Price *@
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="servicePrice">Precio</label>
+        <div class="col-sm-3">
+            <input class="form-control" id="servicePrice" 
+                type="text" name="servicePrice" value="@serviceToEdit.Price"/>
+        </div>
+    </div>
+    @* Service Enabled *@
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="serviceEnabled">Estado</label>
+        <div class="col-sm-3">
+            <select class="form-control" id="serviceEnabled" name="serviceEnabled">
+                <option value="false">Desactivado</option>
+                <option value="true" selected="selected">Activado</option>
+            </select>
+        </div>
+    </div>
+	@* Service Picture ID *@
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="pictureID">ID Imagen</label>
+        <div class="col-sm-4">
+            <input class="form-control" 
+                type="text" id="pictureID" name="pictureID" value="@serviceToEdit.PictureID"
+			    readonly="readonly"/>
+        </div>
+    </div>
+    @* Service Picture *@
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="pictureFile">Imagen</label>
+        <div class="col-sm-4">
+            <input class="form-control" 
+                type="file" id="pictureFile" name="pictureFile"/>
+        </div>
+    </div>
+    <br>
     @* Add Btn *@
     <div class="form-group row">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Validar" class="btn btn-success" />
+            <input type="submit" value="Editar" class="btn btn-success" />
         </div>
     </div>
 </form>
