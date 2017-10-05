@@ -8,11 +8,13 @@ namespace TurismoCR.Models
     [Serializable]
     public class Service
     {
-        #region Properties
+		#region Properties
 
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public String _id { get; set; }
+		[BsonId]
+		[BsonRepresentation(BsonType.ObjectId)]
+		public String _id { get; set; }
+
+        public String RandID { get; set; }
 
         public String OwnerUsername { get; set; }
 
@@ -40,9 +42,7 @@ namespace TurismoCR.Models
 
         public Boolean Enabled { get; set; }
 
-        public String Picture { get; set; }
-
-
+        public String PictureID { get; set; }
 
         #endregion
 
@@ -50,11 +50,12 @@ namespace TurismoCR.Models
 
         public Service() { }
 
-        public Service(String ownerUsername, String name,
+        public Service(String randID, String ownerUsername, String name,
                    String description, String category, String province, String canton,
                    String district, String latitude, String longitude, String startDate,
-                   String endDate, String price, Boolean enabled, String picture)
+                   String endDate, String price, Boolean enabled, String pictureID)
         {
+            RandID = randID;
             OwnerUsername = ownerUsername;
             Name = name;
             Description = description;
@@ -68,11 +69,12 @@ namespace TurismoCR.Models
             EndDate = endDate;
             Price = price;
             Enabled = enabled;
-            Picture = picture;
+            PictureID = pictureID;
         }
 
         public Service(Service ser)
         {
+            // rand
             OwnerUsername = ser.OwnerUsername;
             Name = ser.Name;
             Description = ser.Description;
@@ -86,8 +88,9 @@ namespace TurismoCR.Models
             EndDate = ser.EndDate;
             Price = ser.Price;
             Enabled = ser.Enabled;
-            Picture = ser.Picture;
+            PictureID = ser.PictureID;
         }
+
         public static implicit operator UpdateDefinition<object>(Service v)
         {
             throw new NotImplementedException();

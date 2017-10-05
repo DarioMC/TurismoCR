@@ -23,7 +23,7 @@ namespace TurismoCR.Controllers
 
 		[HttpPost("AddServicePost")]
 		public async Task<ActionResult> AddServicePost(
-                                           String serviceName,
+										   String serviceName,
 										   String serviceDescription,
 										   String serviceCategory,
 										   String serviceProvince,
@@ -35,77 +35,85 @@ namespace TurismoCR.Controllers
 										   String selectServiceEndDate,
 										   String servicePrice,
 										   Boolean serviceEnabled,
-										   IFormFile pictureFile)
-		{
-			// create service
-			Service service = new Service(Request.Cookies["userSession"],
-										  serviceName,
-										  serviceDescription,
-										  serviceCategory,
-										  serviceProvince,
-										  serviceCanton,
-										  serviceDistrict,
-										  serviceLatitude,
-										  serviceLongitude,
-										  selectServiceStartDate,
-										  selectServiceEndDate,
-										  servicePrice,
-										  serviceEnabled,
-										  "picture");
-			// save image on service
-			try
-			{
-				if (pictureFile.Length > 0)
-				{
-					using (var ms = new MemoryStream())
-					{
-						pictureFile.CopyTo(ms);
-						var fileBytes = ms.ToArray();
-						string s = Convert.ToBase64String(fileBytes);
-						// act on the Base64 data
-						service.Picture = s;
-					}
-				}
-			}
-			catch
-			{
-				TempData["msg"] = "<script>alert('No se pudo cargar la imagen!');</script>";
-			}
-			// check if service is well defined
-			var isServiceNullOrEmpty = service
-				.GetType()
-				.GetProperties()
-				.Where(pi => pi.GetValue(service) is string)
-				.Select(pi => (string)pi.GetValue(service))
-				.Any(String.IsNullOrEmpty);
-			if (isServiceNullOrEmpty == true)
-			{
+                                           IFormFile pictureFile) 
+        {
+            // check if parameters are null or empty
+            if (String.IsNullOrEmpty(serviceName)
+                || String.IsNullOrEmpty(serviceDescription)
+                || String.IsNullOrEmpty(serviceCategory)
+                || String.IsNullOrEmpty(serviceLatitude)
+                || String.IsNullOrEmpty(serviceLongitude)
+                || String.IsNullOrEmpty(selectServiceStartDate)
+                || String.IsNullOrEmpty(selectServiceEndDate)
+                || String.IsNullOrEmpty(servicePrice)) 
+            {
 				// setting alert message
 				TempData["msg"] = "<script>alert('Hay campos vacíos!');</script>";
-			}
-			else
-			{
-				try
-				{
+            }
+            else 
+            {
+                // create connection with MongoDB
+                try 
+                {
 					// setting MongoDB connection
 					var mongoClient = new MongoClient("mongodb://localhost");
 					var db = mongoClient.GetDatabase("TurismoCR");
-					// getting reference to services
-					var serviceCollection = db.GetCollection<Service>("Services");
-					// inserting service by reference
-					await serviceCollection.InsertOneAsync(service);
+                    // insert picture if exists
+                    var pictureRandID = "";
+					try
+					{
+						if (pictureFile.Length > 0)
+						{
+							using (var ms = new MemoryStream())
+							{
+								pictureFile.CopyTo(ms);
+								var pictureBytes = ms.ToArray();
+								var pictureStr = Convert.ToBase64String(pictureBytes);
+								// act on the Base64 data
+                                var pictures = db.GetCollection<PictureService>("Pictures");
+                                // inserting picture service by reference
+                                pictureRandID = Guid.NewGuid().ToString();
+                                var pictureService = new PictureService(pictureStr, pictureRandID);
+								await pictures.InsertOneAsync(pictureService);
+							}
+						}
+					}
+					catch
+					{
+						TempData["msg"] = "<script>alert('No se pudo cargar la imagen!');</script>";
+					}
+					// insert service
+					var service = new Service(
+                        Guid.NewGuid().ToString(),
+                        Request.Cookies["userSession"],
+					    serviceName,
+					    serviceDescription,
+					    serviceCategory,
+					    serviceProvince,
+					    serviceCanton,
+					    serviceDistrict,
+					    serviceLatitude,
+					    serviceLongitude,
+					    selectServiceStartDate,
+					    selectServiceEndDate,
+					    servicePrice,
+					    serviceEnabled,
+					    pictureRandID
+                    );
+                    var services = db.GetCollection<Service>("Services");
+                    await services.InsertOneAsync(service);
 					// setting alert message
 					TempData["msg"] = "<script>alert('Paquete agregado exitosamente.');</script>";
-				}
-				catch
-				{
+                }
+                catch 
+                {
 					// setting alert message
-					TempData["msg"] = "<script>alert('No hay comunicación con MongoDB.');</script>";
-				}
-			}
+					TempData["msg"] = "<script>alert('No hay comunicación con MongoDB.');</script>"; 
+                }
+            }
 			// let's go to main page
 			return RedirectToAction("Index", "Home");
-		}
+        }
 
 		public async Task<ActionResult> ShowServices()
 		{
@@ -118,9 +126,8 @@ namespace TurismoCR.Controllers
 				var collection = db.GetCollection<Service>("Services");
 				var ownerUsername = Request.Cookies["userSession"];
 				var filter = Builders<Service>.Filter.Eq("OwnerUsername", ownerUsername);
-				var sort = Builders<Service>.Sort.Ascending("Category");
 				// filter services for current owner user
-				var result = await collection.Find(filter).Sort(sort).ToListAsync();
+				var result = await collection.Find(filter).ToListAsync();
 				if (result.Count == 0)
 				{
 					// setting alert message
@@ -145,13 +152,16 @@ namespace TurismoCR.Controllers
 
 		}
 
-		public ActionResult EditService()
+		/*public ActionResult EditService()
 		{
 			ViewData["Message"] = "Página para editar paquete turístico";
             return View();
-		}
+		}*/
 
-        [HttpPost("EditValidService")]
+		/*[HttpPost("EditService")]
+		public async Task<ActionResult> EditService(String serviceID)*/
+
+        /*[HttpPost("EditValidService")]
 		public async Task<ActionResult> EditValidService(String serviceID)
 		{
             try
@@ -189,10 +199,11 @@ namespace TurismoCR.Controllers
             }
 			// let's go to main page
 			return RedirectToAction("Index", "Home");
-		}
+		}*/
 
-		[HttpPost("EditServicePost")]
+		/*[HttpPost("EditServicePost")]
 		public async Task<ActionResult> EditServicePost(
+                                           String serviceID, 
 										   String serviceName,
 										   String serviceDescription,
 										   String serviceCategory,
@@ -208,20 +219,22 @@ namespace TurismoCR.Controllers
 										   IFormFile pictureFile)
 		{
             // create service
-			Service service = new Service(Request.Cookies["userSession"],
-										  serviceName,
-										  serviceDescription,
-										  serviceCategory,
-										  serviceProvince,
-										  serviceCanton,
-										  serviceDistrict,
-										  serviceLatitude,
-										  serviceLongitude,
-										  selectServiceStartDate,
-										  selectServiceEndDate,
-										  servicePrice,
-										  serviceEnabled,
-										  "picture");
+			Service service = new Service(
+                serviceID,
+                Request.Cookies["userSession"],
+			    serviceName,
+			    serviceDescription,
+			    serviceCategory,
+			    serviceProvince,
+			    serviceCanton,
+			    serviceDistrict,
+			    serviceLatitude,
+			    serviceLongitude,
+			    selectServiceStartDate,
+			    selectServiceEndDate,
+			    servicePrice,
+			    serviceEnabled,
+			    "picture");
 			// save image on service
 			try
 			{
@@ -233,7 +246,7 @@ namespace TurismoCR.Controllers
 						var fileBytes = ms.ToArray();
 						string s = Convert.ToBase64String(fileBytes);
 						// act on the Base64 data
-						service.Picture = s;
+						service.PictureID = s;
 					}
 				}
 			}
@@ -271,16 +284,15 @@ namespace TurismoCR.Controllers
 			}
 			// let's go to main page
 			return RedirectToAction("Index", "Home");
-		}
+		}*/
 
-		public ActionResult DeleteService()
+		/*public ActionResult DeleteService()
 		{
 			ViewData["Message"] = "Página para borrar paquete turístico";
 			return View();
-		}
-
-		[HttpPost("DeleteServicePost")]
-        public async Task<ActionResult> DeleteServicePost(String serviceID)
+		}*/
+        
+        public async Task<ActionResult> DeleteService(String serviceID)
         {
 			try
 			{
@@ -288,17 +300,24 @@ namespace TurismoCR.Controllers
 				var mongoClient = new MongoClient("mongodb://localhost");
 				var db = mongoClient.GetDatabase("TurismoCR");
 				// getting reference to services
-				var collection = db.GetCollection<Service>("Services");
-				var filter = Builders<Service>.Filter.Eq("_id", serviceID);
+				var servCollection = db.GetCollection<Service>("Services");
+				var servFilter = Builders<Service>.Filter.Eq("RandID", serviceID);
 				// filter services for specific service id
-				var result = await collection.Find(filter).ToListAsync();
+				var result = await servCollection.Find(servFilter).ToListAsync();
                 // if theres any result
                 if (result.Count != 0)
                 {
-                    // delete service
-                    await collection.DeleteOneAsync(filter);
-                    // setting alert message
-                    TempData["msg"] = "<script>alert('El paquete ha sido borrado');</script>";
+                    // get service
+                    var service = result.First();
+					// getting reference to pictures
+                    var picCollection = db.GetCollection<PictureService>("Pictures");
+                    var picFilter = Builders<PictureService>.Filter.Eq("RandID", service.PictureID);
+					// delete service
+					await servCollection.DeleteOneAsync(servFilter);
+					// delete picture
+                    await picCollection.DeleteOneAsync(picFilter);
+					// setting alert message
+					TempData["msg"] = "<script>alert('El paquete ha sido borrado.');</script>";
                 }
 			}
 			catch
@@ -312,8 +331,6 @@ namespace TurismoCR.Controllers
 
 		public async Task<ActionResult> SearchService()
 		{
-            
-
 			try
 			{
 				// setting MongoDB connection
@@ -346,6 +363,7 @@ namespace TurismoCR.Controllers
 			// let's go to main page
 			return RedirectToAction("Index", "Home");
 		}
+
         public List<int> CreateintDropdown()
         {
             var templist = new List<int>();
@@ -353,7 +371,6 @@ namespace TurismoCR.Controllers
             {
                 templist.Add(i);
             }
-
             return templist; 
         }
 	}
