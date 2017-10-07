@@ -1,19 +1,33 @@
 ﻿@using MongoDB.Bson;
 @using static System.Convert;
 @using Neo4jClient;
-@model TurismoCR.Models.Service;
+@model TurismoCR.Models.CarService;
 
 @{
     ViewData["Title"] = "Paquetes Turísticos En Oferta";
     List<Service> enabledServices = ViewBag.enabledServices as List<Service>;
+    List<int> Cant = new List<int>();
+    List<Object> drop = new List<Object>{
+                       new { value = 1 , text = "1"  },
+                       new { value = 2, text = "2" },
+                       new { value = 3, text = "3"},
+                       new { value = 4, text = "4"},
+                       new { value = 5, text = "5"},
+                       new { value = 6, text = "6"},
+                       new { value = 7, text = "7"},
+                       new { value = 8, text = "8"},
+                       new { value = 9, text = "9"},
+                       new { value = 10, text = "10"}
+                    };
+
     var i = 1;
-    var quant = 1; 
-    
+    var tempcar = new CarService();
+    var val = "3";
 }
 
 <h2>@ViewData["Title"]</h2>
 <br>
-@using (Html.BeginForm(FormMethod.Post))
+@using (Html.BeginForm(null,null,FormMethod.Post))
 {
     <table id="t02">
         <thead>
@@ -90,21 +104,11 @@
                             </a>
                         </p>
                     </td>
-                    <td>@Html.DropDownList("dropdown"+ i, new SelectList(
-                  new List<Object>{
-                       new { value = 1*Int32.Parse(service.Price) , text = "1"  },
-                       new { value = 2*Int32.Parse(service.Price) , text = "2" },
-                       new { value = 3*Int32.Parse(service.Price), text = "3"},
-                       new { value = 4*Int32.Parse(service.Price) , text = "4"},
-                       new { value = 5*Int32.Parse(service.Price), text = "5"},
-                       new { value = 6*Int32.Parse(service.Price), text = "6"},
-                       new { value = 7*Int32.Parse(service.Price), text = "7"},
-                       new { value = 8*Int32.Parse(service.Price), text = "8"},
-                       new { value = 9*Int32.Parse(service.Price), text = "9"},
-                       new { value = 10*Int32.Parse(service.Price), text = "10"}
-                    },
+                    <td>
+                        @Html.DropDownList("dropdown"+ i, new SelectList(@drop
+                 ,
                   "value",
-                  "text"),new { onchange= "AddValue("+i+")" })
+                  "text"),new { onchange= "AddValue("+i+","+service.Price+")" })
                     </td>
                     <td id=@Total>@service.Price</td>
                     <td>
@@ -122,33 +126,114 @@
                             }
 
                             Cear un array de servicios coger la pos y accerder al array de servicio mediante el i
+                            
+                            <input type="submit" value="Agregar" name="Edit" formaction="@Url.Action("AddService", "Car", new CarService(service,val))" 
+                               formmethod="post" class="btn btn-success"/> 
 
+                            $.ajax({
+                            url: 'Car/Add',
+                            data: { qnt: qnt, name: name, price: price, photo: photo },
+                            type: "POST",
+                            success: function () {
+                                alert('Added');
+                            },
+                            error:function (xhr, ajaxOptions, thrownError){
+                                      //some errror, some show err msg to user and log the error
+                                      alert("Error al agregar el servicio");
+
+                            }
+                                });
+
+                            $.ajax({
+                                url: '@Url.Action("Add","Car")',
+                              data: { qnt: qnt, name: name, price: price,photo:photo },
+                          success: function(data){
+                            //call is successfully completed and we got result in data
+                              alert("Se ha agregado el servicio");
+                          },
+                          error:function (xhr, ajaxOptions, thrownError){
+                                          //some errror, some show err msg to user and log the error
+                                          alert("Error al agregar la funcion");
+
+                                        }
+                          });
                             -->
                         
-                        <input type="submit" value="Agregar" name="Edit" formaction="@Url.Action("AddService", "Car", new CarService(service,"7"))" 
-                               formmethod="post" class="btn btn-success" />
+                        <input type="button" value="Agregar" name="Edit" onclick="AddService(@i,
+                               '@service._id',
+                               '@service.RandID',
+                               '@service.OwnerUsername',
+                               '@service.Name',
+                               '@service.Description',
+                               '@service.Category',
+                               '@service.Province',
+                               '@service.Canton',
+                               '@service.District',
+                               '@service.Latitude',
+                               '@service.Longitude',
+                               '@service.StartDate',
+                               '@service.EndDate',
+                               '@service.Price',
+                               '@service.Enabled',
+                               '@service.PictureID')"
+                               class="btn btn-success" />
 
                     </td>
                 </tr>
-                i = i+1;
-             }
+                
+                i = i + 1;
+             }  
              
         </tbody>
+
     </table>
-    <span id="xxx"></span>
 }   
 
 
 @section Scripts {
+
 <!-- Funcion para cambiar a valor la cantidad -->
-<script type="text/javascript">
-        function AddValue(i)
-        {    
+<script type="text/javascript" language="javascript">
+
+        function AddValue(i,price)
+        {
             var total = $("#dropdown" + i + " Option:Selected").val();
-            $("#Total" + i).text(total);  
-            var value = $("#dropdown" + i + " Option:Selected").text();
+
+            $("#Total" + i).text(total * price);
+            $("#Quanty").text(total);
             
-            
+    }
+
+
+    function AddService(i, id, randid, ownn, name, descrip, 
+                    cat,prov,cant,dist,lon,lat,dstart,dend,price,ena, photo)
+        {
+            var qnt = $("#dropdown" + i + " Option:Selected").val();
+
+
+            $.post("@Url.Action("Add","Car")", {
+                qnt: qnt,
+                id:id,
+                randid: randid,
+                ownn: ownn,
+                name: name,
+                descrip: descrip,
+                cat: cat,
+                prov: prov,
+                cant: cant,
+                dist: dist,
+                lon: lon,
+                lat: lat,
+                dstart: dstart,
+                dend: dend,
+                price: price,
+                ena: ena,
+                photo: photo
+                    }, function (data) {
+                    alert("Se ha guardado el servicio al carrito");
+                });
+
+
         }
 </script>
 
@@ -165,7 +250,7 @@
     table#t02 tr:nth-child(odd) {  
         background-color: #fff;  
     }  
-    table#t02 th {  
+    table#t02 th {      
         color: white;  
         background-color:#50896d;  
     }  

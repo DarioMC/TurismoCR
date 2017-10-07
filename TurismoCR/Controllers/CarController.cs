@@ -124,10 +124,41 @@ namespace TurismoCR.Controllers
             }
 
         }
+
+        [HttpPost]
+        public void Add(string qnt, string id, string randid, string ownn, string name, string descrip,
+                    string cat, string prov, string cant, string dist, string lon, string lat, string dstart,
+                    string dend, string price, string ena, string photo) 
+        {
+            Service tempser = new Service(randid,ownn,name,descrip,cat,prov,cant,dist,lon,lat,dstart,dend,price,
+                                                                        true,photo);
+            CarService tempCser = new CarService(tempser, qnt);
+
+            var redisDB = RedisInstance();
+            var ownerUsername = Request.Cookies["userSession"];
+
+
+            String result = redisDB.StringGet(ownerUsername);
+            var tempcar = JsonConvert.DeserializeObject<Carrito>(result);
+            tempcar.Products.Add(tempCser);
+
+            String json = JsonConvert.SerializeObject(tempcar);
+            redisDB.StringSet(ownerUsername, json);
+
+
+            var f = "goood ";
+
+        }
+
         private ActionResult Follow()
         {
             return RedirectToAction("Index", "Home");
         }
+
+
+
+
+
         //Devulve una instancia de la base de datos. 
         private IDatabase RedisInstance()
         {
