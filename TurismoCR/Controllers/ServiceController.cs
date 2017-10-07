@@ -9,13 +9,16 @@ using MongoDB.Driver;
 using TurismoCR.Models;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using TurismoCR.Data;
 
 namespace TurismoCR.Controllers
 {
 	public class ServiceController : Controller
 	{
 
-		public ActionResult AddService()
+        private readonly TurismoCRContext _context;
+
+        public ActionResult AddService()
 		{
 			ViewData["Message"] = "Página para agregar paquete turístico";
 			return View();
@@ -371,6 +374,45 @@ namespace TurismoCR.Controllers
                 templist.Add(i);
             }
             return templist; 
+        }
+
+        public async Task<ActionResult> ObtenerRecomendacionesAsync()
+        {
+            List<String> ordenesRecientes = new List<String>();
+            List<List<Service>> recomendaciones = new List<List<Service>>();
+            String usuarioId = Request.Cookies["userSession"].ToString();
+
+            using (_context)
+            {
+                var ordenes = (from p in _context.Ordenes
+                               where p.Usuario.Equals(usuarioId)
+                               orderby p.Fecha ascending
+                               select p).Take(5);
+
+                foreach (Orden orden in ordenes)
+                {
+                    ordenesRecientes.Add(orden.Categoria);
+                }
+
+                foreach (String cat in ordenesRecientes)
+                {
+                    // setting MongoDB connection
+                    var mongoClient = new MongoClient("mongodb://localhost");
+                    var db = mongoClient.GetDatabase("TurismoCR");
+                    // getting reference to services
+                    var collection = db.GetCollection<Service>("Services");
+                    var filter = Builders<Service>.Filter.Eq("Category", cat);
+                    // filter services for current owner user
+                    var result = await collection.Find(filter).ToListAsync();
+
+                    recomendaciones.Add(result);
+                }
+
+                ViewBag.Recomendaciones = recomendaciones;
+
+                return View();
+            }
+        }
         }
 	}
 }
