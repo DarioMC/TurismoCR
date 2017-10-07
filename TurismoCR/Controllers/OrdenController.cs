@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using TurismoCR.Data;
 using TurismoCR.Models;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using StackExchange.Redis;
 
 namespace TurismoCR.Controllers
 {
@@ -60,7 +62,35 @@ namespace TurismoCR.Controllers
 			return View();
 		}
 
-        public ActionResult InsertaOrdenCompra(Orden nuevaOrden)
+        public ActionResult InsertarOrdenCompra()
+        {
+            var redisDB = RedisInstance();
+            var ownerUsername = Request.Cookies["userSession"];
+
+            String result = redisDB.StringGet(ownerUsername);
+            var tempcar = JsonConvert.DeserializeObject<Carrito>(result);
+
+            foreach(CarService producto in tempcar.Products)
+            {
+                Orden tmpOrden = new Orden(tempcar.IdCarrito.ToString(), ownerUsername.ToString(), DateTime.Now, producto.Category, producto.Description, Convert.ToInt32(producto.Price));
+                try
+                {
+                    _context.Add(tmpOrden);
+                    _context.SaveChanges();
+                }
+                catch
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+
+            }
+
+            return RedirectToAction("Index", "Home");
+
+        }
+
+        /*public ActionResult InsertaOrdenCompra(Orden nuevaOrden)
         {
             try
             {
@@ -78,7 +108,7 @@ namespace TurismoCR.Controllers
                 //Agregar redireccion de interfaz en vez de View.
                 return View();
             }
-        }
+        }*/
 
 		public ActionResult VerOrdenes() {
 			ViewData["Message"] = "Página para ver órdenes de compras realizadas.";
@@ -116,5 +146,15 @@ namespace TurismoCR.Controllers
                 return View();
             }
         }
+
+
+        private IDatabase RedisInstance()
+        {
+            var products = new List<Service>();
+            ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("localhost");
+            IDatabase redisDB = redis.GetDatabase();
+            return redisDB;
+        }
     }
+
 }
