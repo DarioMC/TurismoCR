@@ -18,6 +18,11 @@ namespace TurismoCR.Controllers
 
         private readonly TurismoCRContext _context;
 
+        public ServiceController(TurismoCRContext context)
+        {
+            _context = context;
+        }
+
         public ActionResult AddService()
 		{
 			ViewData["Message"] = "Página para agregar paquete turístico";
@@ -376,43 +381,59 @@ namespace TurismoCR.Controllers
             return templist; 
         }
 
-        public async Task<ActionResult> ObtenerRecomendacionesAsync()
+        public async Task<ActionResult> ObtenerRecomendaciones()
         {
-            List<String> ordenesRecientes = new List<String>();
+            //variables necesarias.
+            HashSet<String> ordenesRecientes = new HashSet<string>();
             List<List<Service>> recomendaciones = new List<List<Service>>();
             String usuarioId = Request.Cookies["userSession"].ToString();
 
             using (_context)
             {
-                var ordenes = (from p in _context.Ordenes
+                //busca las ultimas ordenes del usuario.
+                var ordenes = from p in _context.Ordenes
                                where p.Usuario.Equals(usuarioId)
                                orderby p.Fecha ascending
-                               select p).Take(5);
+                               select p;
 
-                foreach (Orden orden in ordenes)
+                //si existen ordenes obtiene recomendaciones.
+                if (ordenes != null)
                 {
-                    ordenesRecientes.Add(orden.Categoria);
-                }
+                    //obtiene las categorias de las ultimas ordenes.
+                    foreach (Orden orden in ordenes)
+                    {
+                        //agrega a la lista las categorias.
+                        ordenesRecientes.Add(orden.Categoria);
+                    }
 
-                foreach (String cat in ordenesRecientes)
+                    //consulta la lista final de categorias.
+                    foreach (String cat in ordenesRecientes)
+                    {
+                        // setting MongoDB connection
+                        var mongoClient = new MongoClient("mongodb://localhost");
+                        var db = mongoClient.GetDatabase("TurismoCR");
+                        // getting reference to services
+                        var collection = db.GetCollection<Service>("Services");
+                        var filter = Builders<Service>.Filter.Eq("Category", cat);
+                        // filter services for current owner user
+                        var result = await collection.Find(filter).ToListAsync();
+                        
+                        //guarda el resultado de recomendaciones en la lista.
+                        recomendaciones.Add(result);
+                    }
+                    
+                    //lista de recomendaciones encontradas.
+                    ViewBag.Recomendaciones = recomendaciones;
+
+                    return View();
+                }
+                else
                 {
-                    // setting MongoDB connection
-                    var mongoClient = new MongoClient("mongodb://localhost");
-                    var db = mongoClient.GetDatabase("TurismoCR");
-                    // getting reference to services
-                    var collection = db.GetCollection<Service>("Services");
-                    var filter = Builders<Service>.Filter.Eq("Category", cat);
-                    // filter services for current owner user
-                    var result = await collection.Find(filter).ToListAsync();
-
-                    recomendaciones.Add(result);
+                    //lista vacía de recomendaciones
+                    ViewBag.Recomendaciones = recomendaciones;
+                    return View();
                 }
-
-                ViewBag.Recomendaciones = recomendaciones;
-
-                return View();
             }
-        }
         }
 	}
 }
