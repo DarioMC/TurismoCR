@@ -112,53 +112,6 @@
                     </td>
                     <td id=@Total>@service.Price</td>
                     <td>
-                        <!-- Problema !!!! NO se puede mezclar javascript con C#  Se le pone el parametro fijo a la funcion 
-                            Si se pudiera hacer tal vez una variable global, pero no se puede pasar por parametro service a una 
-                            funcion de javascript. 
-                            $ajax tampoco es una solucion. 
-                            <input type="submit" value="Agregar" name="Edit" onclick="AddService("i,service");" 
-                                class="btn btn-success" />
-                           
-                            function AddService(i, ser) {
-                            var Quant = $("#dropdown" + i + " Option:Selected").text();
-                            $("#Total" + i).text(Quant);
-            
-                            }
-
-                            Cear un array de servicios coger la pos y accerder al array de servicio mediante el i
-                            
-                            <input type="submit" value="Agregar" name="Edit" formaction="@Url.Action("AddService", "Car", new CarService(service,val))" 
-                               formmethod="post" class="btn btn-success"/> 
-
-                            $.ajax({
-                            url: 'Car/Add',
-                            data: { qnt: qnt, name: name, price: price, photo: photo },
-                            type: "POST",
-                            success: function () {
-                                alert('Added');
-                            },
-                            error:function (xhr, ajaxOptions, thrownError){
-                                      //some errror, some show err msg to user and log the error
-                                      alert("Error al agregar el servicio");
-
-                            }
-                                });
-
-                            $.ajax({
-                                url: '@Url.Action("Add","Car")',
-                              data: { qnt: qnt, name: name, price: price,photo:photo },
-                          success: function(data){
-                            //call is successfully completed and we got result in data
-                              alert("Se ha agregado el servicio");
-                          },
-                          error:function (xhr, ajaxOptions, thrownError){
-                                          //some errror, some show err msg to user and log the error
-                                          alert("Error al agregar la funcion");
-
-                                        }
-                          });
-                            -->
-                        
                         <input type="button" value="Agregar" name="Edit" onclick="AddService(@i,
                                '@service._id',
                                '@service.RandID',
@@ -215,6 +168,7 @@
                 qnt: qnt,
                 id:id,
                 randid: randid,
+
                 ownn: ownn,
                 name: name,
                 descrip: descrip,

@@ -29,6 +29,12 @@ namespace TurismoCR.Models
         {
             Quantity = Quant;
         }
+
+        public CarService(Service ser) : base(ser)
+        {
+            Quantity = null;
+        }
+
         #endregion
 
     }

@@ -1,0 +1,48 @@
+﻿@model IEnumerable<TurismoCR.Models.User>
+@{
+    ViewData["Title"] = "DeshabilitarUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Control de Usuarios</h2>
+
+@using (Html.BeginForm(null,null, FormMethod.Post))
+{
+    @if (Model != null)
+    {
+        <table class="table table-striped">
+            <tr>
+                <th> Nombre </th>
+                <th> Rol  </th>
+                <th> Accion </th>
+            </tr>
+            <tbody>
+                @foreach (var i in Model)
+                {
+                    <tr>
+                        <td>@i.Name @i.LastName1 @i.LastName2</td>
+                        <td>@i.Rol</td>
+                        
+                        <td>
+                            @if (i.Enabled)
+                            {
+                                <input type="submit" value="Deshabilitar" name="Edit" formaction="@Url.Action("Disable", "User", @i)" formmethod="post" class="btn btn-danger" />
+                            }
+                            else
+                            {
+                                <input type="submit" value="Habilitar" name="Edit" formaction="@Url.Action("Enable","User",@i)" formmethod="post" class="btn btn-danger" />
+                            }
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+
+            
+       </table>
+    }
+    else
+    { 
+        <h2>No hay usuarios</h2>
+    }
+}
