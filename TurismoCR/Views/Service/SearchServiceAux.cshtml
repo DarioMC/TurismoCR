@@ -1,0 +1,33 @@
+﻿@using TurismoCR.Models;
+@model TurismoCR.Models.Service;
+
+@{
+    ViewData["Title"] = "Paquetes Turísticos En Oferta";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form method="post" enctype="multipart/form-data" asp-controller="Service" asp-action="SearchService">
+    <h4>Seleccione el tipo de paquete deseado:</h4>
+    <hr/>
+    @* Service Category *@
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="serviceCategory">Categoría</label>
+        <div class="col-sm-3">
+            <select class="form-control" id="serviceCategory" name="serviceCategory">
+                <option value="Playa">Playa</option>
+                <option value="Montaña">Montaña</option>
+				<option value="Hotel">Hotel</option>
+				<option value="Bosque">Bosque</option>
+				<option value="Parque">Parque</option>
+				<option value="Museo">Museo</option>
+            </select>
+        </div>
+    </div>
+	@* Add Btn *@
+    <div class="form-group row">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Elegir categoría" class="btn btn-success" />
+        </div>
+    </div>
+</form>

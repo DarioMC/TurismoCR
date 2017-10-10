@@ -9,18 +9,18 @@
     List<Service> enabledServices = ViewBag.enabledServices as List<Service>;
     // quantity logic
     List<int> Cant = new List<int>();
-    List<Object> drop = new List<Object>{
-                       new { value = 1 , text = "1"  },
-                       new { value = 2, text = "2" },
-                       new { value = 3, text = "3"},
-                       new { value = 4, text = "4"},
-                       new { value = 5, text = "5"},
-                       new { value = 6, text = "6"},
-                       new { value = 7, text = "7"},
-                       new { value = 8, text = "8"},
-                       new { value = 9, text = "9"},
-                       new { value = 10, text = "10"}
-                    };
+    List<Object> drop = new List<Object> {
+        new { value = 1 , text = "1" },
+        new { value = 2, text = "2" },
+        new { value = 3, text = "3"},
+        new { value = 4, text = "4"},
+        new { value = 5, text = "5"},
+        new { value = 6, text = "6"},
+        new { value = 7, text = "7"},
+        new { value = 8, text = "8"},
+        new { value = 9, text = "9"},
+        new { value = 10, text = "10"}
+    };
     var i = 1;
     var tempcar = new CarService();
     var val = "3";
@@ -28,7 +28,7 @@
 
 <h2>@ViewData["Title"]</h2>
 <br>
-@using (Html.BeginForm(null,null,FormMethod.Post))
+@using (Html.BeginForm(null, null, FormMethod.Post))
 {
     <table id="t02">
         <thead>

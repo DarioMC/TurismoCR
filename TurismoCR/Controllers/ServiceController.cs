@@ -336,7 +336,14 @@ namespace TurismoCR.Controllers
 			return RedirectToAction("Index", "Home");
         }
 
-		public async Task<ActionResult> SearchService()
+		public ActionResult SearchServiceAux()
+		{
+			ViewData["Message"] = "Página para buscar paquetes turísticos";
+			return View();
+		}
+
+        [HttpPost("SearchService")]
+		public async Task<ActionResult> SearchService(String serviceCategory)
 		{
 			try
 			{
@@ -345,13 +352,15 @@ namespace TurismoCR.Controllers
 				var db = mongoClient.GetDatabase("TurismoCR");
 				// getting reference to services
 				var collection = db.GetCollection<Service>("Services");
-				var filter = Builders<Service>.Filter.Eq("Enabled", true);
+			    var filterEnabled = Builders<Service>.Filter.Eq("Enabled", true);
+                var filterCategory = Builders<Service>.Filter.Eq("Category", serviceCategory);
+                var filter = filterEnabled & filterCategory;
 				// filter services for current owner user
 				var result = await collection.Find(filter).ToListAsync();
 				if (result.Count == 0)
 				{
 					// setting alert message
-					TempData["msg"] = "<script>alert('No hay paquetes registrados!');</script>";
+					TempData["msg"] = "<script>alert('No hay paquetes registrados con sus preferencias!');</script>";
 				}
 				else
 				{

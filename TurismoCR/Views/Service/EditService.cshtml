@@ -35,12 +35,18 @@
                 type="text" name="serviceDescription" value="@serviceToEdit.Description"/>
         </div>
     </div>
-    @* Service Category *@
+	@* Service Category *@
     <div class="form-group row">
         <label class="col-sm-2 col-form-label" for="serviceCategory">Categoría</label>
         <div class="col-sm-3">
-            <input class="form-control" id="serviceCategory" 
-                type="text" name="serviceCategory" value="@serviceToEdit.Category"/>
+            <select class="form-control" id="serviceCategory" name="serviceCategory">
+                <option value="Playa">Playa</option>
+                <option value="Montaña">Montaña</option>
+                <option value="Hotel">Hotel</option>
+                <option value="Bosque">Bosque</option>
+                <option value="Parque">Parque</option>
+                <option value="Museo">Museo</option>
+            </select>
         </div>
     </div>
     @* Service Province *@

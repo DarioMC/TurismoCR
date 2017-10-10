@@ -23,13 +23,20 @@
 		    <input class="form-control" id="serviceDescription" type="text" name="serviceDescription"/>
         </div>
 	</div>
-	@* Service Category *@
+    @* Service Category *@
     <div class="form-group row">
-		<label class="col-sm-2 col-form-label" for="serviceCategory">Categoría</label>
+        <label class="col-sm-2 col-form-label" for="serviceCategory">Categoría</label>
         <div class="col-sm-3">
-		    <input class="form-control" id="serviceCategory" type="text" name="serviceCategory"/>
+            <select class="form-control" id="serviceCategory" name="serviceCategory">
+                <option value="Playa">Playa</option>
+                <option value="Montaña">Montaña</option>
+                <option value="Hotel">Hotel</option>
+                <option value="Bosque">Bosque</option>
+                <option value="Parque">Parque</option>
+                <option value="Museo">Museo</option>
+            </select>
         </div>
-	</div>
+    </div>
 	@* Service Province *@
     <div class="form-group row">
 		<label class="col-sm-2 col-form-label" for="serviceProvince">Provincia</label>
@@ -69,7 +76,7 @@
     <div class="form-group row">
 		<label class="col-sm-2 col-form-label" for="selectServiceStartDate">Fecha de inicio</label>
         <div class="col-sm-3">
-				<input class="form-control" id= "selectServiceStartDate" type="text" name="selectServiceStartDate"/>
+		    <input class="form-control" id= "selectServiceStartDate" type="text" name="selectServiceStartDate"/>
         </div>
 	</div>
 	@* Service EndDate *@
