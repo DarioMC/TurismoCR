@@ -383,30 +383,30 @@ namespace TurismoCR.Controllers
 
         public async Task<ActionResult> ObtenerRecomendaciones()
         {
-            //variables necesarias.
+            // variables necesarias
             HashSet<String> ordenesRecientes = new HashSet<string>();
             List<List<Service>> recomendaciones = new List<List<Service>>();
             String usuarioId = Request.Cookies["userSession"].ToString();
 
             using (_context)
             {
-                //busca las ultimas ordenes del usuario.
+                // busca las ultimas ordenes del usuario
                 var ordenes = from p in _context.Ordenes
                                where p.Usuario.Equals(usuarioId)
                                orderby p.Fecha ascending
                                select p;
 
-                //si existen ordenes obtiene recomendaciones.
+                // si existen ordenes obtiene recomendaciones
                 if (ordenes != null)
                 {
-                    //obtiene las categorias de las ultimas ordenes.
+                    // obtiene las categorias de las ultimas ordenes
                     foreach (Orden orden in ordenes)
                     {
-                        //agrega a la lista las categorias.
+                        // agrega a la lista las categorias
                         ordenesRecientes.Add(orden.Categoria);
                     }
 
-                    //consulta la lista final de categorias.
+                    // consulta la lista final de categorias
                     foreach (String cat in ordenesRecientes)
                     {
                         // setting MongoDB connection
@@ -417,19 +417,17 @@ namespace TurismoCR.Controllers
                         var filter = Builders<Service>.Filter.Eq("Category", cat);
                         // filter services for current owner user
                         var result = await collection.Find(filter).ToListAsync();
-                        
-                        //guarda el resultado de recomendaciones en la lista.
+                        // guarda el resultado de recomendaciones en la lista
                         recomendaciones.Add(result);
                     }
-                    
-                    //lista de recomendaciones encontradas.
+                    // lista de recomendaciones encontradas
                     ViewBag.Recomendaciones = recomendaciones;
 
                     return View();
                 }
                 else
                 {
-                    //lista vacía de recomendaciones
+                    // lista vacía de recomendaciones
                     ViewBag.Recomendaciones = recomendaciones;
                     return View();
                 }

@@ -9,6 +9,10 @@ namespace TurismoCR.Models
     {
 		#region Properties
 
+		[BsonId]
+		[BsonRepresentation(BsonType.ObjectId)]
+		public String _id { get; set; }
+
         public String Picture { get; set; }
 
         public String RandID { get; set; }

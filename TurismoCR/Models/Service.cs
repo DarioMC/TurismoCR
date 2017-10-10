@@ -1,4 +1,13 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using TurismoCR.Models;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using TurismoCR.Data;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
@@ -91,7 +100,45 @@ namespace TurismoCR.Models
             PictureID = ser.PictureID;
         }
 
-        public static implicit operator UpdateDefinition<object>(Service v)
+		#endregion
+
+		#region Methods
+
+        public String GetPictureString() 
+        {
+            if (PictureID == "") 
+            {
+                return "";
+            } 
+            else 
+            {
+                try
+                {
+                    // setting MongoDB connection
+                    var mongoClient = new MongoClient("mongodb://localhost");
+                    var db = mongoClient.GetDatabase("TurismoCR");
+                    // getting reference to service picture
+                    var picCollection = db.GetCollection<PictureService>("Pictures");
+                    var picFilter = Builders<PictureService>.Filter.Eq("RandID", PictureID);
+                    var result = picCollection.Find(picFilter).ToList();
+                    if (result.Count != 0)
+                    {
+                        var pictureService = result.First();
+                        return pictureService.Picture;
+                    }
+                    else
+                    {
+                        return "";
+                    }
+                }
+                catch
+                {
+                    return "";
+                }
+            }
+        }
+
+		public static implicit operator UpdateDefinition<object>(Service v)
         {
             throw new NotImplementedException();
         }

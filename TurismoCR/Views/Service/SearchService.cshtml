@@ -1,11 +1,13 @@
 ﻿@using MongoDB.Bson;
 @using static System.Convert;
 @using Neo4jClient;
+@using TurismoCR.Models;
 @model TurismoCR.Models.CarService;
 
 @{
     ViewData["Title"] = "Paquetes Turísticos En Oferta";
     List<Service> enabledServices = ViewBag.enabledServices as List<Service>;
+    // quantity logic
     List<int> Cant = new List<int>();
     List<Object> drop = new List<Object>{
                        new { value = 1 , text = "1"  },
@@ -19,7 +21,6 @@
                        new { value = 9, text = "9"},
                        new { value = 10, text = "10"}
                     };
-
     var i = 1;
     var tempcar = new CarService();
     var val = "3";
@@ -42,32 +43,43 @@
             <th>Precio</th>
 		    <th>Contacto</th>
 		    <th>Mapa</th>
+		    <th>Imagen</th>
             <th>Cantidad</th>
             <th>Total </th>
             <th>Agregar a carrito</th>
         </thead>
         <tbody>
-            
             @foreach (var service in enabledServices)
             {
-                var Total = "Total" + i; 
+		        @**********************@
+                var Total = "Total" + i;
+		        @**********************@
                 <tr>
+			        @* Nombre *@
                     <td>@service.Name</td>
+			        @* Descripción *@
                     <td>@service.Description</td>
+			        @* Categoría *@
                     <td>@service.Category</td>
+			        @* Provincia *@
                     <td>@service.Province</td>
+			        @* Cantón *@
                     <td>@service.Canton</td>
+			        @* Distrito *@
                     <td>@service.District</td>
+			        @* Fecha inicial *@
                     <td>@service.StartDate</td>
+			        @* Fecha final *@
                     <td>@service.EndDate</td>
+			        @* Precio *@
                     <td>@service.Price</td>
-                    @* Owner Contact *@
-			        @{          try
+                    @* Contacto *@
+			        @{  try
                         {
                             // setting Neo4j connection
                             var client = new GraphClient(
                                 // cambiar password (adrian) por el de su base Neo4j
-                                new Uri("http://localhost:7474/db/data"), "neo4j", "chavacampos14"
+                                new Uri("http://localhost:7474/db/data"), "neo4j", "adrian"
                             );
                             client.Connect();
                             var ownerConsulted = client
@@ -83,7 +95,8 @@
                                     @foundOwner.Name @foundOwner.LastName1 @foundOwner.LastName2
                                     @foundOwner.PhoneNumber
                                     @foundOwner.Email
-                                </td>         }
+                                </td>
+			                }
                             else
                             {
 			                    <td> No hay datos para mostrar. </td>
@@ -95,6 +108,7 @@
 			                <td> No hay datos para mostrar. </td>
                         }
 			        }
+			        @* Mapa *@
 			        <td>
                         <p data-placement="top" data-toggle="tooltip" title="Mapa">
                             <a class="btn btn-primary btn-xs" data-title="map" 
@@ -104,71 +118,78 @@
                             </a>
                         </p>
                     </td>
-                    <td>
-                        @Html.DropDownList("dropdown"+ i, new SelectList(@drop
-                 ,
-                  "value",
-                  "text"),new { onchange= "AddValue("+i+","+service.Price+")" })
+			        @* Imagen *@
+                    @{
+			            var base64 = @service.GetPictureString();
+			        }
+			        <td>
+                        <p data-placement="top" data-toggle="tooltip" title="Imagen">
+                            <a data-title="picture" data-toggle="modal" data-target="#picture"
+						        onclick="location.href='data:image;base64,@base64'">
+                                <img src="data:image;base64,@base64" width="80" height="80"/>
+                            </a>
+                        </p>
                     </td>
-                    <td id=@Total>@service.Price</td>
+			        @* Cantidad *@
                     <td>
-                        <input type="button" value="Agregar" name="Edit" onclick="AddService(@i,
-                               '@service._id',
-                               '@service.RandID',
-                               '@service.OwnerUsername',
-                               '@service.Name',
-                               '@service.Description',
-                               '@service.Category',
-                               '@service.Province',
-                               '@service.Canton',
-                               '@service.District',
-                               '@service.Latitude',
-                               '@service.Longitude',
-                               '@service.StartDate',
-                               '@service.EndDate',
-                               '@service.Price',
-                               '@service.Enabled',
-                               '@service.PictureID')"
-                               class="btn btn-success" />
-
+                        @Html.DropDownList("dropdown"+ i, new SelectList(@drop, "value",
+                        "text"), new { onchange= "AddValue("+i+", "+service.Price+")" })
+                    </td>
+			        @* Total *@
+                    <td id="@Total">
+			            @service.Price
+			        </td>
+			        @* Agregar a carrito *@
+                    <td>
+                        <input type="button" value="Agregar" 
+					        name="Edit" onclick="AddService(@i,
+                                '@service._id',
+                                '@service.RandID',
+                                '@service.OwnerUsername',
+                                '@service.Name',
+                                '@service.Description',
+                                '@service.Category',
+                                '@service.Province',
+                                '@service.Canton',
+                                '@service.District',
+                                '@service.Latitude',
+                                '@service.Longitude',
+                                '@service.StartDate',
+                                '@service.EndDate',
+                                '@service.Price',
+                                '@service.Enabled',
+                                '@service.PictureID'
+					        )"
+                            class="btn btn-success"/>
                     </td>
                 </tr>
-                
+		        @*********@
                 i = i + 1;
+		        @*********@
              }  
-             
         </tbody>
-
     </table>
 }   
 
-
 @section Scripts {
-
-<!-- Funcion para cambiar a valor la cantidad -->
-<script type="text/javascript" language="javascript">
-
+    <!-- funcion para cambiar a valor la cantidad -->
+    <script type="text/javascript" language="javascript">
         function AddValue(i,price)
         {
             var total = $("#dropdown" + i + " Option:Selected").val();
 
             $("#Total" + i).text(total * price);
             $("#Quanty").text(total);
-            
-    }
+        }
 
-
-    function AddService(i, id, randid, ownn, name, descrip, 
-                    cat,prov,cant,dist,lon,lat,dstart,dend,price,ena, photo)
+        function AddService(i, id, randid, ownn, name, descrip, 
+                        cat, prov, cant, dist, lon, lat, dstart, dend, price, ena, photo)
         {
             var qnt = $("#dropdown" + i + " Option:Selected").val();
-
-
             $.post("@Url.Action("Add","Car")", {
                 qnt: qnt,
                 id:id,
                 randid: randid,
-
                 ownn: ownn,
                 name: name,
                 descrip: descrip,
@@ -186,13 +207,11 @@
                     }, function (data) {
                     alert("Se ha guardado el servicio al carrito");
                 });
-
-
         }
-</script>
-
+    </script>
 
 }
+
 <style>  
     table#t02 {  
         width: 100%;  
