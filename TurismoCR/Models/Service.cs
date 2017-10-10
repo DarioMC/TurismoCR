@@ -1,13 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using TurismoCR.Models;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using TurismoCR.Data;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
@@ -83,7 +75,6 @@ namespace TurismoCR.Models
 
         public Service(Service ser)
         {
-            // rand
             OwnerUsername = ser.OwnerUsername;
             Name = ser.Name;
             Description = ser.Description;
@@ -110,31 +101,25 @@ namespace TurismoCR.Models
             {
                 return "";
             } 
-            else 
+            try
             {
-                try
+                // setting MongoDB connection
+                var mongoClient = new MongoClient("mongodb://localhost");
+                var db = mongoClient.GetDatabase("TurismoCR");
+                // getting reference to service picture
+                var picCollection = db.GetCollection<PictureService>("Pictures");
+                var picFilter = Builders<PictureService>.Filter.Eq("RandID", PictureID);
+                var result = picCollection.Find(picFilter).ToList();
+                if (result.Count != 0)
                 {
-                    // setting MongoDB connection
-                    var mongoClient = new MongoClient("mongodb://localhost");
-                    var db = mongoClient.GetDatabase("TurismoCR");
-                    // getting reference to service picture
-                    var picCollection = db.GetCollection<PictureService>("Pictures");
-                    var picFilter = Builders<PictureService>.Filter.Eq("RandID", PictureID);
-                    var result = picCollection.Find(picFilter).ToList();
-                    if (result.Count != 0)
-                    {
-                        var pictureService = result.First();
-                        return pictureService.Picture;
-                    }
-                    else
-                    {
-                        return "";
-                    }
+                    var pictureService = result.First();
+                    return pictureService.Picture;
                 }
-                catch
-                {
-                    return "";
-                }
+                return "";
+            }
+            catch
+            {
+                return "";
             }
         }
 
