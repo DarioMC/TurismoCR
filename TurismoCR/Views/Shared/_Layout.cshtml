@@ -82,30 +82,42 @@
                         }
                         @if (rolName == "Client") 
                         {
-                            <li>
-                                <a asp-area="" asp-controller="Service" asp-action="SearchServiceAux">
-                                    <span class="glyphicon glyphicon-search"></span> Buscar
+						    <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    Opciones<span class="caret"></span>
                                 </a>
-                            </li>
-                            <li>
-                                <a asp-area="" asp-controller="Car" asp-action="Index">
-                                    <span class="glyphicon glyphicon-shopping-cart"></span> Carrito
-                                </a>
-                            </li>
-                            <li>
-                                <a asp-area="" asp-controller="Orden" asp-action="Index">
-                                    Órdenes
-                                </a>
-                            </li>
-                            <li>
-                                <a asp-area="" asp-controller="Reseña" asp-action="MisReseñas">
-                                    Mis Reseñas
-                                </a>
-                            </li>
-                            <li>
-                                <a asp-area="" asp-controller="Service" asp-action="ObtenerRecomendaciones">
-                                    Recomendaciones
-                                </a>
+                                <ul class="dropdown-menu">
+        						    <li>
+                                        <a asp-area="" asp-controller="User" asp-action="FollowView">
+                                            Seguir
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a asp-area="" asp-controller="Service" asp-action="SearchServiceAux">
+                                            <span class="glyphicon glyphicon-search"></span> Buscar
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a asp-area="" asp-controller="Car" asp-action="Index">
+                                            <span class="glyphicon glyphicon-shopping-cart"></span> Carrito
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a asp-area="" asp-controller="Orden" asp-action="Index">
+                                            Órdenes
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a asp-area="" asp-controller="Reseña" asp-action="MisReseñas">
+                                            Reseñas
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a asp-area="" asp-controller="Service" asp-action="ObtenerRecomendaciones">
+                                            Recomendaciones
+                                        </a>
+                                    </li>
+								</ul>
                             </li>
                         }
                         @if (rolName == "Owner") {

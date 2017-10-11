@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Neo4jClient;
 
 namespace TurismoCR.Models
 {
@@ -98,6 +100,31 @@ namespace TurismoCR.Models
             Password = password;
         }
 
-        #endregion
-    }
+		#endregion
+
+		#region Methods
+
+        public Boolean UserFollowsMe(String username)
+		{
+            try
+            {
+                var client = new GraphClient(new Uri("http://localhost:7474/db/data"), "neo4j", "adrian");
+                client.Connect();
+                bool follow = (
+                    client.Cypher
+                          .Match("(a: User { UserName: '" + username + "'})-[:Sigue]->(b: User { UserName: '" + UserName + "'})")
+                          .Return<Node<User>>("a")
+                          .Results
+                          .Count() == 1
+                );
+                return follow;
+            }
+            catch
+            {
+                return false;
+            }
+		}
+
+		#endregion
+	}
 }

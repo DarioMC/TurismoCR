@@ -234,6 +234,7 @@ namespace TurismoCR.Controllers
 			return RedirectToAction("Index", "Home");
 		}
 
+        [HttpPost]
 		public ActionResult Enable(User user)
 		{
 			// setting Neo4j connection
@@ -254,6 +255,43 @@ namespace TurismoCR.Controllers
 			// setting alert message
 			TempData["msg"] = "<script>alert('El usuario ha sido habilitado.');</script>";
 			return RedirectToAction("Index", "Home");
+		}
+
+        public ActionResult FollowView()
+        {
+            var clientLogged = Request.Cookies["userSession"].ToString();
+			ViewData["Message"] = "Página para seguir usuarios clientes.";
+			// setting Neo4j connection
+			var client = new GraphClient(
+				// cambiar password (adrian) por el de su base Neo4j
+				new Uri("http://localhost:7474/db/data"), "neo4j", "adrian"
+			);
+			client.Connect();
+			// getting client users from Neo4j
+			var clientUsers = client
+				.Cypher
+				.Match("(userNeo4j:User)")
+                .Where((User userNeo4j) => (userNeo4j.Rol == "Client"))
+                .AndWhere((User userNeo4j) => (userNeo4j.UserName != clientLogged))
+				.Return(userNeo4j => userNeo4j.As<User>())
+				.Results;
+            return View(clientUsers);
+        }
+
+        [HttpPost]
+		public ActionResult Follow(String username)
+		{
+            var loggedUser = Request.Cookies["userSession"];
+			var client = new GraphClient(new Uri("http://localhost:7474/db/data"), "neo4j", "adrian");
+			client.Connect();
+            client.Cypher.Match("(a:User)", "(b:User)")
+                         .Where((User a) => a.UserName == loggedUser)
+                         .AndWhere((User b) => b.UserName == username)
+						 .CreateUnique("(a)- [:Sigue] -> (b)")
+						 .ExecuteWithoutResults();
+			// setting alert message
+			TempData["msg"] = "<script>alert('Estas siguiendo a este usuario!');</script>";
+            return RedirectToAction("Index", "Home");
 		}
 	}
 }

@@ -1,0 +1,49 @@
+﻿@using System.Linq;
+@using Neo4jClient;
+@model IEnumerable<TurismoCR.Models.User>
+
+@{
+    ViewData["Title"] = "Seguir Usuarios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var userCookie = Context.Request.Cookies["userSession"];
+    var loggedUserName = userCookie.ToString();
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@using (Html.BeginForm(null,null, FormMethod.Post))
+{
+    if (Model != null)
+    {
+        <table class="table table-striped">
+            <tr>
+		        <th> Nombre de Usuario  </th>
+                <th> Nombre Completo</th>
+                <th> Acción </th>
+            </tr>
+            <tbody>
+                @foreach (var i in Model)
+                {
+                    <tr>
+			            <td> @i.UserName </td>
+                        <td> @i.Name @i.LastName1 @i.LastName2 </td>
+                        <td>
+                            @if (i.UserFollowsMe(loggedUserName))
+                            {
+                                <input type="submit" value="Dejar de seguir" name="Unfollow" formaction="@Url.Action("Unfollow", "User", @i.UserName)" formmethod="post" class="btn btn-danger" />
+                            }
+                            else
+                            {
+                                <input type="submit" value="Seguir" name="Follow" formaction="@Url.Action("Follow", "User", @i.UserName)" formmethod="post" class="btn btn-danger" />
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+       </table>
+    }
+    else
+    { 
+        <h2> No hay usuarios. </h2>
+    }
+}
