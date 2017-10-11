@@ -259,7 +259,7 @@ namespace TurismoCR.Controllers
 
         public ActionResult FollowView()
         {
-            var clientLogged = Request.Cookies["userSession"].ToString();
+            var clientLogged = Request.Cookies["userSession"];
 			ViewData["Message"] = "Página para seguir usuarios clientes.";
 			// setting Neo4j connection
 			var client = new GraphClient(
@@ -280,7 +280,7 @@ namespace TurismoCR.Controllers
 
         public ActionResult Follow(String username)
 		{
-            var loggedUser = Request.Cookies["userSession"].ToString();
+            var loggedUser = Request.Cookies["userSession"];
 			var client = new GraphClient(new Uri("http://localhost:7474/db/data"), "neo4j", "adrian");
 			client.Connect();
             client.Cypher.Match("(a:User)", "(b:User)")
