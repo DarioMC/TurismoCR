@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using TurismoCR.Models;
 using TurismoCR.Data;
 using Microsoft.AspNetCore.Http;
+using Neo4jClient;
 
 namespace TurismoCR.Controllers
 {
@@ -134,6 +135,98 @@ namespace TurismoCR.Controllers
                 //Cambiar redireccion a otra vista en vez de a simple View().
                 return View();
             }
+        }
+
+        public ActionResult ReseñasAmigos()
+        {
+            try
+            {
+                //Conexion a Neo4j.
+                var client = new GraphClient(new Uri("http://localhost:7474/db/data"), "neo4j", "adrian");
+                client.Connect();
+
+                //Usuario logueado actualmente.
+                var username = Request.Cookies["userSession"];
+
+                //Variables necesarias.
+                IEnumerable<User> listaClientes = GetClientes();
+                List<String> meSiguen = new List<string>();
+                List<Reseña> reseniasAmigos = new List<Reseña>();
+
+
+                foreach(User usuario in listaClientes)
+                {
+                    //Confirma si por cada usuario existe alguno que siga al logueado.
+                    bool follow = (
+                    client.Cypher
+                          .Match("(a: User { UserName: '" + usuario.UserName + "'})-[:Sigue]->(b: User { UserName: '" + username + "'})")
+                          .Return<Node<User>>("a")
+                          .Results
+                          .Count() == 1
+                    );
+
+                    //En caso de que lo siga, lo agrega a una lista.
+                    if (follow == true)
+                        meSiguen.Add(usuario.UserName);
+                    
+                }
+
+                using (_context)
+                {
+                    try
+                    {
+                        //Por cada nombre en la lista obtiene reseñas propias de ese usuario.
+                        foreach(String usrName in meSiguen)
+                        {
+                            //Busca las reseñas del usuario.
+                            var resenias = from p in _context.Reseñas
+                                           where p.Usuario.Equals(usrName)
+                                           select p;
+
+                            //En caso de haber alguna reseña, la agrega a la lista final.
+                            if(resenias.Count() > 0)
+                                foreach (Reseña tmpRes in resenias)
+                                    reseniasAmigos.Add(tmpRes);
+
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+                }
+
+                //Guarda la lista en el viewbag.
+                ViewBag.reseniasAmigos = reseniasAmigos;
+
+                return View();
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        //Metodo para traerse los clientes del sistema.
+        public IEnumerable<User> GetClientes()
+            
+        {
+            var clientLogged = Request.Cookies["userSession"];
+            // setting Neo4j connection
+            var client = new GraphClient(
+                // cambiar password (adrian) por el de su base Neo4j
+                new Uri("http://localhost:7474/db/data"), "neo4j", "adrian"
+            );
+            client.Connect();
+            // getting client users from Neo4j
+            var clientUsers = client
+                .Cypher
+                .Match("(userNeo4j:User)")
+                .Where((User userNeo4j) => (userNeo4j.Rol == "Client"))
+                .AndWhere((User userNeo4j) => (userNeo4j.UserName != clientLogged))
+                .Return(userNeo4j => userNeo4j.As<User>())
+                .Results;
+            return clientUsers;
         }
     }
 }

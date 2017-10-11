@@ -1,10 +1,10 @@
 ﻿@using TurismoCR.Models;
 @{
-    ViewData["Title"] = "Index";
-    List<Reseña> listaReseña = ViewBag.listaReseñas as List<Reseña>;
+    ViewData["Title"] = "Reseñas Amigos";
+    List<Reseña> listaReseña = ViewBag.reseniasAmigos as List<Reseña>;
 
 }
-<h2>Mis Reseñas</h2>
+<h2>@ViewData["Title"]</h2>
 
 <table id="t02">
     <thead>
@@ -14,7 +14,6 @@
             <th>Usuario</th>
             <th>Calificacion</th>
             <th>Comentario</th>
-            <th>Borrar</th>
         </tr>
     </thead>
     <tbody>
@@ -26,9 +25,6 @@
                 <td>@reseña.Usuario</td>
                 <td>@reseña.Calificacion</td>
                 <td>@reseña.Comentario</td>
-                <td>
-                    <a href="@Url.Action("BorrarReseñas", "Reseña", new { idReseña = reseña.IdResenia })">Borrar Reseña</a>
-                </td>
             </tr>
         }
     </tbody>

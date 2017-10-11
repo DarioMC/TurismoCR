@@ -7,7 +7,7 @@ CREATE TABLE [dbo].[Orden] (
     [Usuario]   VARCHAR(20)      NOT NULL,
     [Tarifa] INT      NOT NULL,
 	[Categoria] VARCHAR(20)      NULL,
-	[Descripcion] VARCHAR(500)      NOT NULL
+	[Descripción] VARCHAR(500)      NOT NULL
     
     CONSTRAINT [PK_IdOrden] PRIMARY KEY CLUSTERED ([IdOrden] ASC)
 );
@@ -15,7 +15,7 @@ CREATE TABLE [dbo].[Orden] (
 CREATE TABLE [dbo].[Resenia]
 (
 	[IdResenia] INT IDENTITY(1,1) NOT NULL, 
-    [IdServicio] VARCHAR(50) NOT NULL,
+    [IdServicio] INT NOT NULL,
     [Usuario] VARCHAR(20) NOT NULL, 
     [Fecha] DATETIME NOT NULL, 
 	[Calificacion] INT NOT NULL,
