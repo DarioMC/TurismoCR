@@ -295,7 +295,7 @@ namespace TurismoCR.Controllers
 
         public ActionResult UnFollow(String username)
         {
-			var loggedUser = Request.Cookies["userSession"].ToString();
+			var loggedUser = Request.Cookies["userSession"];
 			var client = new GraphClient(new Uri("http://localhost:7474/db/data"), "neo4j", "adrian");
 			client.Connect();
 			client.Cypher.Match("(a)-[r]->(b)")
