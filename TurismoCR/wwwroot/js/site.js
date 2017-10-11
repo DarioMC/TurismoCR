@@ -49,6 +49,7 @@
         close: "cerrar",
         firstDay: 1,
         format: "yyyy-mm-dd",
+        min: [2017, 9, 12]
     });
 
     $("#selectServiceEndDate").pickadate({
@@ -75,6 +76,7 @@
         close: "cerrar",
         firstDay: 1,
         format: "yyyy-mm-dd",
+        min: [2017, 9, 12]
     });
 }
 
