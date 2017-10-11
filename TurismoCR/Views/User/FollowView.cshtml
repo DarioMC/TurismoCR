@@ -30,11 +30,24 @@
                         <td>
                             @if (i.UserFollowsMe(loggedUserName))
                             {
-                                <input type="submit" value="Dejar de seguir" name="Unfollow" formaction="@Url.Action("Unfollow", "User", @i.UserName)" formmethod="post" class="btn btn-danger" />
+				                
+                                <p data-placement="top" data-toggle="tooltip" title="Dejar de Seguir">
+                                    <a class="btn btn-primary btn-xs" data-title="Unfollow" 
+                                        data-toggle="modal" data-target="#unfollow"
+                                        onclick="location.href='@Url.Action("UnFollow", "User", new { username = @i.UserName })'">
+                                        Dejar de Seguir
+                                    </a>
+                                </p>
                             }
                             else
                             {
-                                <input type="submit" value="Seguir" name="Follow" formaction="@Url.Action("Follow", "User", @i.UserName)" formmethod="post" class="btn btn-danger" />
+				                <p data-placement="top" data-toggle="tooltip" title="Seguir">
+    				                <a class="btn btn-primary btn-xs" data-title="Follow" 
+                                        data-toggle="modal" data-target="#follow"
+                                        onclick="location.href='@Url.Action("Follow", "User", new { username = @i.UserName })'">
+					                    Seguir
+                                    </a>
+					            </p>
                             }
                         </td>
                     </tr>

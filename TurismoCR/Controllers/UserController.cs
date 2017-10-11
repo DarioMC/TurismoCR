@@ -278,10 +278,9 @@ namespace TurismoCR.Controllers
             return View(clientUsers);
         }
 
-        [HttpPost]
-		public ActionResult Follow(String username)
+        public ActionResult Follow(String username)
 		{
-            var loggedUser = Request.Cookies["userSession"];
+            var loggedUser = Request.Cookies["userSession"].ToString();
 			var client = new GraphClient(new Uri("http://localhost:7474/db/data"), "neo4j", "adrian");
 			client.Connect();
             client.Cypher.Match("(a:User)", "(b:User)")
@@ -293,5 +292,20 @@ namespace TurismoCR.Controllers
 			TempData["msg"] = "<script>alert('Estas siguiendo a este usuario!');</script>";
             return RedirectToAction("Index", "Home");
 		}
+
+        public ActionResult UnFollow(String username)
+        {
+			var loggedUser = Request.Cookies["userSession"].ToString();
+			var client = new GraphClient(new Uri("http://localhost:7474/db/data"), "neo4j", "adrian");
+			client.Connect();
+			client.Cypher.Match("(a)-[r]->(b)")
+						 .Where((User a) => a.UserName == loggedUser)
+						 .AndWhere((User b) => b.UserName == username)
+						 .AndWhere("Type(r) = 'Sigue'")
+						 .Delete("r").ExecuteWithoutResults();
+			// setting alert message
+			TempData["msg"] = "<script>alert('Ya no estas siguiendo a este usuario!');</script>";
+			return RedirectToAction("Index", "Home");
+        }
 	}
 }
