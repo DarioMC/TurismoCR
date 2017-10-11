@@ -38,8 +38,8 @@ namespace TurismoCR.Controllers
 					// setting Neo4j connection
 					var client = new GraphClient(
 						// cambiar password (adrian) por el de su base Neo4j
-						new Uri("http://localhost:7474/db/data"), "neo4j", "adrian"
-					);
+						new Uri("http://localhost:7474/db/data"), "neo4j", "chavacampos14"
+                    );
 					client.Connect();
 					// getting user from Neo4j
 					var userConsulted = client
@@ -157,8 +157,8 @@ namespace TurismoCR.Controllers
 					// setting Neo4j connection
 					var client = new GraphClient(
 						// cambiar password (adrian) por el de su base Neo4j
-						new Uri("http://localhost:7474/db/data"), "neo4j", "adrian"
-					);
+						new Uri("http://localhost:7474/db/data"), "neo4j", "chavacampos14"
+                    );
 					client.Connect();
 					// getting user from Neo4j
 					var userConsulted = client
@@ -198,8 +198,8 @@ namespace TurismoCR.Controllers
 			// setting Neo4j connection
 			var client = new GraphClient(
 				// cambiar password (adrian) por el de su base Neo4j
-				new Uri("http://localhost:7474/db/data"), "neo4j", "adrian"
-			);
+				new Uri("http://localhost:7474/db/data"), "neo4j", "chavacampos14"
+            );
 			client.Connect();
 			// getting user from Neo4j
 			var userConsulted = client
@@ -211,51 +211,27 @@ namespace TurismoCR.Controllers
 			return View(userConsulted);
 		}
 
-		[HttpPost]
-		public ActionResult Disable(User user)
-		{
-			// setting Neo4j connection
-			var client = new GraphClient(
-				// cambiar password (adrian) por el de su base Neo4j
-				new Uri("http://localhost:7474/db/data"), "neo4j", "adrian"
-			);
-			client.Connect();
-			// getting and disable user from Neo4j
-			var userConsulted = client
-				.Cypher
-				.Match("(userNeo4j:User)")
-				.Where((User userNeo4j) => userNeo4j.UserName == user.UserName)
-				.Set("userNeo4j.Enabled={Enable}")
-				.WithParams(new { Enable = "false" })
-				.Return(userNeo4j => userNeo4j.As<User>())
-				.Results;
-			// setting alert message
-			TempData["msg"] = "<script>alert('El usuario ha sido desabilitado.');</script>";
-			return RedirectToAction("Index", "Home");
-		}
-
         [HttpPost]
-		public ActionResult Enable(User user)
-		{
-			// setting Neo4j connection
-			var client = new GraphClient(
-				// cambiar password (adrian) por el de su base Neo4j
-				new Uri("http://localhost:7474/db/data"), "neo4j", "adrian"
-			);
-			client.Connect();
-			// getting and enable user from Neo4j
-			var userConsulted = client
-				.Cypher
-				.Match("(userNeo4j:User)")
-				.Where((User userNeo4j) => userNeo4j.UserName == user.UserName)
-				.Set("userNeo4j.Enabled={Enable}")
-				.WithParams(new { Enable = "true" })
-				.Return(userNeo4j => userNeo4j.As<User>())
-				.Results;
-			// setting alert message
-			TempData["msg"] = "<script>alert('El usuario ha sido habilitado.');</script>";
-			return RedirectToAction("Index", "Home");
-		}
+        public ActionResult Action(User user)
+        {
+            // setting Neo4j connection
+            var client = new GraphClient(
+                // cambiar password (adrian) por el de su base Neo4j
+                new Uri("http://localhost:7474/db/data"), "neo4j", "chavacampos14"
+            );
+            client.Connect();
+            // getting user from Neo4j
+            var userConsulted = client
+                .Cypher
+                .Match("(userNeo4j:User)")
+                .Where((User userNeo4j) => userNeo4j.UserName == user.UserName)
+                .Set("userNeo4j.Enabled={Enable}")
+                .WithParams(new { Enable = !user.Enabled })
+                .Return(userNeo4j => userNeo4j.As<User>())
+                .Results;
+
+            return RedirectToAction("Index", "Home");
+        }
 
         public ActionResult FollowView()
         {
@@ -264,7 +240,7 @@ namespace TurismoCR.Controllers
 			// setting Neo4j connection
 			var client = new GraphClient(
 				// cambiar password (adrian) por el de su base Neo4j
-				new Uri("http://localhost:7474/db/data"), "neo4j", "adrian"
+				new Uri("http://localhost:7474/db/data"), "neo4j", "chavacampos14"
 			);
 			client.Connect();
 			// getting client users from Neo4j
@@ -281,7 +257,7 @@ namespace TurismoCR.Controllers
         public ActionResult Follow(String username)
 		{
             var loggedUser = Request.Cookies["userSession"].ToString();
-			var client = new GraphClient(new Uri("http://localhost:7474/db/data"), "neo4j", "adrian");
+			var client = new GraphClient(new Uri("http://localhost:7474/db/data"), "neo4j", "chavacampos14");
 			client.Connect();
             client.Cypher.Match("(a:User)", "(b:User)")
                          .Where((User a) => a.UserName == loggedUser)
@@ -296,7 +272,7 @@ namespace TurismoCR.Controllers
         public ActionResult UnFollow(String username)
         {
 			var loggedUser = Request.Cookies["userSession"].ToString();
-			var client = new GraphClient(new Uri("http://localhost:7474/db/data"), "neo4j", "adrian");
+			var client = new GraphClient(new Uri("http://localhost:7474/db/data"), "neo4j", "chavacampos14");
 			client.Connect();
 			client.Cypher.Match("(a)-[r]->(b)")
 						 .Where((User a) => a.UserName == loggedUser)

@@ -26,11 +26,11 @@
                         <td>
                             @if (i.Enabled)
                             {
-                                <input type="submit" value="Deshabilitar" name="Edit" formaction="@Url.Action("Disable", "User", @i)" formmethod="post" class="btn btn-danger" />
+                                <input type="submit" value="Deshabilitar" name="Edit" formaction="@Url.Action("Action","User",@i)" formmethod="post" class="btn btn-danger" />
                             }
                             else
                             {
-                                <input type="submit" value="Habilitar" name="Edit" formaction="@Url.Action("Enable","User",@i)" formmethod="post" class="btn btn-danger" />
+                                <input type="submit" value="Habilitar" name="Edit" formaction="@Url.Action("Action","User",@i)" formmethod="post" class="btn btn-danger" />
                             }
                         </td>
                     </tr>

@@ -37,20 +37,50 @@
             </select>
         </div>
     </div>
-	@* Service Province *@
+    @* Service Province *@
     <div class="form-group row">
-		<label class="col-sm-2 col-form-label" for="serviceProvince">Provincia</label>
+        <label class="col-sm-2 col-form-label" for="serviceProvince">Provincia</label>
         <div class="col-sm-3">
-			<input class="form-control" id="serviceProvince" type="text" name="serviceProvince"/>
+            <select name="serviceProvince" id="serviceProvince" class="form-control" onchange="populate(this.id,'serviceCanton')">
+                <option selected="selected" value="San José">San José</option>
+                <option value="Alajuela">Alajuela</option>
+                <option value="Cartago">Cartago</option>
+                <option value="Heredia">Heredia</option>
+                <option value="Guanacaste">Guanacaste</option>
+                <option value="Puntarenas">Puntarenas</option>
+                <option value="Limón">Limón</option>
+            </select>
         </div>
-	</div>
-	@* Service Canton *@
+    </div>
+
+    @* Service Canton *@
     <div class="form-group row">
-    	<label class="col-sm-2 col-form-label" for="serviceCanton">Cantón</label>
+        <label class="col-sm-2 col-form-label" for="serviceCanton">Cantón</label>
         <div class="col-sm-3">
-			<input class="form-control" id="serviceCanton" type="text" name="serviceCanton"/>
+            <select name="serviceCanton" id="serviceCanton" class="form-control" )">
+                <option selected="selected" value="San José">San José                      </option>
+                <option value="Escazú">Escazú                        </option>
+                <option value="Desamparados">Desamparados                  </option>
+                <option value="Puriscal">Puriscal                      </option>
+                <option value="Tarrazu">Tarrazu                       </option>
+                <option value="Aserrí">Aserrí                        </option>
+                <option value="Mora">Mora                          </option>
+                <option value="Goicoechea">Goicoechea                    </option>
+                <option value="Santa Ana">Santa Ana                     </option>
+                <option value="Alajuelita">Alajuelita                    </option>
+                <option value="Vazquez de Coronado">Vazquez de Coronado           </option>
+                <option value="Acosta">Acosta                        </option>
+                <option value="Tibás">Tibás                         </option>
+                <option value="Moravia">Moravia                       </option>
+                <option value="Montes de Oca">Montes de Oca                 </option>
+                <option value="Turrubares">Turrubares                    </option>
+                <option value="Dota">Dota                          </option>
+                <option value="Curridabat">Curridabat                    </option>
+                <option value="Pérez Zeledón">Pérez Zeledón                 </option>
+                <option value="León Cortes">León Cortes                   </option>
+            </select>
         </div>
-	</div>
+    </div>
     @* Service District *@
     <div class="form-group row">
 		<label class="col-sm-2 col-form-label" for="serviceDistrict">Distrito</label>
@@ -118,3 +148,69 @@
         </div>
     </div>
 </form>
+
+@section Scripts
+    {
+    <script type="text/javascript" language="javascript">
+
+        function populate(drop1, drop2)
+        {
+            var drop1 = document.getElementById(drop1);
+            var drop2 = document.getElementById(drop2);
+            drop2.innerHTML = "";
+            if (drop1.value == "San José") {
+
+                var optionArray = ["San José |San José ", "Escazú|Escazú", "Desamparados|Desamparados",
+                    "Tarrazu|Tarrazu", "Aserrí|Aserrí", "Mora|Mora", "Goicoechea|Goicoechea", "Santa Ana|Santa Ana",
+                    "Alajuelita|Alajuelita", "Vazquez de Coronado|Vazquez de Coronado", "Acosta|Acosta", "Tibás|Tibás",
+                    "Moravia|Moravia", "Montes de Oca|Montes de Oca", "Turrubares|Turrubares", "Dota|Dota",
+                    "Curridabat|Curridabat","Pérez Zeledón|Pérez Zeledón", "León Cortes |León Cortes "];
+
+            } else if (drop1.value == "Alajuela") {
+
+                var optionArray = ["Alajuela|Alajuela","San Ramon|San Ramon", "Grecia|Grecia", "San Mateo|San Mateo",
+                    "Atenas|Atenas", "Naranjo|Naranjo", "Palmares|Palmares", "Poás|Poás", "Orotina|Orotina",
+                    "San Carlos|San Carlos", "Alfaro Ruiz|Alfaro Ruiz", "Valverde Vega|Valverde Vega", "Upala|Upala",
+                    "Los Chiles|Los Chiles", "Guatuso|Guatuso"];
+
+            } else if (drop1.value == "Cartago") {
+
+                var optionArray = ["Cartago|Cartago", "Paraíso|Paraíso", "La Unión|La Unión", "Jiménez|Jiménez",
+                    "Turrialba|Turrialba", "Alvarado|Alvarado", "Oreamuno|Oreamuno", "El Guarco|El Guarco"];
+
+            } else if (drop1.value == "Heredia") {
+
+                var optionArray = ["Heredia|Heredia", "Barva|Barva", "Santo Domingo|Santo Domingo",
+                    "Santa Bárbara|Santa Bárbara", "San Rafael|San Rafael", "San Isidro|San Isidro",
+                    "Belén|Belén", "San Joaquín de Flores|San Joaquín de Flores", "San Pablo|San Pablo", "Sarapiquí|Sarapiquí"];
+
+            } else if (drop1.value == "Guanacaste") {
+
+                var optionArray = ["Liberia|Liberia", "Nicoya|Nicoya", "Santa Cruz|Santa Cruz", "Bagaces|Bagaces",
+                    "Carrillo|Carrillo", "Cañas|Cañas", "Abangares|Abangares", "Tilarán|Tilarán", "Nandayure|Nandayure",
+                    "La Cruz|La Cruz", "Hojancha|Hojancha"];
+
+            } else if (drop1.value == "Puntarenas") {
+
+                var optionArray = ["Puntarenas|Puntarenas", "Esparza|Esparza", "Buenos Aires|Buenos Aires",
+                    "Montes de Oro|Montes de Oro", "Osa|Osa", "Aguirre|Aguirre", "Golfito|Golfito", "Coto Brus|Coto Brus",
+                    "Parrita|Parrita", "Corredores|Corredores", "Garabito|Garabito"];
+
+            } else if (drop1.value == "Limón") {
+
+                var optionArray = ["Limón|Limón", "Pococí|Pococí", "Siquirres|Siquirres", "Talamanca|Talamanca",
+                    "Matina|Matina", "Guácimo|Guácimo"];
+
+            }
+
+            for (i in optionArray)
+            {
+                var pair = optionArray[i].split("|");
+                var newoption = document.createElement("option");
+                newoption.value = pair[0];
+                newoption.innerHTML = pair[1];
+                drop2.options.add(newoption);
+            }
+        }
+    </script>
+}
